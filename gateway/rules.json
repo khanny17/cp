@@ -1,0 +1,6 @@
+{
+    "rules": [
+        { "pathname": "/api/hello", "dest": "hello.cp-api.tech" },
+        { "dest": "www.cp-api.tech" }
+    ]
+}

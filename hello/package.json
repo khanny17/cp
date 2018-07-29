@@ -1,0 +1,16 @@
+{
+    "main": "index.js",
+    "scripts": {
+        "start": "micro"
+    },
+    "dependencies": {
+        "micro": "^9.3.2"
+    },
+    "now": {
+        "name": "hello",
+        "alias": "hello.cp-api.tech",
+        "env": {
+            "HELLO": "@hello"
+        }
+    }
+}
