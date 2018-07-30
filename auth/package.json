@@ -1,0 +1,22 @@
+{
+    "main": "index.js",
+    "scripts": {
+        "start": "micro"
+    },
+    "dependencies": {
+        "bcrypt": "^3.0.0",
+        "jsonwebtoken": "^8.3.0",
+        "micro": "^9.3.2",
+        "micro-jwt-auth": "^1.10.0",
+        "mongoose": "^5.2.5",
+        "validator": "^10.4.0"
+    },
+    "now": {
+        "name": "auth",
+        "alias": "auth.cp-api.tech",
+        "env": {
+            "JWT_SECRET": "@jwt_secret",
+            "DB_URL": "@db_url"
+        }
+    }
+}
