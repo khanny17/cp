@@ -9,6 +9,8 @@
         "micro": "^9.3.2",
         "micro-jwt-auth": "^1.10.0",
         "mongoose": "^5.2.5",
+        "request": "^2.87.0",
+        "request-promise-native": "^1.0.5",
         "validator": "^10.4.0"
     },
     "now": {
@@ -16,7 +18,8 @@
         "alias": "auth.cp-api.tech",
         "env": {
             "JWT_SECRET": "@jwt_secret",
-            "DB_URL": "@db_url"
+            "DB_URL": "@db_url",
+            "CAPTCHA_SECRET_KEY": "@captcha_secret_key"
         }
     }
 }

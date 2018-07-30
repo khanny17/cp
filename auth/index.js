@@ -1,6 +1,7 @@
 const { json, send } = require('micro');
 const jwt_auth = require('micro-jwt-auth');
 const jwt = require('jsonwebtoken');
+const request = require('request-promise');
 const User = require('./user_model');
 
 
@@ -15,6 +16,18 @@ module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
 
 async function register(req) {
   const body = await json(req);
+
+  //Validate captcha first
+  const captcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+  const { success } = await request.post(captcha_url, {
+    secret: process.env.CAPTCHA_SECRET_KEY,
+    response: body['g-recaptcha-response'],
+  }).then(htmlString => JSON.parse(htmlString));
+
+  if(!success) {
+    throw new Error('reCAPTCHA check failed');
+  }
+
   await User.create({ email: body.email, password: body.password });
   return login(body);
 }
