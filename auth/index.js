@@ -21,7 +21,9 @@ async function register(req) {
 
 async function login(req) {
   const body = await json(req);
+
   const user = await User.findOne({ email: body.email }, '+password');
+
   if(!user) {
     throw new Error('User not found');
   }
