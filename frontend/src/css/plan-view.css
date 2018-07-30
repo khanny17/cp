@@ -1,0 +1,14 @@
+.plan-view .year {
+    margin: 5px;
+}
+
+.year-container {
+    display: flex;
+    justify-content: center;
+}
+
+.plan-view {
+    margin-top: 25px;
+    padding-bottom: 50px;
+    list-style: none outside none;
+}

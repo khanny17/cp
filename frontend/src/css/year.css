@@ -1,0 +1,18 @@
+.year > h2 {
+    margin: 5px;
+}
+
+.year {
+    background: #eee3df;
+    border-radius: 5px;
+
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.term-container {
+    flex: 1;
+
+    display: flex;
+}

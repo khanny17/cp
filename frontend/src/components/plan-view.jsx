@@ -1,13 +1,37 @@
 import React from 'react';
-import Year from './year'
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import '../css/plan-view.css';
+import Year from './year';
+import DragDropMaster from './drag-drop-master';
+import { Droppable } from 'react-beautiful-dnd';
 
 const PlanView = ({ plan }) => (
-  <div>
-    <h1>plan.name</h1>
-    <div>
-      plan.years.map(year => <Year year={year} />)
-    </div>
+  <div className="plan-view">
+    <Droppable droppableId={plan.fid} type="PLAN-YEAR" direction="horizontal">
+      {(provided, snapshot) => (
+        <div ref={provided.innerRef} className="year-container">
+          { plan.years.map((p, i) => <Year year={p} key={p} index={i} />) }
+          { provided.placeholder }
+        </div>
+      )}
+    </Droppable>
   </div>
-)
+);
 
-export default PlanView;
+PlanView.propTypes = {
+  plan: PropTypes.object,
+};
+
+const DragDropWrappedPlanView = (props) => (
+  <DragDropMaster>
+    <PlanView {...props}/>
+  </DragDropMaster>
+);
+
+const DragDropWrappedPlanViewContainer = connect(
+  (state, { plan }) => ({ plan: state.plan.plans[plan] }),
+  dispatch => ({}),
+)(DragDropWrappedPlanView);
+
+export default DragDropWrappedPlanViewContainer;

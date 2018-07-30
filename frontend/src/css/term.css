@@ -1,0 +1,21 @@
+.term .course-wrapper {
+    margin: 3px 5px;
+}
+
+.term {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.course-container {
+    flex: 1;
+
+    display: flex;
+    flex-flow: column;
+    margin: 10px 0;
+}
+
+.term > h3 {
+    margin: 5px;
+}

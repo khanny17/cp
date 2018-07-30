@@ -1,34 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import logo from './logo.svg';
 import './App.css';
 import PlanView from './components/plan-view';
-import uuidv4 from 'uuid/v4';
 
-let plan = {
-  name: 'Plan',
-  years: [{
-    name: 'Year 1',
-    terms: [{
-      name: 'Term 1',
-      courses: [{
-        name: 'Course 1',
-      }],
-    }],
-  }]
-};
+const App = ({ plan }) => (
+  <div className="App" style={{ display: 'flex', flexFlow: 'column' }}>
+    <header className="App-header" style={{ flex: '0 0 auto' }}>
+      <img src={logo} className="App-logo" alt="logo" />
+      <h1 className="App-title">Welcome to React</h1>
+    </header>
+    <PlanView plan={plan}/>
+  </div>
+);
 
-class App extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <PlanView plan={plan} />
-      </div>
-    );
-  }
-}
+App.propTypes = { plan: PropTypes.string };
 
-export default App;
+const AppContainer = connect(
+  state => ({ plan: state.plan.plan }),
+  dispatch => ({}),
+)(App);
+
+export default AppContainer;
