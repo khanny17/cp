@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import logo from './logo.svg';
 import './App.css';
 import PlanView from './components/plan-view';
+import LoginForm from './components/login-form';
 
 const App = ({ plan }) => (
   <div className="App" style={{ display: 'flex', flexFlow: 'column' }}>
     <header className="App-header" style={{ flex: '0 0 auto' }}>
       <img src={logo} className="App-logo" alt="logo" />
       <h1 className="App-title">Welcome to React</h1>
+      <LoginForm />
     </header>
     <PlanView plan={plan}/>
   </div>
