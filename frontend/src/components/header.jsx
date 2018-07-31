@@ -1,25 +1,37 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Menu } from 'semantic-ui-react';
 import AuthModal from './auth-modal';
+import ProfileModal from './profile-modal';
 
-const headerStyle = {
-  backgroundColor: '#222',
-  padding: '10px',
-  display: 'flex',
-};
 
 const logoStyle = {
-  color: 'white',
-  margin: 0,
-  marginTop: '-3px',
-  marginLeft: '10px',
+  fontSize: '1.5rem',
+  padding: '0.9rem',
+  marginTop: '-0.3rem',
 };
 
-const Header = () => (
-  <header style={headerStyle}>
-    <h1 style={logoStyle}>cp</h1>
+const Header = ({ user }) => (
+  <Menu inverted style={{ borderRadius: 0 }}>
+    <Menu.Item header style={logoStyle}>cp</Menu.Item>
     <div style={{ flex: 1 }} />
-    <AuthModal />
-  </header>
+    {user ?
+      <ProfileModal /> :
+      <Menu.Item>
+        <AuthModal />
+      </Menu.Item>
+    }
+  </Menu>
 );
 
-export default Header;
+Header.propTypes = {
+  user: PropTypes.object,
+};
+
+const HeaderContainer = connect(
+  state => ({ user: state.auth.user }),
+  dispatch => ({}),
+)(Header);
+
+export default HeaderContainer;

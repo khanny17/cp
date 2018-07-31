@@ -1,15 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
+import { login } from '../actions/auth';
 
 class LoginForm extends React.Component {
   submit() {
-    fetch('https://auth.cp-api.tech/login', {
-      method: 'post',
-      body: JSON.stringify(this.state),
-      mode: 'no-cors'
-    })
-      .then(data => console.log(data)) //eslint-disable-line
+    this.props.login(this.state);
   }
 
   onChange(event) {
@@ -52,6 +49,15 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   swap: PropTypes.func,
+  login: PropTypes.func,
 };
 
-export default LoginForm;
+const LoginFormContainer = connect(
+  state => ({}),
+  dispatch => ({
+    login: user => dispatch(login(user)),
+  }),
+)(LoginForm);
+
+
+export default LoginFormContainer;

@@ -4,9 +4,15 @@ const jwt = require('jsonwebtoken');
 const request = require('request-promise-native');
 const User = require('./user_model');
 
+function configureResponse(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+}
+
 
 module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
 (async(req, res) => {
+  configureResponse(res);
+
   switch(req.url) {
     case '/register': return await register(req);
     case '/login'   : return await login(req);
@@ -16,7 +22,6 @@ module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
 
 async function register(req) {
   const body = await json(req);
-  console.log(body['g-recaptcha-response']);
 
   //Validate captcha first
   const captcha_url = 'https://www.google.com/recaptcha/api/siteverify' +
@@ -36,7 +41,11 @@ async function register(req) {
     throw new Error('reCAPTCHA check failed');
   }
 
-  await User.create({ email: body.email, password: body.password });
+  await User.create({
+    email: body.email,
+    password: body.password,
+    name: body.name,
+  });
   return login(body);
 }
 
@@ -55,5 +64,10 @@ async function login(req) {
 
   const { password, ...payload } = user.toObject();
 
-  return jwt.sign(payload, process.env.JWT_SECRET);
+  const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+  return {
+    jwt: token,
+    user: { ...payload },
+  };
 }

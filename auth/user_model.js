@@ -12,6 +12,7 @@ const schema = new mongoose.Schema({
     type: String, unique: true, lowercase: true,
     validate: [ isEmail, 'invalid email' ],
   },
+  name: { type: String },
   password: { type: String, select: false },
 });
 

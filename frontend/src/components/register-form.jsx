@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Form } from 'semantic-ui-react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { register } from '../actions/auth';
 
 class RegisterForm extends React.Component {
   submit() {
-    fetch('https://auth.cp-api.tech/register', {
-      method: 'post',
-      body: JSON.stringify(this.state),
-      mode: 'no-cors'
-    })
-      .then(data => console.log(data)) //eslint-disable-line
+    this.props.register(this.state);
   }
 
   captchaChange(value) {
@@ -37,6 +34,7 @@ class RegisterForm extends React.Component {
     const EasyInput = this.EasyInput;
     return (
       <Form>
+        <EasyInput name="name" />
         <EasyInput name="email" type="email" />
         <EasyInput name="password" type="password" />
         <ReCAPTCHA
@@ -57,6 +55,14 @@ class RegisterForm extends React.Component {
 
 RegisterForm.propTypes = {
   swap: PropTypes.func,
+  register: PropTypes.func,
 };
 
-export default RegisterForm;
+const RegisterFormContainer = connect(
+  state => ({}),
+  dispatch => ({
+    register: user => dispatch(register(user)),
+  }),
+)(RegisterForm);
+
+export default RegisterFormContainer;
