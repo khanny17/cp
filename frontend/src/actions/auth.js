@@ -56,7 +56,7 @@ export function register(userData) {
   return dispatch => {
     dispatch(registerRequest());
 
-    return fetch('http://127.0.0.1:3000/register', {
+    return fetch('https://auth.cp-api.tech/register', {
       method: 'post',
       body: JSON.stringify(userData),
     })
@@ -69,7 +69,7 @@ export function login(userData) {
   return dispatch => {
     dispatch(loginRequest());
 
-    return fetch('http://127.0.0.1:3000/login', {
+    return fetch('https://auth.cp-api.tech/login', {
       method: 'post',
       body: JSON.stringify(userData),
     })
