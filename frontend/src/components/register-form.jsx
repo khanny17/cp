@@ -42,7 +42,8 @@ class RegisterForm extends React.Component {
           onChange={this.captchaChange.bind(this)}
         />
         <Form.Group className="auth-modal-actions">
-          <Form.Button primary onClick={this.submit.bind(this)}>
+          <Form.Button primary loading={this.props.loading}
+            onClick={this.submit.bind(this)}>
             Register
           </Form.Button>
           <div style={{ flex: 1 }}></div>
@@ -56,10 +57,11 @@ class RegisterForm extends React.Component {
 RegisterForm.propTypes = {
   swap: PropTypes.func,
   register: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 const RegisterFormContainer = connect(
-  state => ({}),
+  state => ({ loading: state.ui.requestingRegister }),
   dispatch => ({
     register: user => dispatch(register(user)),
   }),

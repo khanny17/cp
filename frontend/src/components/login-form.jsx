@@ -33,7 +33,8 @@ class LoginForm extends React.Component {
         <EasyInput name="password" type="password" />
 
         <Form.Group className="auth-modal-actions">
-          <Form.Button primary onClick={this.submit.bind(this)}>
+          <Form.Button primary loading={this.props.loading}
+            onClick={this.submit.bind(this)}>
             Login
           </Form.Button>
           <div style={{ flex: 1 }}></div>
@@ -50,10 +51,11 @@ class LoginForm extends React.Component {
 LoginForm.propTypes = {
   swap: PropTypes.func,
   login: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 const LoginFormContainer = connect(
-  state => ({}),
+  state => ({ loading: state.ui.requestingLogin }),
   dispatch => ({
     login: user => dispatch(login(user)),
   }),
