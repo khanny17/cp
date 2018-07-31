@@ -34,3 +34,8 @@
 .App .plan-view {
     flex: 1;
 }
+
+.button-link {
+    padding: 0 10px;
+    cursor: pointer;
+}

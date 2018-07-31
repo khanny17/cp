@@ -1,18 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import logo from './logo.svg';
 import './App.css';
 import PlanView from './components/plan-view';
-import LoginForm from './components/login-form';
+import Header from './components/header';
 
 const App = ({ plan }) => (
   <div className="App" style={{ display: 'flex', flexFlow: 'column' }}>
-    <header className="App-header" style={{ flex: '0 0 auto' }}>
-      <img src={logo} className="App-logo" alt="logo" />
-      <h1 className="App-title">Welcome to React</h1>
-      <LoginForm />
-    </header>
+    <Header />
     <PlanView plan={plan}/>
   </div>
 );

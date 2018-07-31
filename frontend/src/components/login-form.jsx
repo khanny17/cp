@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Form } from 'semantic-ui-react';
 
 class LoginForm extends React.Component {
   submit() {
@@ -16,21 +18,40 @@ class LoginForm extends React.Component {
     });
   }
 
-  Input = ({ name, type='input' }) => (
-    <input name={name} type={type} onChange={e => this.onChange(e)}
-      placeholder={name}/>
+  EasyInput = ({ name, type='input' }) => (
+    <Form.Input
+      label={name}
+      name={name}
+      type={type}
+      placeholder={name}
+      onChange={e => this.onChange(e)}
+    />
   );
 
   render() {
-    const Input = this.Input;
+    const EasyInput = this.EasyInput;
     return (
-      <div>
-        <Input name="email" type="email" />
-        <Input name="password" type="password" />
-        <button onClick={this.submit.bind(this)}>Submit</button>
-      </div>
+      <Form>
+        <EasyInput name="email" type="email" />
+        <EasyInput name="password" type="password" />
+
+        <Form.Group className="auth-modal-actions">
+          <Form.Button primary onClick={this.submit.bind(this)}>
+            Login
+          </Form.Button>
+          <div style={{ flex: 1 }}></div>
+          <a className="button-link" onClick={() => this.props.swap()}>
+            Register
+          </a>
+        </Form.Group>
+
+      </Form>
     );
   }
 }
+
+LoginForm.propTypes = {
+  swap: PropTypes.func,
+};
 
 export default LoginForm;
