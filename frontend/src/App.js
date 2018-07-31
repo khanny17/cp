@@ -1,22 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
+import BrowseView from './components/browse-view';
 import PlanView from './components/plan-view';
 import Header from './components/header';
 
-const App = ({ plan }) => (
+const App = () => (
   <div className="App" style={{ display: 'flex', flexFlow: 'column' }}>
     <Header />
-    <PlanView plan={plan}/>
+    <Switch>
+      <Route exact path="/" component={BrowseView} />
+      <Route exact path="/plan" component={PlanView} />
+    </Switch>
   </div>
 );
 
-App.propTypes = { plan: PropTypes.string };
-
-const AppContainer = connect(
-  state => ({ plan: state.plan.plan }),
-  dispatch => ({}),
-)(App);
-
-export default AppContainer;
+export default App;

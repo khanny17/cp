@@ -43,4 +43,22 @@ for(var y = 1; y < 5; y++) {
   plan.years.push(year.fid);
 }
 
-export default { plan: plan.fid, plans, years, terms, courses };
+const userPlans = [
+  { name: 'Testing 1', _id: 1 },
+  { name: 'Testing 2', _id: 2 },
+];
+
+const templates = [
+  { name: 'Template Test 1', _id: 1 },
+  { name: 'Template Test 2', _id: 2 },
+];
+
+export default {
+  plan: plan.fid,
+  plans,
+  years,
+  terms,
+  courses,
+  userPlans,
+  templates,
+};

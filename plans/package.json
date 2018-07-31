@@ -1,0 +1,19 @@
+{
+    "main": "index.js",
+    "scripts": {
+        "start": "micro"
+    },
+    "dependencies": {
+        "micro": "^9.3.2",
+        "micro-jwt-auth": "^1.10.0",
+        "mongoose": "^5.2.5"
+    },
+    "now": {
+        "name": "plans",
+        "alias": "plans.cp-api.tech",
+        "env": {
+            "JWT_SECRET": "@jwt_secret",
+            "DB_URL": "@db_url"
+        }
+    }
+}

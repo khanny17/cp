@@ -8,3 +8,14 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+td > .show-on-hover,
+div > .show-on-hover {
+    visibility: hidden;
+}
+
+td:hover > .show-on-hover,
+div:hover > .show-on-hover {
+    visibility: visible;
+}
+

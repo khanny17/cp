@@ -30,7 +30,7 @@ const DragDropWrappedPlanView = (props) => (
 );
 
 const DragDropWrappedPlanViewContainer = connect(
-  (state, { plan }) => ({ plan: state.plan.plans[plan] }),
+  (state, { plan }) => ({ plan: state.plan.plans[state.plan.plan] }),
   dispatch => ({}),
 )(DragDropWrappedPlanView);
 
