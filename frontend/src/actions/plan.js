@@ -6,6 +6,25 @@ export const ADD_COURSE = 'ADD_COURSE';
 export const MOVE_YEAR = 'MOVE_YEAR';
 export const MOVE_TERM = 'MOVE_TERM';
 export const MOVE_COURSE = 'MOVE_COURSE';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const UPDATE_COURSE = 'UPDATE_COURSE';
+
+
+export function updateCourse(updates) {
+  return {
+    type: UPDATE_COURSE,
+    updates,
+  };
+}
+
+export function deleteItem(delete_type, item_fid, list_fid) {
+  return {
+    type: DELETE_ITEM,
+    delete_type,
+    item_fid,
+    list_fid,
+  };
+}
 
 export function addYear(planId, year = {}) {
   return {

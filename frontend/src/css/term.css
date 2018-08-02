@@ -6,10 +6,11 @@
     display: flex;
     flex-flow: column;
     height: 100%;
+    min-width: 110px;
 }
 
 .course-container {
-    flex: 1;
+    flex: 1 0 auto;
 
     display: flex;
     flex-flow: column;

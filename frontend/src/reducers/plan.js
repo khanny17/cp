@@ -5,6 +5,8 @@ import {
   MOVE_YEAR,
   MOVE_TERM,
   MOVE_COURSE,
+  DELETE_ITEM,
+  UPDATE_COURSE,
 } from '../actions/plan';
 
 import initialState from '../util/initial-plan-state';
@@ -25,19 +27,73 @@ function plan(state = initialState, action) {
     return moveTerm(state, action.termId, action.source, action.dest);
   case MOVE_YEAR:
     return moveYear(state, action.yearId, action.source, action.dest);
+  case DELETE_ITEM:
+    return deleteItem(state, action);
+  case UPDATE_COURSE:
+    return {
+      ...state,
+      courses: {
+        ...state.courses,
+        [action.updates.fid]: {
+          ...state.courses[action.updates.fid],
+          ...action.updates,
+        },
+      }
+    };
   default:
     return state;
 
   }
 }
 
+function deleteItem(state, action) {
+  const { delete_type, item_fid, list_fid } = action;
+
+  let item_type, list_type;
+  if(delete_type === 'PLAN-YEAR') {
+    item_type = 'years';
+    list_type = 'plan';
+  } else if(delete_type === 'YEAR-TERM') {
+    item_type = 'terms';
+    list_type = 'years';
+  } else if(delete_type === 'TERM-COURSE') {
+    item_type = 'courses';
+    list_type = 'terms';
+  } else {
+    throw new Error('The devs screwed something up');
+  }
+
+  // Remove from the dict and from the list it came from
+  let newState = {
+    ...state,
+    // Remove from the list
+    [list_type]: {
+      ...state[list_type], 
+      [list_fid]: {
+        ...state[list_type][list_fid], 
+        [item_type]: 
+          state[list_type][list_fid][item_type].filter(x => x !== item_fid),
+      },
+    },
+  };
+
+  // Remove from dict
+  delete newState[item_type][item_fid];
+  return newState;
+}
+
 
 function addYear(state, year) {
+  const planId = state.plan;
+
   return {
     ...state,
-    plan: {
-      ...state.plan,
-      years: [ ...state.plan.years, year.fid ],
+    plans: {
+      ...state.plans,
+      [planId]: {
+        ...state.plans[planId],
+        years: state.plans[planId].years.concat(year.fid),
+      },
     },
     years: {
       ...state.years,
@@ -53,7 +109,7 @@ function addTerm(state, yearId, term) {
       ...state.years,
       [yearId]: {
         ...state.years[yearId],
-        terms: state[yearId].terms.concat(term.fid),
+        terms: state.years[yearId].terms.concat(term.fid),
       },
     },
     terms: {
@@ -70,7 +126,7 @@ function addCourse(state, termId, course) {
       ...state.terms,
       [termId]: {
         ...state.terms[termId],
-        courses: state[termId].courses.concat(course.fid),
+        courses: state.terms[termId].courses.concat(course.fid),
       },
     },
     courses: {

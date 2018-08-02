@@ -5,10 +5,11 @@
     height: 100px;
     width: 100px;
 
-    padding: 2px;
-    border: 1px solid gray;
+    border: 1px solid #1b1c1d;
     border-radius: 3px;
-    background: #fbfafa;
+
+    color: white;
+    background: #4cf;
 }
 
 .course > p {
@@ -17,10 +18,14 @@
 }
 
 .course .course-header {
-    width: auto;
     flex: 0 0 auto;
-    border-bottom: 1px solid gray;
+    width: 100%;
+    padding: 2px;
+    border-bottom: 1px solid #1b1c1d;
     margin-bottom: 2px;
+
+    background: rgba(0,0,0,0.2);
+    font-weight: bold;
 }
 
 .course-title {
@@ -29,4 +34,12 @@
 
 .course-credits {
     flex: 0 0 auto;
+}
+
+.course .editing {
+    background: rgba(0,0,0,0.2);
+    width: 100%;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
 }

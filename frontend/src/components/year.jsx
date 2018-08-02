@@ -12,7 +12,12 @@ const Year = ({ year }) => (
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
-          style={{ display: 'flex' }}
+          style={{
+            display: 'flex',
+            height: '100%',
+            border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
+            borderRadius: '5px',
+          }}
           {...provided.droppableProps}
         >
           { year.terms.map((t, i) => <Term term={t} key={t} index={i} />) }
@@ -34,13 +39,15 @@ const DraggableYear = (props) => (
     index={props.index}
   >
     {(provided, snapshot) => (
-      <div>
+      <div className="pre-draggable">
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           style={{
             opacity: snapshot.isDragging ? '.5' : '1',
+            border: snapshot.isDragging ? '1px dotted gray' : 'none',
+            borderRadius: '5px',
             ...provided.draggableProps.style,
           }}
         >

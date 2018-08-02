@@ -5,6 +5,7 @@ import '../css/plan-view.css';
 import Year from './year';
 import DragDropMaster from './drag-drop-master';
 import { Droppable } from 'react-beautiful-dnd';
+import Trash from './trash';
 
 const PlanView = ({ plan }) => (
   <div className="plan-view">
@@ -16,6 +17,7 @@ const PlanView = ({ plan }) => (
         </div>
       )}
     </Droppable>
+    <Trash />
   </div>
 );
 

@@ -4,11 +4,36 @@
 
 .year-container {
     display: flex;
-    justify-content: center;
+}
+
+/*
+ * These next two styles fix centering when screen gets small.
+ * It works better than using "justify-content: center" on the parent div.
+ */
+.year-container > div:first-child {
+    margin-left: auto;
+}
+.year-container > div:last-child {
+    margin-right: auto;
 }
 
 .plan-view {
     margin-top: 25px;
     padding-bottom: 50px;
     list-style: none outside none;
+}
+
+/* Internet Explorer has not grabby hand */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .pre-draggable {
+        cursor: move;
+    }
+}
+
+.pre-draggable > div {
+    height: 100%;
+}
+
+.trash:hover {
+    color: red;
 }

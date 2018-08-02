@@ -7,10 +7,13 @@ import {
   REGISTER_SUCCESS,
 } from '../actions/auth';
 
+import { SHOW_TRASH, HIDE_TRASH } from '../actions/ui';
+
 
 const initialState = {
   requestingLogin: false,
   requestingRegister: false,
+  showTrash: false,
 };
 
 function ui(state = initialState, action) {
@@ -27,6 +30,10 @@ function ui(state = initialState, action) {
     return { ...state, requestingRegister: false };
   case REGISTER_SUCCESS:
     return { ...state, requestingRegister: false };
+  case SHOW_TRASH:
+    return { ...state, showTrash: true };
+  case HIDE_TRASH:
+    return { ...state, showTrash: false };
   default:
     return state;
   }
