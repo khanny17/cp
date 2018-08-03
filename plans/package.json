@@ -1,11 +1,15 @@
 {
     "main": "index.js",
     "scripts": {
-        "start": "micro"
+        "start": "micro",
+        "deploy": "now && now alias",
+        "dev": "micro-dev -p 3002"
     },
     "dependencies": {
         "micro": "^9.3.2",
+        "micro-cors": "^0.1.0",
         "micro-jwt-auth": "^1.10.0",
+        "micro-match": "^0.2.0",
         "mongoose": "^5.2.5"
     },
     "now": {
@@ -15,5 +19,8 @@
             "JWT_SECRET": "@jwt_secret",
             "DB_URL": "@db_url"
         }
+    },
+    "devDependencies": {
+        "micro-dev": "^3.0.0"
     }
 }

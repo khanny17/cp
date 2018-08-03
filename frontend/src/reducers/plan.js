@@ -1,3 +1,7 @@
+import uuidv4 from 'uuid/v4';
+
+import { LOGOUT } from '../actions/auth';
+
 import {
   ADD_YEAR,
   ADD_TERM,
@@ -9,11 +13,31 @@ import {
   UPDATE_COURSE,
 } from '../actions/plan';
 
-import initialState from '../util/initial-plan-state';
+import {
+  SAVE_PLAN_REQUEST,
+  SAVE_PLAN_SUCCESS,
+  SAVE_PLAN_FAILURE,
+  LOAD_PLAN_REQUEST,
+  LOAD_PLAN_SUCCESS,
+  LOAD_PLAN_FAILURE,
+  DELETE_PLAN_SUCCESS,
+  NEW_PLAN,
+} from '../actions/plan-api';
+
+
+import makeNewPlan from '../util/initial-plan-state';
+
+const initialState = makeNewPlan();
 
 
 function plan(state = initialState, action) {
   switch(action.type) {
+
+  case LOGOUT:
+    return initialState;
+
+  case NEW_PLAN:
+    return makeNewPlan();
 
   case ADD_YEAR:
     return addYear(state, action.year);
@@ -40,6 +64,85 @@ function plan(state = initialState, action) {
         },
       }
     };
+
+
+  case SAVE_PLAN_REQUEST:
+    return {
+      ...state,
+      saving: true,
+    };
+  case SAVE_PLAN_SUCCESS: {
+    const { years, terms, courses, _id, details } = action.data;
+    return {
+      ...state,
+      saving: false,
+      years: years,
+      terms: terms,
+      courses: courses,
+      plans: {
+        [_id]: { ...details, fid: _id, _id: _id },
+      },
+      plan: _id,
+    };
+  }
+  case SAVE_PLAN_FAILURE:
+    return {
+      ...state,
+      saving: false,
+    };
+
+  case LOAD_PLAN_REQUEST:
+    return {
+      ...state,
+      loading: true,
+      failed: false,
+    };
+  case LOAD_PLAN_SUCCESS: {
+    const { years, terms, courses, _id, details } = action.data;
+    return {
+      ...state,
+      loading: false,
+      failed: false,
+      years: years,
+      terms: terms,
+      courses: courses,
+      plans: {
+        [_id]: { ...details, fid: _id, _id: _id },
+      },
+      plan: _id,
+    };
+  }
+  case LOAD_PLAN_FAILURE:
+    return {
+      ...state,
+      loading: false,
+      plans: { [action.planId]: { failed: true } }
+    };
+
+  case DELETE_PLAN_SUCCESS: {
+    const delId = action.deletedId;
+
+    // We don't care unless we deleted the current open plan
+    if(delId !== state.plan) {
+      return state;
+    }
+
+    // In that case, swap to use a new fid instead of the _id
+    // as a key and delete the _id from the plan
+    const newId = uuidv4();
+    const { _id, ...updatedPlan } = Object.assign({}, state.plans[delId]);
+    updatedPlan.fid = newId;
+
+    return {
+      ...state,
+      plans: {
+        [delId]: null,
+        [newId]: updatedPlan,
+      },
+      plan: newId,
+    };
+  }
+
   default:
     return state;
 

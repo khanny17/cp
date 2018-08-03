@@ -1,3 +1,4 @@
+const cors = require('micro-cors')();
 const { json, send } = require('micro');
 const jwt_auth = require('micro-jwt-auth');
 const jwt = require('jsonwebtoken');
@@ -9,7 +10,7 @@ function configureResponse(res) {
 }
 
 
-module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
+module.exports = cors(jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
 (async(req, res) => {
   configureResponse(res);
 
@@ -18,7 +19,7 @@ module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
     case '/login'   : return await login(req);
     default: return `Recognized as ${req.jwt.email}`;
   }
-});
+}));
 
 async function register(req) {
   const body = await json(req);

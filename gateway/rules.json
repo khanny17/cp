@@ -1,6 +1,7 @@
 {
     "rules": [
         { "pathname": "/api/hello", "dest": "hello.cp-api.tech" },
+        { "pathname": "/api/plans", "dest": "plans.cp-api.tech" },
         { "pathname": "/api/auth", "dest": "auth.cp-api.tech" },
         { "dest": "www.cp-api.tech" }
     ]

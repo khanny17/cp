@@ -6,7 +6,10 @@ mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
 
 const schema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  name: { type: String, required: true },
+  details: {
+    title: { type: String, required: true },
+    years: { type: Array, required: true },
+  },
   years: { type: Object, required: true },
   terms: { type: Object, required: true },
   courses: { type: Object, required: true },

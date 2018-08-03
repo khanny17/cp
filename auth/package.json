@@ -1,12 +1,15 @@
 {
     "main": "index.js",
     "scripts": {
-        "start": "micro"
+        "start": "micro",
+        "deploy": "now && now alias",
+        "dev": "micro-dev -p 3001"
     },
     "dependencies": {
         "bcrypt": "^3.0.0",
         "jsonwebtoken": "^8.3.0",
         "micro": "^9.3.2",
+        "micro-cors": "^0.1.0",
         "micro-jwt-auth": "^1.10.0",
         "mongoose": "^5.2.5",
         "request": "^2.87.0",
@@ -21,5 +24,8 @@
             "DB_URL": "@db_url",
             "CAPTCHA_SECRET_KEY": "@captcha_secret_key"
         }
+    },
+    "devDependencies": {
+        "micro-dev": "^3.0.0"
     }
 }

@@ -1,3 +1,4 @@
+import { AUTH_API_ROOT } from '../util/api-config';
 import { handleErrors } from '../util/fetch-utils';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
@@ -56,7 +57,7 @@ export function register(userData) {
   return dispatch => {
     dispatch(registerRequest());
 
-    return fetch('https://auth.cp-api.tech/register', {
+    return fetch(AUTH_API_ROOT+'/register', {
       method: 'post',
       body: JSON.stringify(userData),
     })
@@ -69,7 +70,7 @@ export function login(userData) {
   return dispatch => {
     dispatch(loginRequest());
 
-    return fetch('https://auth.cp-api.tech/login', {
+    return fetch(AUTH_API_ROOT+'/login', {
       method: 'post',
       body: JSON.stringify(userData),
     })

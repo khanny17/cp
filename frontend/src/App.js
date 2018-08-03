@@ -1,16 +1,20 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
+import Private from './components/private';
 import BrowseView from './components/browse-view';
 import PlanView from './components/plan-view';
-import Header from './components/header';
+import Landing from './components/landing';
 
 const App = () => (
   <div className="App" style={{ display: 'flex', flexFlow: 'column' }}>
-    <Header />
     <Switch>
-      <Route exact path="/" component={BrowseView} />
-      <Route exact path="/plan" component={PlanView} />
+      <Route exact path="/" component={Landing} />
+      <Route exact path="/plan/:id?" component={PlanView} />
+      <Private>
+        <Route exact path="/browse" component={BrowseView} />
+      </Private>
+      <Redirect to="/" />
     </Switch>
   </div>
 );
