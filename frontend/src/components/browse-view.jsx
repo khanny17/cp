@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getMine } from '../actions/browse';
+import { newPlan } from '../actions/plan-api';
 import MyHeader from './header';
 import {
+  Button,
   Container,
   Header,
+  Icon,
   Segment,
   Table,
 } from 'semantic-ui-react';
@@ -13,21 +17,29 @@ import HiddenOpenButton from './hidden-open-button';
 import HiddenDeleteButton from './hidden-delete-button';
 
 class BrowseView extends React.Component {
-  componentDidMount() {
-    if(this.props.my_plans === null) {
-      this.props.getMine();
+  state = {};
+
+  static getDerivedStateFromProps(props) {
+    if(props.my_plans === null) {
+      props.getMine();
     }
+    return {};
   }
 
   render() {
     const { my_plans, templates, loading_my_plans,
-      loading_templates } = this.props;
+      loading_templates, newPlan } = this.props;
     return (
       <div>
         <MyHeader />
         <Container text style={{ textAlign: 'left' }}>
           <Header as='h1' attached='top' block>
             My Plans
+            <Link to="/plan" onClick={newPlan}>
+              <Button primary style={{ float: 'right' }}>
+                <Icon name="file"/>New Plan
+              </Button>
+            </Link>
           </Header>
           <Segment attached loading={loading_my_plans}>
             <Table basic="very" selectable>
@@ -106,6 +118,7 @@ BrowseView.propTypes = {
   loading_my_plans: PropTypes.bool,
   loading_templates: PropTypes.bool,
   getMine: PropTypes.func,
+  newPlan: PropTypes.func,
 };
 
 const BrowseViewContainer = connect(
@@ -117,6 +130,7 @@ const BrowseViewContainer = connect(
   }),
   dispatch => ({
     getMine: () => dispatch(getMine()),
+    newPlan: () => dispatch(newPlan()),
   }),
 )(BrowseView);
 

@@ -4,10 +4,10 @@ import { Link, Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Menu, Icon } from 'semantic-ui-react';
 import AuthModal from './auth-modal';
-import ProfileModal from './profile-modal';
-import LogoutButton from './logout-button';
+import UserDropdownMenu from './user-dropdown-menu';
 import SaveButton from './save-button';
 import { newPlan } from '../actions/plan-api';
+import '../css/header.css';
 
 const logoStyle = {
   fontSize: '1.5rem',
@@ -27,10 +27,9 @@ const Header = ({ user, newPlan }) => (
     </Menu.Item>
     <div style={{ flex: 1 }} />
     {user ?
-      <Menu.Menu>
+      <Menu.Menu position="right">
         <Route exact path="/plan/:id?" component={SaveButton} />
-        <ProfileModal />
-        <LogoutButton />
+        <UserDropdownMenu />
       </Menu.Menu>
 
       :

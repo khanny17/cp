@@ -10,6 +10,7 @@ import {
   MOVE_TERM,
   MOVE_COURSE,
   DELETE_ITEM,
+  UPDATE_PLAN,
   UPDATE_COURSE,
 } from '../actions/plan';
 
@@ -53,6 +54,21 @@ function plan(state = initialState, action) {
     return moveYear(state, action.yearId, action.source, action.dest);
   case DELETE_ITEM:
     return deleteItem(state, action);
+
+
+  case UPDATE_PLAN: {
+    const { title } = action.updates;
+    return {
+      ...state,
+      plans: {
+        ...state.plans,
+        [state.plan]: {
+          ...state.plans[state.plan],
+          title: title,
+        }
+      }
+    };
+  }
   case UPDATE_COURSE: {
     const { fid, subject } = action.updates;
     return {

@@ -19,7 +19,7 @@ class HiddenDeleteButton extends React.Component {
     this.props.deletePlan(this.props.plan._id);
     this.closeModal();
   }
-  
+
   render() {
     return (
       <Modal trigger={
@@ -35,7 +35,9 @@ class HiddenDeleteButton extends React.Component {
       basic size="small" style={{ textAlign: 'center' }}>
         <Header icon="delete" content="Delete This Plan?" />
         <Modal.Actions>
-          <Button inverted basic>Cancel</Button>
+          <Button inverted basic onClick={this.closeModal.bind(this)}>
+            Cancel
+          </Button>
           <Button inverted color="red"
             onClick={this.deletePlanAndCloseModal.bind(this)}>
             <Icon name="delete" /> Delete

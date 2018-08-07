@@ -11,8 +11,11 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const LOGOUT = 'LOGOUT';
 
 export function logout() {
-  return {
-    type: LOGOUT,
+  return dispatch => {
+    push('/');
+    dispatch({
+      type: LOGOUT,
+    });
   };
 }
 

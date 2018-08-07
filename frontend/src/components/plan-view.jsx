@@ -9,10 +9,14 @@ import { Dimmer, Loader } from 'semantic-ui-react';
 import Trash from './trash';
 import { loadPlan, newPlan } from '../actions/plan-api';
 import Header from './header';
+import PlanTitle from './plan-title';
 
 const PlanView = ({ plan }) => {
   return (
     <div className="plan-view">
+      <div className="plan-title-wrapper">
+        <PlanTitle />
+      </div>
       <Droppable droppableId={plan.fid} type="PLAN-YEAR" direction="horizontal">
         {(provided, snapshot) => (
           <div ref={provided.innerRef} className="year-container">

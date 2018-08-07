@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Menu, Modal } from 'semantic-ui-react';
+import { Dropdown, Icon, Modal } from 'semantic-ui-react';
 
 
-const ProfileMenuItem = ({ user, open }) => (
-  <Menu.Item icon="user" name={user.name || 'User'} link onClick={open} />
+const ProfileMenuItem = ({ open }) => (
+  <Dropdown.Item onClick={open}><Icon name="user" />Profile</Dropdown.Item>
 );
 
 ProfileMenuItem.propTypes = {
@@ -23,10 +23,7 @@ class ProfileModal extends React.Component {
         open={this.state.open}
         onClose={() => this.setState({ open: false })}
         trigger={
-          <ProfileMenuItem
-            user={this.props.user}
-            open={() => this.setState({ open: true })}
-          />
+          <ProfileMenuItem open={() => this.setState({ open: true })}/>
         }
       >
         <Modal.Header>Profile</Modal.Header>

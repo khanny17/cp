@@ -7,8 +7,16 @@ export const MOVE_YEAR = 'MOVE_YEAR';
 export const MOVE_TERM = 'MOVE_TERM';
 export const MOVE_COURSE = 'MOVE_COURSE';
 export const DELETE_ITEM = 'DELETE_ITEM';
+export const UPDATE_PLAN = 'UPDATE_PLAN';
 export const UPDATE_COURSE = 'UPDATE_COURSE';
 
+
+export function updatePlan(updates) {
+  return {
+    type: UPDATE_PLAN,
+    updates,
+  };
+}
 
 export function updateCourse(updates) {
   return {
