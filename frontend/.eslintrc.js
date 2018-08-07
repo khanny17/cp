@@ -38,5 +38,8 @@ module.exports = {
         ],
         "react/jsx-uses-react": 1,
         "react/jsx-uses-vars": 1,
+    },
+    "globals": {
+      "randomColor": false,
     }
 };

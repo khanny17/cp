@@ -2,7 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button, Container, Header, Icon, Menu, Segment } from 'semantic-ui-react';
+import AuthModal from './auth-modal';
+import {
+  Button,
+  Container,
+  Header,
+  Icon,
+  Menu,
+  Segment
+} from 'semantic-ui-react';
 import '../css/landing.css';
 
 const Landing = ({ user }) => (
@@ -23,16 +31,16 @@ const Landing = ({ user }) => (
           :
           <Menu.Menu position="right">
             <Menu.Item>
-              <Link to="/login">
+              <AuthModal login={true} trigger={
                 <Button size="large" inverted style={{ marginRight: '5px' }}>
                   Login
                 </Button>
-              </Link>
-              <Link to="/register">
+              }/>
+              <AuthModal login={false} trigger={
                 <Button size="large" inverted color="teal">
                   Sign Up
                 </Button>
-              </Link>
+              }/>
             </Menu.Item>
           </Menu.Menu>
         }

@@ -1,4 +1,5 @@
 import { MINE_REQUEST, MINE_SUCCESS, MINE_FAILURE } from '../actions/browse';
+import { DELETE_PLAN_SUCCESS, SAVE_PLAN_SUCCESS } from '../actions/plan-api';
 
 const initialState = {
   loading_my_plans: true,
@@ -13,6 +14,9 @@ function browse(state = initialState, action) {
     return { ...state, loading_my_plans: false, my_plans: { error: true } };
   case MINE_SUCCESS:
     return { ...state, loading_my_plans: false, my_plans: action.plans };
+  case DELETE_PLAN_SUCCESS:
+  case SAVE_PLAN_SUCCESS:
+    return { ...state, loading_my_plans: false, my_plans: null };
   default:
     return state;
   }

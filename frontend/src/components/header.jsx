@@ -36,7 +36,7 @@ const Header = ({ user, newPlan }) => (
       :
 
       <Menu.Item>
-        <AuthModal />
+        <AuthModal login={true}/>
       </Menu.Item>
     }
   </Menu>

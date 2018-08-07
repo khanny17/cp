@@ -14,6 +14,7 @@ const schema = new mongoose.Schema({
   terms: { type: Object, required: true },
   courses: { type: Object, required: true },
   lastAccessed: Date,
+  colorscheme: Object,
 
   // If this is a template, reference what it was copied from
   // Otherwise, just be null

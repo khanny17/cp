@@ -8,11 +8,13 @@ const Plan = require('./plan_model');
 module.exports = cors(jwt_auth(process.env.JWT_SECRET)
 (async(req, res) => {
 
-  switch(req.url) {
-    case '/save': return await save(req);
-    case '/open': return await open(req);
-    case '/delete': return await deletePlan(req);
-    case '/mine': return await mine(req);
+  const action = req.url.split('/')[1];
+
+  switch(action) {
+    case 'save': return await save(req);
+    case 'open': return await open(req);
+    case 'delete': return await deletePlan(req);
+    case 'mine': return await mine(req);
     default: return `Plans API Root`;
   }
 }));
@@ -74,9 +76,9 @@ async function save(req) {
 }
 
 async function create(req, plan) {
-  const { years, terms, courses, original, details } = plan;
+  const { years, terms, courses, original, details, colorscheme } = plan;
   const newPlan = await Plan.create({
-    years, terms, courses, original, details,
+    years, terms, courses, original, details, colorscheme,
     owner: req.jwt._id,
     lastAccessed: Date.now(),
     original: null,
@@ -86,13 +88,13 @@ async function create(req, plan) {
 }
 
 async function update(req, plan) {
-  const { _id, years, terms, courses, details } = plan;
+  const { _id, years, terms, courses, details, colorscheme } = plan;
 
   const updatedPlan = await Plan.findOneAndUpdate({
     _id: _id,
     owner: req.jwt._id,
   },{
-    years, terms, courses, details,
+    years, terms, courses, details, colorscheme,
     lastAccessed: Date.now(),
   }, { 'new': true });
 

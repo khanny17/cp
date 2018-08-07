@@ -1,5 +1,6 @@
 import { AUTH_API_ROOT } from '../util/api-config';
 import { handleErrors } from '../util/fetch-utils';
+import { push } from 'connected-react-router';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
@@ -62,6 +63,7 @@ export function register(userData) {
       body: JSON.stringify(userData),
     })
       .then(jwt => dispatch(registerSuccess(jwt)))
+      .then(() => dispatch(push('/browse')))
       .catch(err => dispatch(registerFailure(err)));
   };
 }
@@ -79,6 +81,7 @@ export function login(userData) {
       .then(data => {
         dispatch(loginSuccess(data.jwt, data.user));
       })
+      .then(() => dispatch(push('/browse')))
       .catch(err => dispatch(loginFailure(err)));
   };
 }

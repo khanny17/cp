@@ -15,7 +15,7 @@ div > .show-on-hover {
     visibility: hidden;
 }
 
-td:hover > .show-on-hover,
+tr:hover .show-on-hover,
 div:hover > .show-on-hover {
     visibility: visible;
 }

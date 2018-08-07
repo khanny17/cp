@@ -4,6 +4,7 @@
     align-items: center;
     height: 100px;
     width: 100px;
+    overflow: hidden;
 
     border: 1px solid #1b1c1d;
     border-radius: 3px;
@@ -29,7 +30,8 @@
 }
 
 .course-title {
-    flex: 1;
+    max-height: 4em;
+    overflow: hidden;
 }
 
 .course-credits {

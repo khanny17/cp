@@ -6,8 +6,9 @@ import { Draggable } from 'react-beautiful-dnd';
 import InlineEdit from 'react-edit-inline';
 import { updateCourse } from '../actions/plan';
 
+
 class Course extends React.Component {
-  state = { editing: null }
+  state = { editing: null, menu: {} }
 
   handleChange(c) {
     if(c.header) {
@@ -26,6 +27,19 @@ class Course extends React.Component {
     }
   }
 
+  onContextMenu(e) {
+    e.preventDefault();
+    console.log('Right click!', e); //eslint-disable-line
+    this.setState({
+      ...this.state, 
+      menu: {
+        left: e.clientX,
+        top: e.clientY,
+        display: 'inherit',
+      }
+    });
+  }
+
   validateHeader(s) {
     return s.split(' ').length === 2;
   }
@@ -35,10 +49,11 @@ class Course extends React.Component {
   }
 
   render() {
-    const { course } = this.props;
+    const { course, color } = this.props;
     return (
       <div className="course"
-        onKeyPress={e => this.handleKeyPress(e)}
+        style={{ background: color }}
+        onKeyPress={this.handleKeyPress.bind(this)}
       >
         <InlineEdit
           className="course-header"
@@ -57,6 +72,7 @@ class Course extends React.Component {
           paramName="title"
           change={this.handleChange.bind(this)}
           text={ course.title } />
+        <div style={{ flex: 1 }} />
         <InlineEdit
           className="course-credits"
           activeClassName="editing"
@@ -73,6 +89,7 @@ class Course extends React.Component {
 
 Course.propTypes = {
   course: PropTypes.object,
+  color: PropTypes.string,
   updateCourse: PropTypes.func,
 };
 
@@ -108,7 +125,10 @@ DraggableCourse.propTypes = {
 };
 
 const CourseContainer = connect(
-  (state, { course }) => ({ course: state.plan.courses[course] }),
+  (state, { course }) => ({
+    course: state.plan.courses[course],
+    color: state.plan.colorscheme[state.plan.courses[course].subject],
+  }),
   dispatch => ({
     updateCourse: updates => dispatch(updateCourse(updates)),
   }),

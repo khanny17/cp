@@ -53,17 +53,24 @@ function plan(state = initialState, action) {
     return moveYear(state, action.yearId, action.source, action.dest);
   case DELETE_ITEM:
     return deleteItem(state, action);
-  case UPDATE_COURSE:
+  case UPDATE_COURSE: {
+    const { fid, subject } = action.updates;
     return {
       ...state,
       courses: {
         ...state.courses,
-        [action.updates.fid]: {
-          ...state.courses[action.updates.fid],
+        [fid]: {
+          ...state.courses[fid],
           ...action.updates,
         },
-      }
+      },
+      colorscheme: {
+        ...state.colorscheme,
+        // This will wind up setting a color for undefined, but meh it's fine
+        [subject]: state.colorscheme[subject] || randomColor({ luminosity: 'dark'}),
+      },
     };
+  }
 
 
   case SAVE_PLAN_REQUEST:
@@ -98,7 +105,7 @@ function plan(state = initialState, action) {
       failed: false,
     };
   case LOAD_PLAN_SUCCESS: {
-    const { years, terms, courses, _id, details } = action.data;
+    const { years, terms, courses, _id, details, colorscheme } = action.data;
     return {
       ...state,
       loading: false,
@@ -110,6 +117,7 @@ function plan(state = initialState, action) {
         [_id]: { ...details, fid: _id, _id: _id },
       },
       plan: _id,
+      colorscheme,
     };
   }
   case LOAD_PLAN_FAILURE:

@@ -1,101 +1,104 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getMine } from '../actions/browse';
 import MyHeader from './header';
 import {
-  Button,
   Container,
   Header,
-  Icon,
   Segment,
   Table,
 } from 'semantic-ui-react';
+import HiddenOpenButton from './hidden-open-button';
+import HiddenDeleteButton from './hidden-delete-button';
 
-
-const HiddenOpenButton = ({ onClick, planId }) => (
-  <Link to={`/plan/${planId}`}
-    className="show-on-hover"
-  >
-    <Button icon basic size="mini" style={{float: 'right'}}
-      onClick={onClick}
-    >
-      <Icon name="folder open"/>
-      Open
-    </Button>
-  </Link>
-);
-HiddenOpenButton.propTypes = { onClick: PropTypes.func, planId: PropTypes.string };
-
-const BrowseView = ({
-  my_plans, templates, loading_my_plans, loading_templates, getMine,
-}) => {
-  if(my_plans === null) {
-    getMine();
+class BrowseView extends React.Component {
+  componentDidMount() {
+    if(this.props.my_plans === null) {
+      this.props.getMine();
+    }
   }
 
-  return (
-    <div>
-      <MyHeader />
-      <Container text style={{ textAlign: 'left' }}>
-        <Header as='h1' attached='top' block>
-          My Plans
-        </Header>
-        <Segment attached loading={loading_my_plans}>
-          <Table basic="very" selectable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Plan Name</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {my_plans ?
-                my_plans.map(plan => (
-                  <Table.Row key={plan._id || plan.fid}>
-                    <Table.Cell>{plan.title}</Table.Cell>
-                    <Table.Cell>
-                      <HiddenOpenButton planId={plan._id}/>
+  render() {
+    const { my_plans, templates, loading_my_plans,
+      loading_templates } = this.props;
+    return (
+      <div>
+        <MyHeader />
+        <Container text style={{ textAlign: 'left' }}>
+          <Header as='h1' attached='top' block>
+            My Plans
+          </Header>
+          <Segment attached loading={loading_my_plans}>
+            <Table basic="very" selectable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Plan Name</Table.HeaderCell>
+                  <Table.HeaderCell>Last Accessed</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {my_plans && my_plans.length !== 0 ?
+                  my_plans.map(plan => (
+                    <Table.Row key={plan._id || plan.fid}>
+                      <Table.Cell>{plan.title}</Table.Cell>
+                      <Table.Cell>
+                        {new Date(plan.lastAccessed).toLocaleDateString()}
+                        <HiddenDeleteButton plan={plan}/>
+                        <HiddenOpenButton planId={plan._id}/>
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                  :
+                  <Table.Row>
+                    <Table.Cell style={{ textAlign: 'center' }}>
+                      {my_plans === null ?
+                        'Unable to load plans' :
+                        'No plans yet!'}
                     </Table.Cell>
                   </Table.Row>
-                ))
-                :
-                <Table.Row />
-              }
-            </Table.Body>
-          </Table>
-        </Segment>
+                }
+              </Table.Body>
+            </Table>
+          </Segment>
 
-        <Header as='h1' attached='top' block>
-          Plan Templates
-        </Header>
-        <Segment attached loading={loading_templates}>
-          <Table basic="very" selectable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Plan Name</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {templates ?
-                templates.map(plan => (
-                  <Table.Row key={plan._id || plan.fid}>
-                    <Table.Cell>{plan.title}</Table.Cell>
-                    <Table.Cell>
-                      <HiddenOpenButton />
+          <Header as='h1' attached='top' block>
+            Plan Templates
+          </Header>
+          <Segment attached loading={loading_templates}>
+            <Table basic="very" selectable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Plan Name</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {templates ?
+                  templates.map(plan => (
+                    <Table.Row key={plan._id || plan.fid}>
+                      <Table.Cell>{plan.title}</Table.Cell>
+                      <Table.Cell>
+                        <HiddenOpenButton />
+                      </Table.Cell>
+                    </Table.Row>
+                  ))
+                  :
+                  <Table.Row>
+                    <Table.Cell style={{ textAlign: 'center' }}>
+                      {templates === null ?
+                        'Unable to load templates' :
+                        'No templates found'}
                     </Table.Cell>
                   </Table.Row>
-                ))
-                :
-                <Table.Row/>
-              }
-            </Table.Body>
-          </Table>
-        </Segment>
-      </Container>
-    </div>
-  );
-};
+                }
+              </Table.Body>
+            </Table>
+          </Segment>
+        </Container>
+      </div>
+    );
+  }
+}
 
 BrowseView.propTypes = {
   my_plans: PropTypes.array,
