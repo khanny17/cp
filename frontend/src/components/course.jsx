@@ -4,7 +4,9 @@ import '../css/course.css';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import InlineEdit from 'react-edit-inline';
-import { updateCourse } from '../actions/plan';
+import { updateCourse, deleteItem } from '../actions/plan';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import CourseContextMenu from './course-contextmenu';
 
 
 class Course extends React.Component {
@@ -25,19 +27,6 @@ class Course extends React.Component {
       const element_class_name = document.activeElement.className;
       this.setState({ editing: element_class_name });
     }
-  }
-
-  onContextMenu(e) {
-    e.preventDefault();
-    console.log('Right click!', e); //eslint-disable-line
-    this.setState({
-      ...this.state, 
-      menu: {
-        left: e.clientX,
-        top: e.clientY,
-        display: 'inherit',
-      }
-    });
   }
 
   validateHeader(s) {
@@ -93,6 +82,41 @@ Course.propTypes = {
   updateCourse: PropTypes.func,
 };
 
+
+class ContextMenuCourse extends React.Component {
+  handleAction(e, data) {
+    switch(data.action) {
+    case 'delete':
+      this.props.deleteCourse(this.props.course.fid);
+      break;
+    case 'edit':
+      this.openEditModal();
+      break;
+    default:
+      return;
+    }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <ContextMenuTrigger id={this.props.course.fid}>
+          <Course {...this.props}/>
+        </ContextMenuTrigger>
+
+        <CourseContextMenu id={this.props.course.fid}
+          onClick={this.handleAction.bind(this)} />
+      </React.Fragment>
+    );
+  }
+}
+ContextMenuCourse.propTypes = {
+  course: PropTypes.object,
+  deleteCourse: PropTypes.func,
+};
+
+
+
 const DraggableCourse = (props) => (
   <Draggable
     draggableId={props.course.fid}
@@ -111,7 +135,7 @@ const DraggableCourse = (props) => (
             ...provided.draggableProps.style,
           }}
         >
-          <Course {...props}/>
+          <ContextMenuCourse {...props}/>
         </div>
         {provided.placeholder}
       </div>
@@ -131,6 +155,7 @@ const CourseContainer = connect(
   }),
   dispatch => ({
     updateCourse: updates => dispatch(updateCourse(updates)),
+    deleteCourse: fid => dispatch(deleteItem('TERM-COURSE', fid)),
   }),
 )(DraggableCourse);
 

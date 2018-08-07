@@ -158,7 +158,8 @@ function plan(state = initialState, action) {
 }
 
 function deleteItem(state, action) {
-  const { delete_type, item_fid, list_fid } = action;
+  const { delete_type, item_fid } = action;
+  let { list_fid } = action;
 
   let item_type, list_type;
   if(delete_type === 'PLAN-YEAR') {
@@ -172,6 +173,13 @@ function deleteItem(state, action) {
     list_type = 'terms';
   } else {
     throw new Error('The devs screwed something up');
+  }
+
+  if(!list_fid) {
+    //the list id is optional. If we dont have it, we have to find the list
+    //where this belongs
+    list_fid = Object.keys(state[list_type]).find(fid =>
+      state[list_type][fid].courses.find(c_fid => c_fid === item_fid));
   }
 
   // Remove from the dict and from the list it came from
