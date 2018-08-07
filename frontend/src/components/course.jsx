@@ -7,6 +7,7 @@ import InlineEdit from 'react-edit-inline';
 import { updateCourse, deleteItem } from '../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
+import CourseEditModal from './course-edit-modal';
 
 
 class Course extends React.Component {
@@ -83,39 +84,6 @@ Course.propTypes = {
 };
 
 
-class ContextMenuCourse extends React.Component {
-  handleAction(e, data) {
-    switch(data.action) {
-    case 'delete':
-      this.props.deleteCourse(this.props.course.fid);
-      break;
-    case 'edit':
-      this.openEditModal();
-      break;
-    default:
-      return;
-    }
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <ContextMenuTrigger id={this.props.course.fid}>
-          <Course {...this.props}/>
-        </ContextMenuTrigger>
-
-        <CourseContextMenu id={this.props.course.fid}
-          onClick={this.handleAction.bind(this)} />
-      </React.Fragment>
-    );
-  }
-}
-ContextMenuCourse.propTypes = {
-  course: PropTypes.object,
-  deleteCourse: PropTypes.func,
-};
-
-
 
 const DraggableCourse = (props) => (
   <Draggable
@@ -135,7 +103,7 @@ const DraggableCourse = (props) => (
             ...provided.draggableProps.style,
           }}
         >
-          <ContextMenuCourse {...props}/>
+          <Course {...props}/>
         </div>
         {provided.placeholder}
       </div>
@@ -148,6 +116,59 @@ DraggableCourse.propTypes = {
   index: PropTypes.number,
 };
 
+
+class ContextMenuCourse extends React.Component {
+  handleAction(e, data) {
+    switch(data.action) {
+    case 'delete':
+      this.props.deleteCourse(this.props.course.fid);
+      break;
+    case 'edit':
+      this.openModal();
+      break;
+    default:
+      return;
+    }
+  }
+
+  state = { modalOpen: false };
+  closeModal() {
+    this.setState({ modalOpen: false });
+  }
+  openModal() {
+    this.setState({ modalOpen: true });
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <ContextMenuTrigger id={this.props.course.fid}>
+          <DraggableCourse {...this.props}/>
+        </ContextMenuTrigger>
+
+        <CourseContextMenu id={this.props.course.fid}
+          onClick={this.handleAction.bind(this)} />
+
+        <CourseEditModal
+          color={this.props.color}
+          modalOpen={this.state.modalOpen}
+          closeModal={this.closeModal.bind(this)}
+          course={this.props.course}
+          deleteCourse={this.props.deleteCourse}
+          updateCourse={this.props.updateCourse}
+        />
+      </React.Fragment>
+    );
+  }
+}
+ContextMenuCourse.propTypes = {
+  course: PropTypes.object,
+  color: PropTypes.string,
+  deleteCourse: PropTypes.func,
+  updateCourse: PropTypes.func,
+};
+
+
 const CourseContainer = connect(
   (state, { course }) => ({
     course: state.plan.courses[course],
@@ -157,6 +178,6 @@ const CourseContainer = connect(
     updateCourse: updates => dispatch(updateCourse(updates)),
     deleteCourse: fid => dispatch(deleteItem('TERM-COURSE', fid)),
   }),
-)(DraggableCourse);
+)(ContextMenuCourse);
 
 export default CourseContainer;

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Form } from 'semantic-ui-react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { register } from '../actions/auth';
+import EasyInput from './easy-input';
 
 class RegisterForm extends React.Component {
   submit() {
@@ -20,18 +21,7 @@ class RegisterForm extends React.Component {
     });
   }
 
-  EasyInput = ({ name, type='input' }) => (
-    <Form.Input
-      label={name}
-      name={name}
-      type={type}
-      placeholder={name}
-      onChange={e => this.onChange(e)}
-    />
-  );
-
   render() {
-    const EasyInput = this.EasyInput;
     return (
       <Form>
         <EasyInput name="name" />

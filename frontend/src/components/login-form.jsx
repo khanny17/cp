@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
 import { login } from '../actions/auth';
+import EasyInput from './easy-input';
 
 class LoginForm extends React.Component {
   submit() {
@@ -15,22 +16,13 @@ class LoginForm extends React.Component {
     });
   }
 
-  EasyInput = ({ name, type='input' }) => (
-    <Form.Input
-      label={name}
-      name={name}
-      type={type}
-      placeholder={name}
-      onChange={e => this.onChange(e)}
-    />
-  );
-
   render() {
-    const EasyInput = this.EasyInput;
     return (
       <Form>
-        <EasyInput name="email" type="email" />
-        <EasyInput name="password" type="password" />
+        <EasyInput name="email" type="email"
+          onChange={this.onChange.bind(this)}/>
+        <EasyInput name="password" type="password"
+          onChange={this.onChange.bind(this)}/>
 
         <Form.Group className="auth-modal-actions">
           <Form.Button primary loading={this.props.loading}
