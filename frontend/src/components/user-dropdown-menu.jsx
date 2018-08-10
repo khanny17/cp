@@ -11,7 +11,7 @@ const UserDropdownMenu = ({ logout }) =>
     <Dropdown.Menu>
       <ProfileModal />
       <Dropdown.Item onClick={logout}>
-        <Icon name="external" />Logout
+        <Icon name="sign out" />Logout
       </Dropdown.Item>
     </Dropdown.Menu>
   </Dropdown>

@@ -15,8 +15,11 @@ export const NEW_PLAN = 'NEW_PLAN';
 
 
 export function newPlan() {
-  return {
-    type: NEW_PLAN,
+  return dispatch => {
+    dispatch(push('/plan'));
+    dispatch({
+      type: NEW_PLAN,
+    });
   };
 }
 

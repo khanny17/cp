@@ -12,7 +12,7 @@ export const LOGOUT = 'LOGOUT';
 
 export function logout() {
   return dispatch => {
-    push('/');
+    dispatch(push('/'));
     dispatch({
       type: LOGOUT,
     });

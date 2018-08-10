@@ -15,11 +15,6 @@ const schema = new mongoose.Schema({
   courses: { type: Object, required: true },
   lastAccessed: Date,
   colorscheme: Object,
-
-  // If this is a template, reference what it was copied from
-  // Otherwise, just be null
-  original: { type: mongoose.Schema.Types.ObjectId, ref: 'Plan' },
-  isPublic: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Plan', schema);

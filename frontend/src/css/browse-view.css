@@ -1,0 +1,8 @@
+.star {
+    float: right;
+    cursor: pointer;
+}
+
+.star:hover {
+    color: lightblue;
+}
