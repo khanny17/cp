@@ -6,7 +6,12 @@ const match = require('micro-match');
 const Template = require('./template_model');
 const School = require('./school_model');
 
-mongoose.connect(process.env.DB_URL, { useNewUrlParser: true })
+const mongooseOptions = {
+  reconnectTries: 120,
+  reconnectInterval: 1000,
+  useNewUrlParser: true,
+};
+mongoose.connect(process.env.DB_URL, mongooseOptions)
   .then(() => console.log('DB Connected'))
   .catch(err => console.log('DB failed to connect', err));
 
@@ -22,6 +27,7 @@ module.exports = cors(jwt_auth(process.env.JWT_SECRET)
     case 'list': return await list(req);
     case 'tags': return await tags(req);
     case 'schools': return await schools(req);
+    case 'star': return await star(req);
     default: return `Templates API Root`;
   }
 }));
@@ -63,4 +69,8 @@ async function tags(req) {
 
 async function schools(req) {
   return School.find({}, { name: true, aliases: true }).lean();
+}
+
+async function star(req) {
+
 }

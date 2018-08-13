@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4';
+import randomColor from 'randomcolor';
 
 import { LOGOUT } from '../actions/auth';
 
@@ -70,7 +71,7 @@ function plan(state = initialState, action) {
     };
   }
   case UPDATE_COURSE: {
-    const { fid, subject } = action.updates;
+    const { fid, subject, color } = action.updates;
     return {
       ...state,
       courses: {
@@ -83,7 +84,7 @@ function plan(state = initialState, action) {
       colorscheme: {
         ...state.colorscheme,
         // This will wind up setting a color for undefined, but meh it's fine
-        [subject]: state.colorscheme[subject] || randomColor({ luminosity: 'dark'}),
+        [subject]: color || state.colorscheme[subject] || randomColor({ luminosity: 'dark'}),
       },
     };
   }

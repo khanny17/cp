@@ -60,6 +60,7 @@ class BrowseView extends React.Component {
               <Icon name="file"/>New Plan
             </Button>
           </Header>
+
           <Segment attached loading={loading_my_plans}>
             <Table basic="very" selectable>
               <Table.Header>
@@ -69,7 +70,7 @@ class BrowseView extends React.Component {
                 </Table.Row>
               </Table.Header>
               <Table.Body>
-                {my_plans && my_plans.length !== 0 ?
+                {my_plans && !my_plans.error && my_plans.length !== 0 ?
                   my_plans.map(plan => (
                     <Table.Row key={plan._id || plan.fid}>
                       <Table.Cell>{plan.title}</Table.Cell>
@@ -83,7 +84,7 @@ class BrowseView extends React.Component {
                   :
                   <Table.Row>
                     <Table.Cell style={{ textAlign: 'center' }}>
-                      {my_plans === null ?
+                      {my_plans === null || my_plans.error ?
                         'Unable to load plans' :
                         'No plans yet!'}
                     </Table.Cell>
@@ -127,7 +128,7 @@ class BrowseView extends React.Component {
                   :
                   <Table.Row>
                     <Table.Cell style={{ textAlign: 'center' }}>
-                      {templates === null ?
+                      {templates === null || templates.error ?
                         'Unable to load templates' :
                         'No templates found'}
                     </Table.Cell>
