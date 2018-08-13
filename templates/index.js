@@ -43,6 +43,7 @@ async function publish(req) {
       years, terms, courses, details, colorscheme,
     },
     description, school, tags,
+    stars: [],
     owner: req.jwt._id,
     lastUpdated: Date.now(),
   });
@@ -63,14 +64,35 @@ async function list(req) {
 }
 
 async function tags(req) {
-  // TODO
+  // TODO one day this may be its own microservice
   return ['Example tag', 'ANOTHER_EXAMPLE', '1234'];
 }
 
 async function schools(req) {
+  // TODO one day this may be its own microservice
   return School.find({}, { name: true, aliases: true }).lean();
 }
 
 async function star(req) {
+  const body = await json(req);
+  let template = await Template.findOne({ _id: body._id });
 
+  let exists = template.stars.some(star => {
+    // "==" IS CORRECT HERE!! === will fail because it is an array of
+    // mongoose objects.
+    if(star == req.jwt._id) {
+      return true;
+    }
+  });
+
+  if(exists) {
+    // "!=" IS CORRECT HERE!! !== will fail because it is an array of
+    // mongoose objects.
+    template.stars = template.stars.filter(id => id != req.jwt._id);
+  } else {
+    template.stars.push(req.jwt._id);
+  }
+
+  await template.save();
+  return template.stars.toObject();
 }

@@ -10,6 +10,9 @@ export const GET_SCHOOLS_FAILURE = 'GET_SCHOOLS_FAILURE';
 export const PUBLISH_REQUEST = 'PUBLISH_REQUEST';
 export const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';
 export const PUBLISH_FAILURE = 'PUBLISH_FAILURE';
+export const STAR_REQUEST = 'STAR_REQUEST';
+export const STAR_SUCCESS = 'STAR_SUCCESS';
+export const STAR_FAILURE = 'STAR_FAILURE';
 
 
 function getTagsRequest() {
@@ -62,6 +65,37 @@ function publishFailure(err) {
   return {
     type: PUBLISH_FAILURE,
     err,
+  };
+}
+
+function starRequest(templateId) {
+  return { type: STAR_REQUEST, templateId };
+}
+function starSuccess(templateId, stars) {
+  return { type: STAR_SUCCESS, templateId, stars };
+}
+function starFailure(templateId, err) {
+  return { type: STAR_FAILURE, templateId, err };
+}
+
+export function toggleStar(templateId) {
+  return dispatch => {
+    dispatch(starRequest(templateId));
+
+    return fetch(TEMPLATE_API_ROOT+'/star', {
+      method: 'post',
+      body: JSON.stringify({ _id: templateId }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+    })
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        dispatch(starSuccess(templateId, data));
+      })
+      .catch(err => dispatch(starFailure(templateId, err)));
   };
 }
 
