@@ -24,12 +24,16 @@ const Templates = ({ templates, user, loadingTemplates, toggleStar }) =>
                 <Table.Cell>{template.plan.details.title}</Table.Cell>
                 <Table.Cell collapsing>
                   {template.stars.length}
-                  <Icon
-                    name={template.stars.includes(user._id) ?
-                      'star' : 'star outline'
-                    }
-                    className="star"
-                    onClick={() => toggleStar(template._id)} />
+                  {template.togglingStar ?
+                    <Icon loading name="circle notch" className="star"/>
+                    :
+                    <Icon
+                      name={template.stars.includes(user._id) ?
+                        'star' : 'star outline'
+                      }
+                      className="star"
+                      onClick={() => toggleStar(template._id)} />
+                  }
                 </Table.Cell>
                 <Table.Cell>{template.tags}</Table.Cell>
                 <Table.Cell>
