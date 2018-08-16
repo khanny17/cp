@@ -24,9 +24,12 @@ class RegisterForm extends React.Component {
   render() {
     return (
       <Form>
-        <EasyInput name="name" />
-        <EasyInput name="email" type="email" />
-        <EasyInput name="password" type="password" />
+        <EasyInput name="name"
+          onChange={this.onChange.bind(this)}/>
+        <EasyInput name="email" type="email"
+          onChange={this.onChange.bind(this)}/>
+        <EasyInput name="password" type="password"
+          onChange={this.onChange.bind(this)}/>
         <ReCAPTCHA
           sitekey="6LeLS2cUAAAAAEmuzWToCTQ0El6R9RtlpPfJ7k6f"
           onChange={this.captchaChange.bind(this)}
