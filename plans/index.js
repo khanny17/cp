@@ -76,9 +76,10 @@ async function save(req) {
 }
 
 async function create(req, plan) {
-  const { years, terms, courses, original, details, colorscheme } = plan;
+  const { years, terms, courses, original, details, colorscheme,
+          requirements } = plan;
   const newPlan = await Plan.create({
-    years, terms, courses, original, details, colorscheme,
+    years, terms, courses, original, details, colorscheme, requirements,
     owner: req.jwt._id,
     lastAccessed: Date.now(),
     original: null,
@@ -88,13 +89,14 @@ async function create(req, plan) {
 }
 
 async function update(req, plan) {
-  const { _id, years, terms, courses, details, colorscheme } = plan;
+  const { _id, years, terms, courses, details, colorscheme,
+          requirements } = plan;
 
   const updatedPlan = await Plan.findOneAndUpdate({
     _id: _id,
     owner: req.jwt._id,
   },{
-    years, terms, courses, details, colorscheme,
+    years, terms, courses, details, colorscheme, requirements,
     lastAccessed: Date.now(),
   }, { 'new': true });
 

@@ -1,0 +1,28 @@
+.requirements {
+    border-right: 3px solid gray;
+    background: white;
+
+    height: auto !important;
+    position: inherit !important;
+}
+
+.requirements > div {
+    height: 100%;
+    width: 100%;
+    padding: 25px;
+    overflow-y: auto;
+}
+
+.requirement {
+    display: flex;
+    padding: 3px;
+    text-align: left;
+}
+
+.type {
+    flex: 0 0 auto;
+}
+
+.amount > input {
+    width: 3em;
+}

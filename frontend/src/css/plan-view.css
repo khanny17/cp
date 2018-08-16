@@ -18,9 +18,10 @@
 }
 
 .plan-view {
-    margin-top: 25px;
-    padding-bottom: 50px;
+    height: 100%;
     list-style: none outside none;
+
+    display: flex;
 }
 
 /* Internet Explorer has not grabby hand */

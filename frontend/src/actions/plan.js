@@ -9,7 +9,20 @@ export const MOVE_COURSE = 'MOVE_COURSE';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const UPDATE_PLAN = 'UPDATE_PLAN';
 export const UPDATE_COURSE = 'UPDATE_COURSE';
+export const ADD_REQUIREMENT = 'ADD_REQUIREMENT';
+export const UPDATE_REQUIREMENT = 'UPDATE_REQUIREMENT';
 
+export function addRequirement() {
+  return {
+    type: ADD_REQUIREMENT,
+  };
+}
+export function updateRequirement(updates) {
+  return {
+    type: UPDATE_REQUIREMENT,
+    updates,
+  };
+}
 
 export function updatePlan(updates) {
   return {

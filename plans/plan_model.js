@@ -15,6 +15,7 @@ const schema = new mongoose.Schema({
   courses: { type: Object, required: true },
   lastAccessed: Date,
   colorscheme: Object,
+  requirements: Object,
 });
 
 module.exports = mongoose.model('Plan', schema);

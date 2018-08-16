@@ -7,6 +7,8 @@ import {
   ADD_YEAR,
   ADD_TERM,
   ADD_COURSE,
+  ADD_REQUIREMENT,
+  UPDATE_REQUIREMENT,
   MOVE_YEAR,
   MOVE_TERM,
   MOVE_COURSE,
@@ -57,6 +59,27 @@ function plan(state = initialState, action) {
     return deleteItem(state, action);
 
 
+  case ADD_REQUIREMENT: {
+    const req = { fid: uuidv4(), type: null, value: '' };
+    return {
+      ...state,
+      requirements: { ...state.requirements, [req.fid]: req },
+    };
+  }
+  case UPDATE_REQUIREMENT: {
+    const { fid, ...updates } = action.updates;
+    return {
+      ...state,
+      requirements: {
+        ...state.requirements,
+        [fid]: {
+          ...state.requirements[fid],
+          ...updates,
+        },
+      },
+    };
+  }
+
   case UPDATE_PLAN: {
     const { title } = action.updates;
     return {
@@ -96,17 +119,20 @@ function plan(state = initialState, action) {
       saving: true,
     };
   case SAVE_PLAN_SUCCESS: {
-    const { years, terms, courses, _id, details } = action.data;
+    const { years, terms, courses, _id, details, colorscheme,
+      requirements } = action.data;
     return {
       ...state,
       saving: false,
-      years: years,
-      terms: terms,
-      courses: courses,
+      years,
+      terms,
+      courses,
       plans: {
         [_id]: { ...details, fid: _id, _id: _id },
       },
       plan: _id,
+      colorscheme,
+      requirements,
     };
   }
   case SAVE_PLAN_FAILURE:
@@ -122,19 +148,21 @@ function plan(state = initialState, action) {
       failed: false,
     };
   case LOAD_PLAN_SUCCESS: {
-    const { years, terms, courses, _id, details, colorscheme } = action.data;
+    const { years, terms, courses, _id, details, colorscheme,
+      requirements } = action.data;
     return {
       ...state,
       loading: false,
       failed: false,
-      years: years,
-      terms: terms,
-      courses: courses,
+      years,
+      terms,
+      courses,
       plans: {
         [_id]: { ...details, fid: _id, _id: _id },
       },
       plan: _id,
       colorscheme,
+      requirements,
     };
   }
   case LOAD_PLAN_FAILURE:

@@ -2,43 +2,31 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../css/plan-view.css';
-import Year from './year';
 import DragDropMaster from './drag-drop-master';
-import { Droppable } from 'react-beautiful-dnd';
 import { Dimmer, Loader } from 'semantic-ui-react';
-import Trash from './trash';
 import { loadPlan, newPlan } from '../actions/plan-api';
 import Header from './header';
-import PlanTitle from './plan-title';
+import Workspace from './workspace';
+import Requirements from './requirements';
 
-const PlanView = ({ plan }) => {
+const PlanView = ({ plan, showReqsSidebar }) => {
   return (
     <div className="plan-view">
-      <div className="plan-title-wrapper">
-        <PlanTitle />
-      </div>
-      <Droppable droppableId={plan.fid} type="PLAN-YEAR" direction="horizontal">
-        {(provided, snapshot) => (
-          <div ref={provided.innerRef} className="year-container">
-            { plan.years.map((p, i) => <Year year={p} key={p} index={i} />) }
-            { provided.placeholder }
-          </div>
-        )}
-      </Droppable>
-      <Trash />
+      { showReqsSidebar ? <Requirements /> : null }
+      <Workspace plan={plan}/>
     </div>
   );
 };
 
 PlanView.propTypes = {
   plan: PropTypes.object,
+  showReqsSidebar: PropTypes.bool,
 };
 
 const PlanViewContainer = connect(
   state => ({
-    planId: state.plan.plan,
     plan: state.plan.plans[state.plan.plan],
-    loading: state.plan.loading,
+    showReqsSidebar: state.ui.showReqsSidebar,
   }),
   dispatch => ({
   }),

@@ -7,13 +7,18 @@ import {
   REGISTER_SUCCESS,
 } from '../actions/auth';
 
-import { SHOW_TRASH, HIDE_TRASH } from '../actions/ui';
+import {
+  SHOW_TRASH,
+  HIDE_TRASH,
+  TOGGLE_REQUIREMENTS_SIDEBAR,
+} from '../actions/ui';
 
 
 const initialState = {
   requestingLogin: false,
   requestingRegister: false,
   showTrash: false,
+  showReqsSidebar: false,
 };
 
 function ui(state = initialState, action) {
@@ -34,6 +39,8 @@ function ui(state = initialState, action) {
     return { ...state, showTrash: true };
   case HIDE_TRASH:
     return { ...state, showTrash: false };
+  case TOGGLE_REQUIREMENTS_SIDEBAR:
+    return { ...state, showReqsSidebar: !state.showReqsSidebar };
   default:
     return state;
   }

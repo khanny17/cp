@@ -52,5 +52,6 @@ export default function makeNewPlan() {
     courses,
     saving: false,
     colorscheme: {},
+    requirements: {},
   };
 }
