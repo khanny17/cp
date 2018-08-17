@@ -3,7 +3,6 @@
 }
 
 .year {
-    background: #eee3df;
     border-radius: 5px;
 
     display: flex;
@@ -15,4 +14,8 @@
 .term-container {
     flex: 1;
     display: flex;
+}
+
+.year-container *:focus {
+    outline: 3px dotted;
 }

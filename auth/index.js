@@ -5,15 +5,9 @@ const jwt = require('jsonwebtoken');
 const request = require('request-promise-native');
 const User = require('./user_model');
 
-function configureResponse(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-}
-
 
 module.exports = cors(jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
 (async(req, res) => {
-  configureResponse(res);
-
   switch(req.url) {
     case '/register': return await register(req);
     case '/login'   : return await login(req);

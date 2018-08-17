@@ -2,21 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../css/course.css';
 import PropTypes from 'prop-types';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import InlineEdit from 'react-edit-inline';
 import { updateCourse, deleteItem } from '../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
 
+const headerDelimiterRegex = /\s|-/;
 
 class Course extends React.Component {
   state = { editing: null, menu: {} }
 
   handleChange(c) {
     if(c.header) {
-      c.subject = c.header.split(' ')[0];
-      c.number = c.header.split(' ')[1];
+      c.subject = c.header.split(headerDelimiterRegex)[0];
+      c.number = c.header.split(headerDelimiterRegex)[1];
       delete c.header;
     }
     c.fid = this.props.course.fid;
@@ -31,7 +32,7 @@ class Course extends React.Component {
   }
 
   validateHeader(s) {
-    return s.split(' ').length === 2;
+    return s.split(headerDelimiterRegex).length === 2;
   }
 
   validateCredits(s) {
@@ -83,6 +84,18 @@ Course.propTypes = {
   updateCourse: PropTypes.func,
 };
 
+const DroppableCourse = (props) =>
+  <Droppable droppableId={props.course.fid} type="COURSE-REQ">
+    {(provided, snapshot) => (
+      <div ref={provided.innerRef}>
+        <Course {...props} />
+        { provided.placeholder }
+      </div>
+    )}
+  </Droppable>
+;
+DroppableCourse.propTypes = { course: PropTypes.object };
+
 
 
 const DraggableCourse = (props) => (
@@ -103,7 +116,7 @@ const DraggableCourse = (props) => (
             ...provided.draggableProps.style,
           }}
         >
-          <Course {...props}/>
+          <DroppableCourse {...props}/>
         </div>
         {provided.placeholder}
       </div>

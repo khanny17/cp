@@ -6,7 +6,7 @@ import { toggleRequirementsSidebar } from '../actions/ui';
 
 const SaveButton = ({ toggleRequirementsSidebar, }) =>
   <Menu.Item onClick={() => toggleRequirementsSidebar()}>
-    <Icon name="clipboard"/>
+    <Icon name="tasks"/>
     Requirements
   </Menu.Item>
 ;

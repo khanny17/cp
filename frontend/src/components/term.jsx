@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import '../css/term.css';
 import Course from './course';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { addCourse } from '../actions/plan';
 
-const Term = ({ term }) => (
+const Term = ({ term, addCourse }) => (
   <div className="term">
     <h3>{term.title}</h3>
     <Droppable droppableId={term.fid} type="TERM-COURSE">
@@ -21,6 +22,9 @@ const Term = ({ term }) => (
         >
           { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
           { provided.placeholder }
+          <button className="add-course-button" onClick={() => addCourse(term.fid)}>
+            +
+          </button>
         </div>
       )}
     </Droppable>
@@ -29,6 +33,7 @@ const Term = ({ term }) => (
 
 Term.propTypes = {
   term: PropTypes.object,
+  addCourse: PropTypes.func,
 };
 
 const DraggableTerm = (props) => (
@@ -65,7 +70,9 @@ DraggableTerm.propTypes = {
 
 const TermContainer = connect(
   (state, { term }) => ({ term: state.plan.terms[term] }),
-  dispatch => ({}),
+  dispatch => ({
+    addCourse: termId => dispatch(addCourse(termId)),
+  }),
 )(DraggableTerm);
 
 export default TermContainer;

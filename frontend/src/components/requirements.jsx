@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, Dropdown, Header, Icon, List } from 'semantic-ui-react';
 import InlineEdit from 'react-edit-inline';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Rnd } from 'react-rnd';
 import { addRequirement, updateRequirement } from '../actions/plan';
+import findFailingRequirements from '../util/requirements-met';
 import '../css/requirements.css';
 
 
@@ -28,9 +30,10 @@ class Requirement extends React.Component {
   }
 
   render() {
-    const { requirement } = this.props;
+    const { requirement, notMet } = this.props;
     return (
       <div className="requirement">
+        {notMet ? <Icon name="warning" style={{ marginLeft: '-20px' }}/> : null}
         <div className="type">
           <Dropdown placeholder="Type" options={this.typeOptions} inline
             value={requirement.type}
@@ -61,19 +64,53 @@ class Requirement extends React.Component {
     );
   }
 }
-
 Requirement.propTypes = {
   requirement: PropTypes.object,
   updateRequirement: PropTypes.func,
+  notMet: PropTypes.bool,
 };
 
-const Requirements = ({ requirements, addRequirement, updateRequirement }) =>
+const DraggableReq = (props) => (
+  <Draggable
+    draggableId={props.requirement.fid}
+    type="COURSE-REQ"
+    index={props.index}
+  >
+    {(provided, snapshot) => (
+      <div className="pre-draggable">
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          style={{
+            ...provided.draggableProps.style,
+          }}
+        >
+          <Requirement {...props}/>
+        </div>
+        {provided.placeholder}
+      </div>
+    )}
+  </Draggable>
+);
+DraggableReq.propTypes = {
+  requirement: PropTypes.object,
+  index: PropTypes.number,
+};
+
+const Requirements = ({
+  requirements,
+  addRequirement,
+  updateRequirement,
+  failingRequirements,
+}) =>
   <div>
     <Header as='h1'>Requirements</Header>
     <List>
       {Object.values(requirements).map(req => (
         <List.Item key={req.fid}>
-          <Requirement
+          <DraggableReq
+            notMet={!!failingRequirements[req.fid]}
             requirement={req}
             updateRequirement={updateRequirement}
           />
@@ -89,15 +126,30 @@ Requirements.propTypes = {
   addRequirement: PropTypes.func,
   updateRequirement: PropTypes.func,
   requirements: PropTypes.object,
+  failingRequirements: PropTypes.object,
 };
 
+const DroppableRequirements = (props) =>
+  <Droppable droppableId={'REQUIREMENTS'} type="COURSE-REQ">
+    {(provided, snapshot) => (
+      <div ref={provided.innerRef}>
+        <Requirements {...props} />
+        { provided.placeholder }
+      </div>
+    )}
+  </Droppable>
+;
+
 const RequirementsContainer = connect(
-  state => ({ requirements: state.plan.requirements }),
+  state => ({
+    requirements: state.plan.requirements,
+    failingRequirements: findFailingRequirements(state.plan),
+  }),
   dispatch => ({
     addRequirement: () => dispatch(addRequirement()),
     updateRequirement: toUpdate => dispatch(updateRequirement(toUpdate)),
   }),
-)(Requirements);
+)(DroppableRequirements);
 
 class RndRequirements extends React.Component {
   state = { width: 250, height: 250 };
@@ -123,5 +175,6 @@ class RndRequirements extends React.Component {
     );
   }
 }
+RndRequirements.propTypes = { show: PropTypes.bool };
 
 export default RndRequirements;

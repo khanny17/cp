@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { moveCourse, moveTerm, moveYear, deleteItem } from '../actions/plan';
+import {
+  moveCourse,
+  moveTerm,
+  moveYear,
+  deleteItem,
+  assignRequirement
+} from '../actions/plan';
 import { showTrash, hideTrash } from '../actions/ui';
 
 function onDragStart(result, showTrash) {
@@ -12,7 +18,8 @@ function onDragStart(result, showTrash) {
 }
 
 function onDragEnd(result, functions) {
-  const { moveCourse, moveTerm, moveYear, hideTrash, deleteItem } = functions;
+  const { moveCourse, moveTerm, moveYear, hideTrash, deleteItem,
+    assignRequirement } = functions;
 
   hideTrash(); // Handle this first
 
@@ -54,6 +61,10 @@ function onDragEnd(result, functions) {
     );
     break;
 
+  case 'COURSE-REQ':
+    assignRequirement(draggableId, destination.droppableId);
+    break;
+
   default:
     break;
   }
@@ -67,11 +78,12 @@ const DragDropMaster = ({
   showTrash,
   hideTrash,
   deleteItem,
+  assignRequirement,
 }) => (
   <DragDropContext
     onDragStart={result => onDragStart(result, showTrash)}
     onDragEnd={result => onDragEnd(result, {
-      moveCourse, moveTerm, moveYear, hideTrash, deleteItem,
+      moveCourse, moveTerm, moveYear, hideTrash, deleteItem, assignRequirement,
     })}
   >
     <div>{children}</div>
@@ -87,6 +99,8 @@ DragDropMaster.propTypes = {
 
   showTrash: PropTypes.func,
   hideTrash: PropTypes.func,
+
+  assignRequirement: PropTypes.func,
 };
 
 const DragDropMasterContainer = connect(
@@ -100,6 +114,7 @@ const DragDropMasterContainer = connect(
     },
     showTrash: () => dispatch(showTrash()),
     hideTrash: () => dispatch(hideTrash()),
+    assignRequirement: (id, destId) => dispatch(assignRequirement(id, destId)),
   }),
 )(DragDropMaster);
 

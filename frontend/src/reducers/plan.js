@@ -7,14 +7,19 @@ import {
   ADD_YEAR,
   ADD_TERM,
   ADD_COURSE,
-  ADD_REQUIREMENT,
-  UPDATE_REQUIREMENT,
+
   MOVE_YEAR,
   MOVE_TERM,
   MOVE_COURSE,
+
   DELETE_ITEM,
+
   UPDATE_PLAN,
   UPDATE_COURSE,
+
+  ADD_REQUIREMENT,
+  UPDATE_REQUIREMENT,
+  ASSIGN_REQUIREMENT,
 } from '../actions/plan';
 
 import {
@@ -77,6 +82,19 @@ function plan(state = initialState, action) {
           ...updates,
         },
       },
+    };
+  }
+  case ASSIGN_REQUIREMENT: {
+    const { reqId, destId } = action;
+    if(destId === 'REQUIREMENTS') {
+      return state;
+    }
+    return {
+      ...state,
+      requirements: {
+        ...state.requirements,
+        [reqId]: { ...state.requirements[reqId], course: destId },
+      }
     };
   }
 
@@ -284,6 +302,7 @@ function addTerm(state, yearId, term) {
 }
 
 function addCourse(state, termId, course) {
+  const { subject, color } = course;
   return {
     ...state,
     terms: {
@@ -296,6 +315,13 @@ function addCourse(state, termId, course) {
     courses: {
       ...state.courses,
       [course.fid]: course,
+    },
+    colorscheme: {
+      ...state.colorscheme,
+      // This will wind up setting a color for undefined, but meh it's fine
+      [subject]: color ||
+                 state.colorscheme[subject] ||
+                 randomColor({ luminosity: 'dark'}),
     },
   };
 }

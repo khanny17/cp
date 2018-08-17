@@ -30,6 +30,7 @@ export default function makeNewPlan() {
           subject: 'SUBJ',
           number: '' + y + t + c,
           credits: getRandomInt(1, 5),
+          attributes: [],
         };
 
         courses[course.fid] = course;

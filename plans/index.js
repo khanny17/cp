@@ -85,7 +85,7 @@ async function create(req, plan) {
     original: null,
   });
 
-  return newPlan.toObject();
+  return newPlan.toObject({ minimize: false });
 }
 
 async function update(req, plan) {

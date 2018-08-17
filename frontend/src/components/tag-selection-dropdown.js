@@ -19,7 +19,6 @@ class TagSelectionDropdown extends React.Component {
 
 
   onAddItem(e, data) {
-    console.log(data); //eslint-disable-line
     this.setState({ addedTags: this.state.addedTags.concat(data.value) });
   }
 

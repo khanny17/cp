@@ -11,6 +11,14 @@ export const UPDATE_PLAN = 'UPDATE_PLAN';
 export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const ADD_REQUIREMENT = 'ADD_REQUIREMENT';
 export const UPDATE_REQUIREMENT = 'UPDATE_REQUIREMENT';
+export const ASSIGN_REQUIREMENT = 'ASSIGN_REQUIREMENT';
+
+const initialCourse = {
+  title: 'New Course',
+  subject: 'EX',
+  number: '1234',
+  credits: 3,
+};
 
 export function addRequirement() {
   return {
@@ -21,6 +29,13 @@ export function updateRequirement(updates) {
   return {
     type: UPDATE_REQUIREMENT,
     updates,
+  };
+}
+export function assignRequirement(reqId, destId) {
+  return {
+    type: ASSIGN_REQUIREMENT,
+    reqId,
+    destId,
   };
 }
 
@@ -63,7 +78,7 @@ export function addTerm(yearId, term = {}) {
   };
 }
 
-export function addCourse(termId, course = {}) {
+export function addCourse(termId, course = initialCourse) {
   return {
     type: ADD_COURSE,
     termId,
