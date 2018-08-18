@@ -11,7 +11,8 @@ const schema = new mongoose.Schema({
     years: { type: Object, required: true },
     terms: { type: Object, required: true },
     courses: { type: Object, required: true },
-    colorscheme: Object,
+    colorscheme: { type: Object, required: true },
+    requirements: { type: Object, required: true },
   },
 
   lastUpdated: Date,

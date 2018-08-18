@@ -13,6 +13,29 @@ export const PUBLISH_FAILURE = 'PUBLISH_FAILURE';
 export const STAR_REQUEST = 'STAR_REQUEST';
 export const STAR_SUCCESS = 'STAR_SUCCESS';
 export const STAR_FAILURE = 'STAR_FAILURE';
+export const TEMPLATE_REQUEST = 'TEMPLATE_REQUEST';
+export const TEMPLATE_SUCCESS = 'TEMPLATE_SUCCESS';
+export const TEMPLATE_FAILURE = 'TEMPLATE_FAILURE';
+
+function templateRequest(id) {
+  return {
+    type: TEMPLATE_REQUEST,
+    id,
+  };
+}
+function templateSuccess(template) {
+  return {
+    type: TEMPLATE_SUCCESS,
+    template,
+  };
+}
+function templateFailure(id, err) {
+  return {
+    type: TEMPLATE_FAILURE,
+    id,
+    err,
+  };
+}
 
 
 function getTagsRequest() {
@@ -144,14 +167,14 @@ export function publish(templateDetails, plan) {
   return dispatch => {
     dispatch(publishRequest());
 
-    const { years, terms, courses, colorscheme } = plan;
+    const { years, terms, courses, colorscheme, requirements } = plan;
     const details = {
       title: plan.plans[plan.plan].title,
       years: plan.plans[plan.plan].years,
     };
 
     const template = {
-      plan: { details, years, terms, courses, colorscheme },
+      plan: { details, years, terms, courses, colorscheme, requirements },
       description: templateDetails.description,
       school: templateDetails.school,
       tags: templateDetails.tags,
@@ -171,5 +194,25 @@ export function publish(templateDetails, plan) {
         dispatch(publishSuccess(data));
       })
       .catch(err => dispatch(publishFailure({ err: err })));
+  };
+}
+
+export function getFullTemplate(id) {
+  return dispatch => {
+    dispatch(templateRequest(id));
+
+    return fetch(TEMPLATE_API_ROOT+'/get/'+id, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+      },
+    })
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(data => {
+        dispatch(templateSuccess(data));
+      })
+      .catch(err => dispatch(templateFailure({ err: err })));
   };
 }

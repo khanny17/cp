@@ -36,7 +36,10 @@ import {
 
 import makeNewPlan from '../util/initial-plan-state';
 
-const initialState = makeNewPlan();
+const existingPlanState = localStorage.getItem('planState');
+const initialState = existingPlanState ?
+  JSON.parse(existingPlanState) :
+  makeNewPlan();
 
 
 function plan(state = initialState, action) {
@@ -45,8 +48,23 @@ function plan(state = initialState, action) {
   case LOGOUT:
     return initialState;
 
-  case NEW_PLAN:
-    return makeNewPlan();
+  case NEW_PLAN: {
+    let newPlan = makeNewPlan();
+    if(action.template) {
+      return {
+        ...newPlan,
+        ...action.template,
+        plans: {
+          new: {
+            fid: 'new',
+            ...action.template.details,
+          }
+        }
+      };
+    }
+
+    return newPlan;
+  }
 
   case ADD_YEAR:
     return addYear(state, action.year);
@@ -383,4 +401,15 @@ function move(state, dropId, source, dest, listType, dropType) {
   };
 }
 
-export default plan;
+// This wrapper function lets us keep the plan state on a page refresh
+// You have to explicitly exclude properties that shouldnt remain on a refresh,
+// like loading or failed requests
+export default (state, action) => {
+  let newState = plan(state, action);
+  localStorage.setItem('planState', JSON.stringify({
+    ...newState,
+    loading: false,
+    failed: false,
+  }));
+  return newState;
+};

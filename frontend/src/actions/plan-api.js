@@ -14,11 +14,12 @@ export const DELETE_PLAN_SUCCESS = 'DELETE_PLAN_SUCCESS';
 export const NEW_PLAN = 'NEW_PLAN';
 
 
-export function newPlan() {
+export function newPlan(template) {
   return dispatch => {
     dispatch(push('/plan'));
     dispatch({
       type: NEW_PLAN,
+      template,
     });
   };
 }

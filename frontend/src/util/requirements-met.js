@@ -1,6 +1,10 @@
 export default function findFailingRequirements(planState) {
   const { courses, requirements } = planState;
 
+  if(!requirements || Object.keys(requirements).length === 0) {
+    return {};
+  }
+
   let courseMap = Object.values(courses).reduce((map, course) => {
     map[course.subject + course.number] = true;
     return map;

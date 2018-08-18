@@ -28,6 +28,7 @@ module.exports = cors(jwt_auth(process.env.JWT_SECRET)
     case 'tags': return await tags(req);
     case 'schools': return await schools(req);
     case 'star': return await star(req);
+    case 'get': return await get(req);
     default: return `Templates API Root`;
   }
 }));
@@ -36,11 +37,11 @@ module.exports = cors(jwt_auth(process.env.JWT_SECRET)
 async function publish(req) {
   const body = await json(req);
   const { plan, description, school, tags } = body;
-  const { years, terms, courses, details, colorscheme } = plan;
+  const { years, terms, courses, details, colorscheme, requirements } = plan;
 
   await Template.create({
     plan: {
-      years, terms, courses, details, colorscheme,
+      years, terms, courses, details, colorscheme, requirements,
     },
     description, school, tags,
     stars: [],
@@ -95,4 +96,9 @@ async function star(req) {
 
   await template.save();
   return template.stars.toObject();
+}
+
+async function get(req) {
+  const { _id } = match('/get/:_id', req.url);
+  return await Template.findOne({ _id: _id });
 }

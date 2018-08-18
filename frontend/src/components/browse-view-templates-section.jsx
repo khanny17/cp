@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Header, Icon, Segment, Table } from 'semantic-ui-react';
+import { Header, Segment, Table } from 'semantic-ui-react';
+import PreviewTemplateModal from './preview-template-modal';
+import TemplateStar from './template-star';
 
-const Templates = ({ templates, user, loadingTemplates, toggleStar }) =>
+const Templates = ({ templates, user, loadingTemplates }) =>
   <React.Fragment>
     <Header as='h1' attached='top' block>
       Plan Templates
@@ -19,28 +21,16 @@ const Templates = ({ templates, user, loadingTemplates, toggleStar }) =>
         </Table.Header>
         <Table.Body>
           {templates && !templates.error ?
-            templates.map(template => (
+            Object.values(templates).map(template => (
               <Table.Row key={template._id}>
                 <Table.Cell>{template.plan.details.title}</Table.Cell>
                 <Table.Cell collapsing>
                   {template.stars.length}
-                  {template.togglingStar ?
-                    <Icon loading name="circle notch" className="star"/>
-                    :
-                    <Icon
-                      name={template.stars.includes(user._id) ?
-                        'star' : 'star outline'
-                      }
-                      className="star"
-                      onClick={() => toggleStar(template._id)} />
-                  }
+                  <TemplateStar template={template} />
                 </Table.Cell>
                 <Table.Cell>{template.tags}</Table.Cell>
                 <Table.Cell>
-                  <Button icon inverted color="blue" size="mini"
-                    className="show-on-hover" style={{float: 'right'}}>
-                    <Icon name="copy"/>Preview
-                  </Button>
+                  <PreviewTemplateModal template={template} />
                 </Table.Cell>
               </Table.Row>
             ))
@@ -60,10 +50,9 @@ const Templates = ({ templates, user, loadingTemplates, toggleStar }) =>
 ;
 
 Templates.propTypes = {
-  templates: PropTypes.array,
+  templates: PropTypes.object,
   user: PropTypes.object,
   loadingTemplates: PropTypes.bool,
-  toggleStar: PropTypes.func,
 };
 
 export default Templates;
