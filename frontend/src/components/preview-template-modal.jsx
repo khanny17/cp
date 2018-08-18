@@ -1,11 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Dimmer, Icon, Loader, Modal } from 'semantic-ui-react';
+import { Button, Dimmer, Icon, Loader, Menu, Modal } from 'semantic-ui-react';
 import TemplateStar from './template-star';
 import PlanPreview from './plan-preview';
+import RequirementsPreview from './requirements-preview';
 import { getFullTemplate } from '../actions/template';
 import { newPlan } from '../actions/plan-api';
+
+const PlanTab = ({ template }) =>
+  template.loading ?
+    <Dimmer active inverted><Loader/></Dimmer>
+    :
+    <PlanPreview plan={template.plan} />
+;
+PlanTab.propTypes = { template: PropTypes.object };
+
+const ReqTab = ({ template }) =>
+  template.loading ?
+    <Dimmer active inverted><Loader/></Dimmer>
+    :
+    <RequirementsPreview requirements={template.plan.requirements}/>
+;
+ReqTab.propTypes = { template: PropTypes.object };
 
 class PreviewTemplateModal extends React.Component {
   getIfNeeded() {
@@ -16,7 +33,13 @@ class PreviewTemplateModal extends React.Component {
     }
   }
 
+  state = { activeTab: 'plan' };
+  setTab(name) {
+    this.setState({ activeTab: name });
+  }
+
   render() {
+    const { activeTab } = this.state;
     const { template, loadTemplate } = this.props;
     return (
       <Modal closeIcon onOpen={this.getIfNeeded.bind(this)}
@@ -35,11 +58,14 @@ class PreviewTemplateModal extends React.Component {
           </div>
         </Modal.Header>
         <Modal.Content>
-          { template.loading ?
-            <Dimmer active inverted><Loader/></Dimmer>
-            :
-            <PlanPreview plan={template.plan} />
-          }
+          <Menu tabular>
+            <Menu.Item name='plan' active={ activeTab === 'plan' }
+              onClick={() => this.setTab('plan')} />
+            <Menu.Item name='requirements' active={ activeTab === 'requirements' }
+              onClick={() => this.setTab('requirements')} />
+          </Menu>
+          { activeTab === 'plan' ? <PlanTab template={template}/> : null }
+          { activeTab === 'requirements' ? <ReqTab template={template}/> : null }
         </Modal.Content>
         <Modal.Actions>
           <Button primary onClick={() => loadTemplate(template)}>
