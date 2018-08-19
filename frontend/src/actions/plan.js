@@ -62,11 +62,15 @@ export function deleteItem(delete_type, item_fid, list_fid) {
   };
 }
 
-export function addYear(planId, year = {}) {
+export function addYear(year = {}) {
   return {
     type: ADD_YEAR,
-    planId,
-    year: { ...year, fid: uuidv4() },
+    year: {
+      fid: uuidv4(),
+      terms: [],
+      title: 'Year',
+      ...year,
+    },
   };
 }
 
@@ -74,7 +78,12 @@ export function addTerm(yearId, term = {}) {
   return {
     type: ADD_TERM,
     yearId,
-    term: { ...term, fid: uuidv4() },
+    term: {
+      fid: uuidv4(),
+      courses: [],
+      title: 'Term',
+      ...term,
+    },
   };
 }
 

@@ -4,20 +4,20 @@ import { ContextMenu, MenuItem } from 'react-contextmenu';
 import { Icon } from 'semantic-ui-react';
 import '../css/react-contextmenu.css';
 
-const CourseContextMenu = ({ id, onClick }) =>
+const YearContextMenu = ({ id, onClick }) =>
   <ContextMenu id={id}>
-    <MenuItem data={{ action: 'edit', id: id }} onClick={onClick}>
-      <Icon name="edit" />Edit Course
+    <MenuItem data={{ action: 'addTerm', id: id }} onClick={onClick}>
+      <Icon name="plus" />Add Term
     </MenuItem>
-    <MenuItem data={{ action: 'delete', id: id }} onClick={onClick}>
-      <Icon name="delete" />Delete Course
+    <MenuItem data={{ action: 'deleteYear', id: id }} onClick={onClick}>
+      <Icon name="delete" />Delete Year
     </MenuItem>
   </ContextMenu>
 ;
 
-CourseContextMenu.propTypes = {
+YearContextMenu.propTypes = {
   id: PropTypes.any,
   onClick: PropTypes.func,
 };
 
-export default CourseContextMenu;
+export default YearContextMenu;

@@ -8,6 +8,7 @@ import { updateCourse, deleteItem } from '../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
+import validatePlan from '../selectors/validatePlan';
 
 const headerDelimiterRegex = /\s|-/;
 
@@ -40,9 +41,9 @@ class Course extends React.Component {
   }
 
   render() {
-    const { course, color } = this.props;
+    const { course, color, missingPrereqs } = this.props;
     return (
-      <div className="course"
+      <div className={'course ' + (missingPrereqs ? 'missingPrereqs' : '')}
         style={{ background: color }}
         onKeyPress={this.handleKeyPress.bind(this)}
       >
@@ -80,6 +81,7 @@ class Course extends React.Component {
 
 Course.propTypes = {
   course: PropTypes.object,
+  missingPrereqs: PropTypes.object,
   color: PropTypes.string,
   updateCourse: PropTypes.func,
 };
@@ -186,6 +188,7 @@ const CourseContainer = connect(
   (state, { course }) => ({
     course: state.plan.courses[course],
     color: state.plan.colorscheme[state.plan.courses[course].subject],
+    missingPrereqs: validatePlan(state).missingPrereqs[course],
   }),
   dispatch => ({
     updateCourse: updates => dispatch(updateCourse(updates)),

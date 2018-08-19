@@ -3,3 +3,9 @@
     overflow: auto;
     padding: 25px 0;
 }
+
+.plan-view > .react-contextmenu-wrapper {
+    flex: 1;
+    overflow: auto;
+    display: inherit;
+}

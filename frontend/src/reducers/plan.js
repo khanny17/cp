@@ -36,10 +36,7 @@ import {
 
 import makeNewPlan from '../util/initial-plan-state';
 
-const existingPlanState = localStorage.getItem('planState');
-const initialState = existingPlanState ?
-  JSON.parse(existingPlanState) :
-  makeNewPlan();
+const initialState = makeNewPlan();
 
 
 function plan(state = initialState, action) {
@@ -245,7 +242,8 @@ function deleteItem(state, action) {
   let item_type, list_type;
   if(delete_type === 'PLAN-YEAR') {
     item_type = 'years';
-    list_type = 'plan';
+    list_type = 'plans';
+    list_fid = state.plan;
   } else if(delete_type === 'YEAR-TERM') {
     item_type = 'terms';
     list_type = 'years';
@@ -260,7 +258,7 @@ function deleteItem(state, action) {
     //the list id is optional. If we dont have it, we have to find the list
     //where this belongs
     list_fid = Object.keys(state[list_type]).find(fid =>
-      state[list_type][fid].courses.find(c_fid => c_fid === item_fid));
+      state[list_type][fid][item_type].find(c_fid => c_fid === item_fid));
   }
 
   // Remove from the dict and from the list it came from
@@ -401,15 +399,4 @@ function move(state, dropId, source, dest, listType, dropType) {
   };
 }
 
-// This wrapper function lets us keep the plan state on a page refresh
-// You have to explicitly exclude properties that shouldnt remain on a refresh,
-// like loading or failed requests
-export default (state, action) => {
-  let newState = plan(state, action);
-  localStorage.setItem('planState', JSON.stringify({
-    ...newState,
-    loading: false,
-    failed: false,
-  }));
-  return newState;
-};
+export default plan;

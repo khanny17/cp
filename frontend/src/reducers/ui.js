@@ -13,12 +13,35 @@ import {
   TOGGLE_REQUIREMENTS_SIDEBAR,
 } from '../actions/ui';
 
+import {
+  ADD_YEAR,
+  ADD_TERM,
+  ADD_COURSE,
+  MOVE_YEAR,
+  MOVE_TERM,
+  MOVE_COURSE,
+  DELETE_ITEM,
+  UPDATE_PLAN,
+  UPDATE_COURSE,
+  ADD_REQUIREMENT,
+  UPDATE_REQUIREMENT,
+  ASSIGN_REQUIREMENT,
+} from '../actions/plan';
+
+import {
+  SAVE_PLAN_SUCCESS,
+  LOAD_PLAN_SUCCESS,
+  DELETE_PLAN_SUCCESS,
+  NEW_PLAN,
+} from '../actions/plan-api';
+
 
 const initialState = {
   requestingLogin: false,
   requestingRegister: false,
   showTrash: false,
   showReqsSidebar: false,
+  unsavedChanges: true,
 };
 
 function ui(state = initialState, action) {
@@ -41,6 +64,24 @@ function ui(state = initialState, action) {
     return { ...state, showTrash: false };
   case TOGGLE_REQUIREMENTS_SIDEBAR:
     return { ...state, showReqsSidebar: !state.showReqsSidebar };
+  case ADD_YEAR:
+  case ADD_TERM:
+  case ADD_COURSE:
+  case MOVE_YEAR:
+  case MOVE_TERM:
+  case MOVE_COURSE:
+  case DELETE_ITEM:
+  case UPDATE_PLAN:
+  case UPDATE_COURSE:
+  case ADD_REQUIREMENT:
+  case UPDATE_REQUIREMENT:
+  case ASSIGN_REQUIREMENT:
+  case NEW_PLAN:
+    return { ...state, unsavedChanges: true };
+  case SAVE_PLAN_SUCCESS:
+  case LOAD_PLAN_SUCCESS:
+  case DELETE_PLAN_SUCCESS:
+    return { ...state, unsavedChanges: false };
   default:
     return state;
   }

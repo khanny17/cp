@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../css/year.css';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import YearContextMenu from './year-contextmenu';
+import { addTerm, deleteItem } from '../actions/plan';
 import Term from './term';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import '../css/year.css';
 
 const Year = ({ year }) => (
   <div className="year">
@@ -69,4 +72,50 @@ const YearContainer = connect(
   dispatch => ({}),
 )(DraggableYear);
 
-export default YearContainer;
+
+
+class ContextMenuYear extends React.Component {
+  handleAction(e, data) {
+    switch(data.action) {
+    case 'addTerm':
+      this.props.addTerm(this.props.year);
+      break;
+    case 'deleteYear':
+      this.props.deleteYear(this.props.year);
+      break;
+    default:
+      return;
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <ContextMenuTrigger id={this.props.year} >
+          <YearContainer {...this.props} />
+        </ContextMenuTrigger>
+
+        <YearContextMenu id={this.props.year}
+          onClick={this.handleAction.bind(this)} />
+      </div>
+    );
+  }
+}
+ContextMenuYear.propTypes = {
+  year: PropTypes.string,
+  addTerm: PropTypes.func,
+  deleteYear: PropTypes.func,
+  //I'm thinking of adding an 'Edit Colorscheme' option?
+  //  you know, a modal to change subject colors all at once?
+};
+
+const ContextMenuYearContainer = connect(
+  state => ({}),
+  dispatch => ({
+    addTerm: (year, term) => dispatch(addTerm(year, term)),
+    deleteYear: year => dispatch(deleteItem('PLAN-YEAR', year)),
+  }),
+)(ContextMenuYear);
+
+
+export default ContextMenuYearContainer;

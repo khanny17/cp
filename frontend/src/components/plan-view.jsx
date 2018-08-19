@@ -5,6 +5,7 @@ import '../css/plan-view.css';
 import DragDropMaster from './drag-drop-master';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { loadPlan, newPlan } from '../actions/plan-api';
+import { Prompt } from 'react-router-dom';
 import Header from './header';
 import Workspace from './workspace';
 import Requirements from './requirements';
@@ -32,7 +33,9 @@ const PlanViewContainer = connect(
   }),
 )(PlanView);
 
-const DragDropWrappedPlanView = ({ plans, match, loading, load, newPlan, planId }) => {
+const DragDropWrappedPlanView = ({
+  plans, match, loading, load, newPlan, planId,
+}) => {
   if(match.params.id) {
     const plan = plans[match.params.id];
 
@@ -95,7 +98,16 @@ const WithHeader = (props) => (
   <React.Fragment>
     <Header />
     <DragDropWrappedPlanViewContainer {...props}/>
+    <Prompt when={props.unsavedChanges}
+      message="You have unsaved changes, are you sure you want to leave?"
+    />
   </React.Fragment>
 );
+WithHeader.propTypes = { unsavedChanges: PropTypes.bool, };
 
-export default WithHeader;
+const WithHeaderContainer = connect(
+  state => ({ unsavedChanges: state.ui.unsavedChanges }),
+  dispatch => ({}),
+)(WithHeader);
+
+export default WithHeaderContainer;

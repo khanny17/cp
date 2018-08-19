@@ -8,6 +8,15 @@ import RequirementsPreview from './requirements-preview';
 import { getFullTemplate } from '../actions/template';
 import { newPlan } from '../actions/plan-api';
 
+const DescriptionTab = ({ template }) =>
+  <div>
+    {template.description}
+    {template.tags}
+    {template.school}
+  </div>
+;
+DescriptionTab.propTypes = { template: PropTypes.object };
+
 const PlanTab = ({ template }) =>
   template.loading ?
     <Dimmer active inverted><Loader/></Dimmer>
@@ -33,7 +42,7 @@ class PreviewTemplateModal extends React.Component {
     }
   }
 
-  state = { activeTab: 'plan' };
+  state = { activeTab: 'description' };
   setTab(name) {
     this.setState({ activeTab: name });
   }
@@ -50,6 +59,7 @@ class PreviewTemplateModal extends React.Component {
           </Button>
         )}
       >
+
         <Modal.Header style={{ display: 'flex' }}>
           <div style={{ flex: 1 }}>{template.plan.details.title}</div>
           <div style={{ flex: '0 0 auto' }}>
@@ -57,15 +67,26 @@ class PreviewTemplateModal extends React.Component {
             <TemplateStar template={template} />
           </div>
         </Modal.Header>
+
         <Modal.Content>
           <Menu tabular>
+            <Menu.Item name='description' active={ activeTab === 'description' }
+              onClick={() => this.setTab('description')} />
             <Menu.Item name='plan' active={ activeTab === 'plan' }
               onClick={() => this.setTab('plan')} />
             <Menu.Item name='requirements' active={ activeTab === 'requirements' }
               onClick={() => this.setTab('requirements')} />
           </Menu>
-          { activeTab === 'plan' ? <PlanTab template={template}/> : null }
-          { activeTab === 'requirements' ? <ReqTab template={template}/> : null }
+
+          { activeTab === 'plan' ?
+            <PlanTab template={template}/> : null }
+
+          { activeTab === 'requirements' ?
+            <ReqTab template={template}/> : null }
+
+          { activeTab === 'description' ?
+            <DescriptionTab template={template}/> : null }
+
         </Modal.Content>
         <Modal.Actions>
           <Button primary onClick={() => loadTemplate(template)}>

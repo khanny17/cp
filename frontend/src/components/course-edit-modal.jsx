@@ -1,16 +1,61 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, Button, Form, Modal } from 'semantic-ui-react';
+import { Accordion, Button, Form, List, Modal } from 'semantic-ui-react';
 import EasyInput from './easy-input';
 import { CirclePicker } from 'react-color';
 import { randomColors } from '../util/colors';
 
-const accordionPanels = ({ color, colorOptions, onChange }) => [
+class PrereqList extends React.Component {
+  state = {};
+
+  onFormChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  }
+
+  addPrereq() {
+    const { subject, number } = this.state;
+    if(!subject || !number) {
+      return; //TODO error handling 
+    }
+
+    this.props.onChange({
+      target: {
+        name: 'prereqs',
+        value: this.props.prereqs.concat({ subject, number }),
+      },
+    });
+  }
+
+  render() {
+    const { prereqs } = this.props;
+    return (
+      <div>
+        <EasyInput name="subject" onChange={this.onFormChange.bind(this)} />
+        <EasyInput name="number" onChange={this.onFormChange.bind(this)} />
+        <Button primary onClick={this.addPrereq.bind(this)}>Add</Button>
+        <List>
+          {prereqs.map((prereq,i) =>
+            <List.Item key={i}>
+              {prereq.subject + ' ' + prereq.number}
+            </List.Item>
+          )}
+        </List>
+      </div>
+    );
+  }
+}
+PrereqList.propTypes = { onChange: PropTypes.func, prereqs: PropTypes.array };
+
+const accordionPanels = ({ prereqs, onChange, color, colorOptions, onColorChange }) => [
   {
     key: 'Advanced',
     title: 'Prerequisites, Attributes',
     content: { content: (
-      <div>oop</div>
+      <div>
+        <PrereqList prereqs={prereqs || []} onChange={onChange} />
+      </div>
     )},
   },
   {
@@ -18,7 +63,7 @@ const accordionPanels = ({ color, colorOptions, onChange }) => [
     title: 'Colorscheme',
     content: { content: (
       <div>
-        <CirclePicker color={color} onChange={onChange} 
+        <CirclePicker color={color} onChange={onColorChange} 
           colors={colorOptions}
         />
       </div>
@@ -85,7 +130,11 @@ class CourseEditModal extends React.Component {
 
   onChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      ...this.state,
+      course: {
+        ...this.state.course,
+        [event.target.name]: event.target.value,
+      },
     });
   }
 
@@ -117,13 +166,18 @@ class CourseEditModal extends React.Component {
           </div>
           <Accordion styled 
             panels={accordionPanels({
+              prereqs: course.prereqs,
               color,
-              onChange: this.onColorChange.bind(this),
+              onChange: this.onChange.bind(this),
+              onColorChange: this.onColorChange.bind(this),
             })}
           />
         </Modal.Content>
         <Modal.Actions>
-          <Button primary onClick={() => updateCourse(this.state)}>
+          <Button primary onClick={() => updateCourse({
+            color: this.state.color,
+            ...this.state.course,
+          })}>
             Update
           </Button>
           <Button color='red' style={{ float: 'left' }}

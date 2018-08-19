@@ -19,3 +19,8 @@
 .year-container *:focus {
     outline: 3px dotted;
 }
+
+.year-container > div > .react-contextmenu-wrapper {
+    height: 100%;
+    display: inherit;
+}

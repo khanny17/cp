@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Droppable } from 'react-beautiful-dnd';
 import PlanTitle from './plan-title';
 import Year from './year';
 import Trash from './trash';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import WorkspaceContextMenu from './workspace-contextmenu';
+import { addYear } from '../actions/plan';
 import '../css/workspace.css';
 
 const Workspace = ({ plan }) =>
@@ -22,7 +26,49 @@ const Workspace = ({ plan }) =>
     <Trash />
   </div>
 ;
-
 Workspace.propTypes = { plan: PropTypes.object };
 
-export default Workspace;
+class ContextMenuWorkspace extends React.Component {
+  handleAction(e, data) {
+    switch(data.action) {
+    case 'addYear':
+      this.props.addYear({
+        title: 'Year ' + (this.props.plan.years.length+1)
+      });
+      break;
+    default:
+      return;
+    }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <ContextMenuTrigger id={'WORKSPACE'} >
+          <Workspace {...this.props} />
+        </ContextMenuTrigger>
+
+        <WorkspaceContextMenu id={'WORKSPACE'}
+          onClick={this.handleAction.bind(this)} />
+
+      </React.Fragment>
+    );
+  }
+}
+ContextMenuWorkspace.propTypes = {
+  plan: PropTypes.object,
+  addYear: PropTypes.func,
+  //I'm thinking of adding an 'Edit Colorscheme' option?
+  //  you know, a modal to change subject colors all at once?
+};
+
+const ContextMenuWorkspaceContainer = connect(
+  state => ({}),
+  dispatch => ({
+    addYear: year => dispatch(addYear(year)),
+  }),
+)(ContextMenuWorkspace);
+
+
+
+export default ContextMenuWorkspaceContainer;

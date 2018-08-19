@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../css/term.css';
 import Course from './course';
+import { ContextMenuTrigger } from 'react-contextmenu';
+import TermContextMenu from './term-contextmenu';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { addCourse } from '../actions/plan';
+import { addCourse, deleteItem } from '../actions/plan';
 
 const Term = ({ term, addCourse }) => (
   <div className="term">
@@ -75,4 +77,49 @@ const TermContainer = connect(
   }),
 )(DraggableTerm);
 
-export default TermContainer;
+
+class ContextMenuTerm extends React.Component {
+  handleAction(e, data) {
+    switch(data.action) {
+    case 'addCourse':
+      this.props.addCourse(this.props.term);
+      break;
+    case 'deleteTerm':
+      this.props.deleteTerm(this.props.term);
+      break;
+    default:
+      return;
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <ContextMenuTrigger id={this.props.term} >
+          <TermContainer {...this.props} />
+        </ContextMenuTrigger>
+
+        <TermContextMenu id={this.props.term}
+          onClick={this.handleAction.bind(this)} />
+      </div>
+    );
+  }
+}
+ContextMenuTerm.propTypes = {
+  term: PropTypes.string,
+  addCourse: PropTypes.func,
+  deleteTerm: PropTypes.func,
+  //I'm thinking of adding an 'Edit Colorscheme' option?
+  //  you know, a modal to change subject colors all at once?
+};
+
+const ContextMenuTermContainer = connect(
+  state => ({}),
+  dispatch => ({
+    addCourse: (term, course) => dispatch(addCourse(term, course)),
+    deleteTerm: term => dispatch(deleteItem('YEAR-TERM', term)),
+  }),
+)(ContextMenuTerm);
+
+
+export default ContextMenuTermContainer;

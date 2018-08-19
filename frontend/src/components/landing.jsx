@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AuthModal from './auth-modal';
+import { newPlan } from '../actions/plan-api';
 import {
   Button,
   Container,
@@ -13,7 +14,7 @@ import {
 } from 'semantic-ui-react';
 import '../css/landing.css';
 
-const Landing = ({ user }) => (
+const Landing = ({ user, newPlan }) => (
   <Segment inverted>
     <div className="small-triangle"></div>
     <div className="big-triangle"></div>
@@ -53,21 +54,18 @@ const Landing = ({ user }) => (
     <Header as="h2" inverted style={{ marginBottom: '1em' }}>
       A simple app for planning out when to take your classes
     </Header>
-    <Link to="/plan">
-      <Button color="teal" size="huge">
-        Jump Right In <Icon name="right arrow" />
-      </Button>
-    </Link>
+    <Button color="teal" size="huge" onClick={newPlan}>
+      Jump Right In <Icon name="right arrow" />
+    </Button>
 
   </Segment>
 );
-
-Landing.propTypes = { user: PropTypes.object };
+Landing.propTypes = { user: PropTypes.object, newPlan: PropTypes.func };
 
 
 const LandingContainer = connect(
   state => ({ user: state.auth.user }),
-  dispatch => ({}),
+  dispatch => ({ newPlan: () => dispatch(newPlan()) }),
 )(Landing);
 
 export default LandingContainer;

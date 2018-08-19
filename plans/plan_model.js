@@ -16,6 +16,6 @@ const schema = new mongoose.Schema({
   lastAccessed: Date,
   colorscheme: { type: Object, required: true },
   requirements: { type: Object, required: true },
-});
+}, { minimize: false });
 
 module.exports = mongoose.model('Plan', schema);
