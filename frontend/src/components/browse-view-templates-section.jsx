@@ -29,7 +29,7 @@ const TemplateRows = ({ templates }) => {
         {template.stars.length}
         <TemplateStar template={template} />
       </Table.Cell>
-      <Table.Cell>{template.tags}</Table.Cell>
+      <Table.Cell>{template.tags.join(', ')}</Table.Cell>
       <Table.Cell>
         <PreviewTemplateModal template={template} />
       </Table.Cell>

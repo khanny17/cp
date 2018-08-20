@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Dimmer, Icon, Loader, Menu, Modal } from 'semantic-ui-react';
+import { Button, Dimmer, Header, Icon, Loader, Menu, Modal }
+  from 'semantic-ui-react';
 import TemplateStar from './template-star';
 import PlanPreview from './plan-preview';
 import RequirementsPreview from './requirements-preview';
@@ -10,8 +11,11 @@ import { newPlan } from '../actions/plan-api';
 
 const DescriptionTab = ({ template }) =>
   <div>
+    <Header>Description</Header>
     {template.description}
+    <Header>Tags</Header>
     {template.tags}
+    <Header>School</Header>
     {template.school}
   </div>
 ;
