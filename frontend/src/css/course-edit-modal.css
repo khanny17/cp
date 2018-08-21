@@ -1,0 +1,19 @@
+.accordion-enter {
+    max-height: 0em;
+    overflow: hidden;
+}
+
+.accordion-enter.accordion-enter-active {
+    max-height: 10em;
+    transition: max-height 200ms linear;
+}
+
+.accordion-leave {
+    max-height: 10em;
+}
+
+.accordion-leave.accordion-leave-active {
+    max-height: 0em;
+    overflow: hidden;
+    transition: max-height 200ms linear;
+}

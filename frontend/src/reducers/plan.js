@@ -11,10 +11,12 @@ import {
   MOVE_YEAR,
   MOVE_TERM,
   MOVE_COURSE,
+  MINIMIZE_TERM,
 
   DELETE_ITEM,
 
   UPDATE_PLAN,
+  UPDATE_TERM,
   UPDATE_COURSE,
 
   ADD_REQUIREMENT,
@@ -78,6 +80,18 @@ function plan(state = initialState, action) {
   case DELETE_ITEM:
     return deleteItem(state, action);
 
+  case MINIMIZE_TERM:
+    return {
+      ...state,
+      terms: {
+        ...state.terms,
+        [action.term]: {
+          ...state.terms[action.term],
+          minimized: !state.terms[action.term].minimized,
+        }
+      }
+    };
+
 
   case ADD_REQUIREMENT: {
     const req = { fid: uuidv4(), type: null, value: '' };
@@ -126,6 +140,20 @@ function plan(state = initialState, action) {
       }
     };
   }
+  case UPDATE_TERM: {
+    const { fid, updates } = action;
+    return {
+      ...state,
+      terms: {
+        ...state.terms,
+        [fid]: {
+          ...state.terms[fid],
+          ...updates,
+        }
+      }
+    };
+  }
+
   case UPDATE_COURSE: {
     const { fid, subject, color } = action.updates;
     return {

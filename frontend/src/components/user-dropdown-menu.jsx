@@ -6,8 +6,8 @@ import ProfileModal from './profile-modal';
 import { logout } from '../actions/auth';
 
 
-const UserDropdownMenu = ({ logout }) =>
-  <Dropdown item text="User">
+const UserDropdownMenu = ({ logout, name }) =>
+  <Dropdown item text={name ? name.split(' ')[0] : 'User'}>
     <Dropdown.Menu>
       <ProfileModal />
       <Dropdown.Item onClick={logout}>
@@ -17,11 +17,12 @@ const UserDropdownMenu = ({ logout }) =>
   </Dropdown>
 ;
 UserDropdownMenu.propTypes = {
+  name: PropTypes.string,
   logout: PropTypes.func,
 };
 
 const UserDropdownMenuContainer = connect(
-  state => ({}),
+  state => ({ name: state.auth.user.name }),
   dispatch => ({ logout: () => dispatch(logout()) }),
 )(UserDropdownMenu);
 

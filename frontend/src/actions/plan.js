@@ -6,8 +6,10 @@ export const ADD_COURSE = 'ADD_COURSE';
 export const MOVE_YEAR = 'MOVE_YEAR';
 export const MOVE_TERM = 'MOVE_TERM';
 export const MOVE_COURSE = 'MOVE_COURSE';
+export const MINIMIZE_TERM = 'MINIMIZE_TERM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const UPDATE_PLAN = 'UPDATE_PLAN';
+export const UPDATE_TERM = 'UPDATE_TERM';
 export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const ADD_REQUIREMENT = 'ADD_REQUIREMENT';
 export const UPDATE_REQUIREMENT = 'UPDATE_REQUIREMENT';
@@ -42,6 +44,14 @@ export function assignRequirement(reqId, destId) {
 export function updatePlan(updates) {
   return {
     type: UPDATE_PLAN,
+    updates,
+  };
+}
+
+export function updateTerm(fid, updates) {
+  return {
+    type: UPDATE_TERM,
+    fid,
     updates,
   };
 }
@@ -119,5 +129,12 @@ export function moveCourse(courseId, source, dest) {
     courseId,
     source,
     dest,
+  };
+}
+
+export function minimizeTerm(term) {
+  return {
+    type: MINIMIZE_TERM,
+    term,
   };
 }

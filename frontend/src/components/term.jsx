@@ -6,36 +6,50 @@ import Course from './course';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import TermContextMenu from './term-contextmenu';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { addCourse, deleteItem } from '../actions/plan';
+import { addCourse, deleteItem, minimizeTerm, updateTerm } from '../actions/plan';
+import InlineEdit from 'react-edit-inline';
 
-const Term = ({ term, addCourse }) => (
-  <div className="term">
-    <h3>{term.title}</h3>
-    <Droppable droppableId={term.fid} type="TERM-COURSE">
-      {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          style={{
-            border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
-            borderRadius: '5px',
-          }}
-          {...provided.droppableProps}
-          className="course-container"
-        >
-          { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
-          { provided.placeholder }
-          <button className="add-course-button" onClick={() => addCourse(term.fid)}>
-            +
-          </button>
-        </div>
-      )}
-    </Droppable>
+
+const Term = ({ term, addCourse, updateTerm }) =>
+  <div className={term.minimized ? 'term minimized' : 'term' }>
+    <InlineEdit
+      text={term.title}
+      paramName="title"
+      change={update => updateTerm(term.fid, update)}
+      staticElement="h3"
+    />
+    { term.minimized ?
+      <div>
+      </div> 
+      :
+      <Droppable droppableId={term.fid} type="TERM-COURSE">
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            style={{
+              border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
+              borderRadius: '5px',
+            }}
+            {...provided.droppableProps}
+            className="course-container"
+          >
+            { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
+            { provided.placeholder }
+            <button className="add-course-button"
+              onClick={() => addCourse(term.fid)}>
+              +
+            </button>
+          </div>
+        )}
+      </Droppable>
+    }
   </div>
-);
+;
 
 Term.propTypes = {
   term: PropTypes.object,
   addCourse: PropTypes.func,
+  updateTerm: PropTypes.func,
 };
 
 const DraggableTerm = (props) => (
@@ -74,6 +88,7 @@ const TermContainer = connect(
   (state, { term }) => ({ term: state.plan.terms[term] }),
   dispatch => ({
     addCourse: termId => dispatch(addCourse(termId)),
+    updateTerm: (fid, updates) => dispatch(updateTerm(fid, updates)),
   }),
 )(DraggableTerm);
 
@@ -83,6 +98,9 @@ class ContextMenuTerm extends React.Component {
     switch(data.action) {
     case 'addCourse':
       this.props.addCourse(this.props.term);
+      break;
+    case 'minimizeTerm':
+      this.props.minimizeTerm(this.props.term);
       break;
     case 'deleteTerm':
       this.props.deleteTerm(this.props.term);
@@ -94,8 +112,8 @@ class ContextMenuTerm extends React.Component {
 
   render() {
     return (
-      <div>
-        <ContextMenuTrigger id={this.props.term} >
+      <div className="pre-term-context-menu">
+        <ContextMenuTrigger id={this.props.term}>
           <TermContainer {...this.props} />
         </ContextMenuTrigger>
 
@@ -108,6 +126,7 @@ class ContextMenuTerm extends React.Component {
 ContextMenuTerm.propTypes = {
   term: PropTypes.string,
   addCourse: PropTypes.func,
+  minimizeTerm: PropTypes.func,
   deleteTerm: PropTypes.func,
   //I'm thinking of adding an 'Edit Colorscheme' option?
   //  you know, a modal to change subject colors all at once?
@@ -118,6 +137,7 @@ const ContextMenuTermContainer = connect(
   dispatch => ({
     addCourse: (term, course) => dispatch(addCourse(term, course)),
     deleteTerm: term => dispatch(deleteItem('YEAR-TERM', term)),
+    minimizeTerm: term => dispatch(minimizeTerm(term)),
   }),
 )(ContextMenuTerm);
 

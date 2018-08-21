@@ -22,6 +22,7 @@ import {
   MOVE_COURSE,
   DELETE_ITEM,
   UPDATE_PLAN,
+  UPDATE_TERM,
   UPDATE_COURSE,
   ADD_REQUIREMENT,
   UPDATE_REQUIREMENT,
@@ -64,6 +65,7 @@ function ui(state = initialState, action) {
     return { ...state, showTrash: false };
   case TOGGLE_REQUIREMENTS_SIDEBAR:
     return { ...state, showReqsSidebar: !state.showReqsSidebar };
+
   case ADD_YEAR:
   case ADD_TERM:
   case ADD_COURSE:
@@ -76,12 +78,14 @@ function ui(state = initialState, action) {
   case ADD_REQUIREMENT:
   case UPDATE_REQUIREMENT:
   case ASSIGN_REQUIREMENT:
+  case UPDATE_TERM:
   case NEW_PLAN:
     return { ...state, unsavedChanges: true };
   case SAVE_PLAN_SUCCESS:
   case LOAD_PLAN_SUCCESS:
   case DELETE_PLAN_SUCCESS:
     return { ...state, unsavedChanges: false };
+
   default:
     return state;
   }

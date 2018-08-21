@@ -3,10 +3,12 @@
 }
 
 .term {
+    position: relative;
     display: flex;
     flex-flow: column;
     height: 100%;
     min-width: 110px;
+    width: 110px;
     padding-bottom: 5px;
 }
 
@@ -19,6 +21,12 @@
 
 .term > h3 {
     margin: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.term > input {
+    width: 110px;
 }
 
 .add-course-button {
@@ -37,4 +45,27 @@
     border: 1px solid teal;
     margin: 0;
     margin-top: 5px;
+}
+
+.pre-term-context-menu > div {
+    height: 100%;
+}
+.pre-term-context-menu > div > div {
+    height: 100%;
+}
+
+.term.minimized {
+    min-width: 40px;
+    width: 40px;
+    border: 1px solid gray;
+    border-radius: 3px;
+}
+.term.minimized > h3 {
+    writing-mode: tb-rl;
+}
+.term.minimized > input {
+    position: absolute;
+    top: 10px;
+    width: 30px;
+    transform: rotate(90deg);
 }

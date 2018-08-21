@@ -9,6 +9,9 @@ const TermContextMenu = ({ id, onClick }) =>
     <MenuItem data={{ action: 'addCourse', id: id }} onClick={onClick}>
       <Icon name="plus" />Add Course
     </MenuItem>
+    <MenuItem data={{ action: 'minimizeTerm', id: id }} onClick={onClick}>
+      <Icon name="minus" />Minimize Term
+    </MenuItem>
     <MenuItem data={{ action: 'deleteTerm', id: id }} onClick={onClick}>
       <Icon name="delete" />Delete Term
     </MenuItem>
