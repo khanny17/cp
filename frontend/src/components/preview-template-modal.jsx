@@ -25,7 +25,9 @@ const PlanTab = ({ template }) =>
   template.loading ?
     <Dimmer active inverted><Loader/></Dimmer>
     :
-    <PlanPreview plan={template.plan} />
+    <div style={{ overflow: 'auto', display: 'flex' }}>
+      <PlanPreview plan={template.plan} />
+    </div>
 ;
 PlanTab.propTypes = { template: PropTypes.object };
 

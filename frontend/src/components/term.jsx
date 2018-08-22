@@ -18,31 +18,26 @@ const Term = ({ term, addCourse, updateTerm }) =>
       change={update => updateTerm(term.fid, update)}
       staticElement="h3"
     />
-    { term.minimized ?
-      <div>
-      </div> 
-      :
-      <Droppable droppableId={term.fid} type="TERM-COURSE">
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            style={{
-              border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
-              borderRadius: '5px',
-            }}
-            {...provided.droppableProps}
-            className="course-container"
-          >
-            { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
-            { provided.placeholder }
-            <button className="add-course-button"
-              onClick={() => addCourse(term.fid)}>
-              +
-            </button>
-          </div>
-        )}
-      </Droppable>
-    }
+    <Droppable droppableId={term.fid} type="TERM-COURSE">
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          style={{
+            border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
+            borderRadius: '5px',
+          }}
+          {...provided.droppableProps}
+          className="course-container"
+        >
+          { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
+          { provided.placeholder }
+          <button className="add-course-button"
+            onClick={() => addCourse(term.fid)}>
+            +
+          </button>
+        </div>
+      )}
+    </Droppable>
   </div>
 ;
 

@@ -8,8 +8,9 @@ const PlanPreview = ({ plan }) =>
         <div>{year.title}</div>
         <div className="term-container">
           {year.terms.map(t => plan.terms[t]).map(term => (
-            <div key={term.fid} className="term">
-              <div>{term.title}</div>
+            <div key={term.fid}
+              className={term.minimized ? 'term minimized' : 'term'}> 
+              <h3>{term.title}</h3>
               <div className="course-container">
                 {term.courses.map(c => plan.courses[c]).map(course => (
                   <div key={course.fid} className="course"
