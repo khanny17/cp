@@ -52,7 +52,7 @@ export default function makeNewPlan() {
     terms,
     courses,
     saving: false,
-    colorscheme: {},
+    colorscheme: { SUBJ: '#607d8b' },
     requirements: {},
   };
 }

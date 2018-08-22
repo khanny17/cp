@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Icon, Menu } from 'semantic-ui-react';
+import { Button, Icon, Menu } from 'semantic-ui-react';
 import { savePlan } from '../actions/plan-api';
 
 const SaveButton = ({ saving, save, plan_data, match, unsavedChanges }) => {
@@ -14,10 +14,12 @@ const SaveButton = ({ saving, save, plan_data, match, unsavedChanges }) => {
   }
 
   return (
-    <Menu.Item onClick={() => save(plan_data)}>
-      { saving ? <Icon loading name="circle notch" /> : <Icon name="save"/> }
-      Save
-      { unsavedChanges ? '*' : '' }
+    <Menu.Item>
+      <Button inverted onClick={() => save(plan_data)}>
+        { saving ? <Icon loading name="circle notch" /> : <Icon name="save"/> }
+        Save
+        { unsavedChanges ? '*' : '' }
+      </Button>
     </Menu.Item>
   );
 };
