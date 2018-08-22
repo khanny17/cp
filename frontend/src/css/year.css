@@ -31,4 +31,5 @@
 .year > h2 {
     font-weight: normal;
     text-transform: uppercase;
+    letter-spacing: 5px;
 }

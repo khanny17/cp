@@ -3,6 +3,8 @@
 
     height: auto !important;
     position: inherit !important;
+
+    font-family: 'Lato', Helvetica, sans-serif;
 }
 
 .requirements > div {
