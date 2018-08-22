@@ -12,6 +12,8 @@
     color: white;
     background: #4cf;
     text-align: center;
+
+    box-shadow: 1.2px 1.2px #cccccc;
 }
 
 .missingPrereqs {

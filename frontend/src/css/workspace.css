@@ -1,11 +1,29 @@
 .workspace {
-    flex: 1;
-    overflow: auto;
-    padding: 25px 0;
+    padding: 25px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .plan-view > .react-contextmenu-wrapper {
     flex: 1;
     overflow: auto;
     display: inherit;
+}
+
+.plan-title-wrapper {
+    display: flex;
+    padding: 25px;
+    background: #e6e6e6;
+}
+
+.plan-title {
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.plan-school {
+    margin: 0;
+    flex: 0 0 auto;
+    font-weight: normal;
+    text-transform: uppercase;
 }

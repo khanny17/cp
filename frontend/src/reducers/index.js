@@ -4,6 +4,7 @@ import auth from './auth';
 import ui from './ui';
 import browse from './browse';
 import template from './template';
+import school from './school';
 
 const reducers = combineReducers({
   plan,
@@ -11,6 +12,7 @@ const reducers = combineReducers({
   ui,
   browse,
   template,
+  school,
 });
 
 export default reducers;

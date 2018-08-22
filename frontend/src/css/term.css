@@ -18,6 +18,13 @@
     flex-flow: column;
 }
 
+.term .term-title {
+    display: none;
+}
+.term.minimized .term-title {
+    display: block;
+}
+
 .term > h3 {
     margin: 5px;
     overflow: hidden;

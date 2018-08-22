@@ -9,6 +9,9 @@
     flex-flow: column;
     height: 100%;
     min-width: 110px;
+    background: #e6e6e6;
+
+    padding: 0 10px;
 }
 
 .term-container {
@@ -23,4 +26,9 @@
 .year-container > div > .react-contextmenu-wrapper {
     height: 100%;
     display: inherit;
+}
+
+.year > h2 {
+    font-weight: normal;
+    text-transform: uppercase;
 }

@@ -13,6 +13,7 @@ import InlineEdit from 'react-edit-inline';
 const Term = ({ term, addCourse, updateTerm }) =>
   <div className={term.minimized ? 'term minimized' : 'term' }>
     <InlineEdit
+      className="term-title"
       text={term.title}
       paramName="title"
       change={update => updateTerm(term.fid, update)}

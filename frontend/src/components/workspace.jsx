@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Droppable } from 'react-beautiful-dnd';
 import PlanTitle from './plan-title';
+import PlanSchool from './plan-school';
 import Year from './year';
 import Trash from './trash';
 import { ContextMenuTrigger } from 'react-contextmenu';
@@ -14,6 +15,8 @@ const Workspace = ({ plan }) =>
   <div className="workspace">
     <div className="plan-title-wrapper">
       <PlanTitle />
+      <div style={{ flex: 1 }} />
+      <PlanSchool />
     </div>
     <Droppable droppableId={plan.fid} type="PLAN-YEAR" direction="horizontal">
       {(provided, snapshot) => (

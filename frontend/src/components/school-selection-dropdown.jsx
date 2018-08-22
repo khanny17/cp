@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Dropdown } from 'semantic-ui-react';
-import { getSchools } from '../actions/template';
+import { getSchools } from '../actions/school';
 
 class SchoolSelectionDropdown extends React.Component {
   state = { schoolOptions: null, searchQuery: '' };
@@ -19,7 +19,7 @@ class SchoolSelectionDropdown extends React.Component {
 
     const q = this.state.searchQuery.toLowerCase();
     const qRegex = new RegExp(q, 'i');
-    const filtered = this.props.schools.filter(s => {
+    const filtered = Object.values(this.props.schools).filter(s => {
       return qRegex.test(s.name) || qRegex.test(s.aliases);
     });
     const sliced = filtered.slice(0, 100);
@@ -58,7 +58,7 @@ SchoolSelectionDropdown.propTypes = {
 
 const SchoolSelectionDropdownContainer = connect(
   state => ({
-    schools: state.template.schools,
+    schools: state.school.schools,
   }),
   dispatch => ({
     getSchools: () => dispatch(getSchools()),
