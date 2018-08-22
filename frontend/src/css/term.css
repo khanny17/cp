@@ -1,14 +1,19 @@
 .term .course-wrapper {
-    margin: 3px 5px;
+    margin-bottom: 5px;
+}
+
+.term-container > div:first-child {
+    margin-left: 10px;
 }
 
 .term {
     position: relative;
     display: flex;
     flex-flow: column;
-    min-width: 110px;
-    width: 110px;
+    min-width: 100px;
+    width: 100px;
     padding-bottom: 5px;
+    margin-right: 10px;
 }
 
 .course-container {
@@ -71,6 +76,7 @@
     width: 40px;
     border: 1px solid gray;
     border-radius: 3px;
+    height: calc(100% - 35px);
 }
 .term.minimized > h3 {
     writing-mode: tb-rl;

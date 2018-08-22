@@ -14,6 +14,7 @@ const Year = ({ year }) => (
     <Droppable droppableId={year.fid} type="YEAR-TERM" direction="horizontal">
       {(provided, snapshot) => (
         <div
+          className="term-container"
           ref={provided.innerRef}
           style={{
             display: 'flex',
