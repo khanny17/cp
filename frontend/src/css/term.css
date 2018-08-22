@@ -23,13 +23,6 @@
     flex-flow: column;
 }
 
-.term .term-title {
-    display: none;
-}
-.term.minimized .term-title {
-    display: block;
-}
-
 .term > h3 {
     margin: 5px;
     overflow: hidden;
@@ -76,7 +69,8 @@
     width: 40px;
     border: 1px solid gray;
     border-radius: 3px;
-    height: calc(100% - 35px);
+    margin-top: 33px;
+    height: calc(100% - 69px);
 }
 .term.minimized > h3 {
     writing-mode: tb-rl;
