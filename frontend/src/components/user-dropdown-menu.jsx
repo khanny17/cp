@@ -7,7 +7,7 @@ import { logout } from '../actions/auth';
 
 
 const UserDropdownMenu = ({ logout, name }) =>
-  <Dropdown simple item text={name ? name.split(' ')[0] : 'User'}>
+  <Dropdown item text={name ? name.split(' ')[0] : 'User'}>
     <Dropdown.Menu>
       <ProfileModal />
       <Dropdown.Item onClick={logout}>

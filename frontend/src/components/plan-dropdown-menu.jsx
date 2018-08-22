@@ -6,7 +6,7 @@ import { newPlan } from '../actions/plan-api';
 import PublishModal from './publish-modal';
 
 const PlanDropdownMenu = ({ newPlan }) =>
-  <Dropdown simple item text="Plan">
+  <Dropdown item text="Plan">
     <Dropdown.Menu>
       <Dropdown.Item onClick={newPlan}>
         <Icon name="file"/>New

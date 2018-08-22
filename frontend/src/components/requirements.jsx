@@ -152,7 +152,7 @@ const RequirementsContainer = connect(
 )(DroppableRequirements);
 
 class RndRequirements extends React.Component {
-  state = { width: 250, height: 250 };
+  state = { width: 300, height: 300 };
   render() {
     const { width, height } = this.state;
     return (
