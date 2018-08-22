@@ -1,5 +1,4 @@
 .requirements {
-    border-right: 3px solid gray;
     background: #e6e6e6;
 
     height: auto !important;
@@ -10,7 +9,7 @@
     height: 100%;
     width: 100%;
     padding: 25px;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .requirement {
@@ -25,4 +24,8 @@
 
 .amount > input {
     width: 3em;
+}
+
+.requirements h1.ui.header {
+    text-transform: uppercase;
 }

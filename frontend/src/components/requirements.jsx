@@ -33,7 +33,7 @@ class Requirement extends React.Component {
     const { requirement, notMet } = this.props;
     return (
       <div className="requirement">
-        {notMet ? <Icon name="warning" style={{ marginLeft: '-20px' }}/> : null}
+        <Icon name={notMet ? 'circle outline' : 'circle'} />
         <div className="type">
           <Dropdown placeholder="Type" options={this.typeOptions} inline
             value={requirement.type}
