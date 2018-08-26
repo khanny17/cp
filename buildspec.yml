@@ -27,10 +27,10 @@ phases:
       # - command
 artifacts:
   files:
-    - **/*
+    - '**/*'
     # - location
   #discard-paths: yes
-  base-directory: frontend/build
+  base-directory: 'frontend/build'
 cache:
   paths:
     - node_modules/
