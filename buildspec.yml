@@ -29,7 +29,7 @@ artifacts:
   files:
     - '**/*'
     # - location
-  discard-paths: yes
+  #discard-paths: yes
   base-directory: 'frontend/build'
 cache:
   paths:
