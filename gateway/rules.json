@@ -1,8 +1,0 @@
-{
-    "rules": [
-        { "pathname": "/api/templates/*", "dest": "templates.cp-api.tech" },
-        { "pathname": "/api/plans/*", "dest": "plans.cp-api.tech" },
-        { "pathname": "/api/auth/*", "dest": "auth.cp-api.tech" },
-        { "dest": "www.cp-api.tech" }
-    ]
-}
