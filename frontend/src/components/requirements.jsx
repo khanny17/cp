@@ -11,13 +11,28 @@ import '../css/requirements.css';
 
 
 class Requirement extends React.Component {
+  typeColors = {
+    COURSE: 'blue',
+    ATTRIBUTE: 'purple',
+  };
+
   typeOptions = [
     {
-      text: 'Course',
+      text: (
+        <span>
+          <Icon name="circle" style={{ color: this.typeColors.COURSE }}/>
+          Course
+        </span>
+      ),
       value: 'COURSE',
     },
     {
-      text: 'Attribute',
+      text: (
+        <span>
+          <Icon name="circle" style={{ color: this.typeColors.ATTRIBUTE }}/>
+          Attribute
+        </span>
+      ),
       value: 'ATTRIBUTE',
     },
   ];
@@ -33,10 +48,10 @@ class Requirement extends React.Component {
     const { requirement, notMet } = this.props;
     return (
       <div className="requirement">
-        <Icon name={notMet ? 'circle outline' : 'circle'} />
         <div className="type">
-          <Dropdown placeholder="Type" options={this.typeOptions} inline
-            value={requirement.type}
+          <Dropdown options={this.typeOptions} inline
+            icon={notMet ? 'circle outline' : 'circle'}
+            style={{ color: this.typeColors[requirement.type] }}
             onChange={(e, data) => this.onChange({ type: data.value })}
           />
         </div>

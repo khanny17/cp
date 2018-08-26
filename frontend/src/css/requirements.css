@@ -31,3 +31,12 @@
 .requirements h1.ui.header {
     text-transform: uppercase;
 }
+
+/*
+ * Hide the text of the "type" dropdown
+ * This makes it so, for the Type dropdown, so we only show the icon on the
+ * line, but inside the dropdown select we show the word too
+ */
+.requirement .dropdown > .text {
+    display: none;
+}
