@@ -20,9 +20,11 @@ phases:
   build:
     commands:
       - cd frontend/ && npm install && npm run build
-  post_build:
-    commands:
-      - aws s3 cp --recursive / s3://$WEBSITE_S3_BUCKET/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+      # - command
+  #post_build:
+    #commands:
+      # - command
+      # - command
 artifacts:
   files:
     - '**/*'
