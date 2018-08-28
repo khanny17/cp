@@ -51,7 +51,7 @@ class SchoolSelectionDropdown extends React.Component {
   }
 }
 SchoolSelectionDropdown.propTypes = {
-  schools: PropTypes.array,
+  schools: PropTypes.object,
   getSchools: PropTypes.func,
   onChange: PropTypes.func,
 };
