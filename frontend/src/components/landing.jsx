@@ -14,6 +14,7 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import '../css/landing.css';
+import '../images/space_example.jpg';
 
 
 const Landing = () =>
@@ -29,7 +30,7 @@ const Heading = connect(
   () => ({}),
   dispatch => ({ newPlan: () => dispatch(newPlan()) }),
 )(({ newPlan }) =>
-  <Segment inverted vertical>
+  <Segment inverted vertical className="landing-heading">
     <HeadingMenu />
     <Container text style={{textAlign:'center', paddingTop: '110px', paddingBottom: '40px'}}>
 
@@ -54,27 +55,27 @@ const Heading = connect(
 
 const HeadingMenu = connect(state => ({ user: state.auth.user }), () => ({}))(
   ({ user }) =>
-    <Menu inverted size="huge" secondary>
+    <Menu inverted secondary>
       <Container>
         {user ?
           <Menu.Menu position="right">
             <Menu.Item>
               <Link to="/browse">
-                <Button size="large" inverted>Home</Button>
+                <Button inverted>Home</Button>
               </Link>
             </Menu.Item>
           </Menu.Menu>
           :
           <Menu.Menu position="right">
             <Menu.Item>
-              <AuthModal login={true} trigger={
-                <Button size="large" inverted style={{ marginRight: '5px' }}>
-                  Login
+              <AuthModal login={false} trigger={
+                <Button inverted color="blue" style={{ marginRight: '5px' }}>
+                  Sign Up
                 </Button>
               }/>
-              <AuthModal login={false} trigger={
-                <Button size="large" inverted color="teal">
-                  Sign Up
+              <AuthModal login={true} trigger={
+                <Button inverted>
+                  Login
                 </Button>
               }/>
             </Menu.Item>
