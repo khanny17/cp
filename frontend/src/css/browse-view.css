@@ -6,3 +6,8 @@
 .star:hover {
     color: lightblue;
 }
+
+.browse-view {
+    text-align: left;
+    margin-top: 25px;
+}

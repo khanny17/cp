@@ -48,6 +48,9 @@
     flex: 0 0 auto;
     margin: 0;
 }
+.App > div > .menu {
+    margin: 0;
+}
 
 h1 {
     letter-spacing: 4px;

@@ -86,8 +86,10 @@ const HeadingMenu = connect(state => ({ user: state.auth.user }), () => ({}))(
 
 const Body = () =>
   <Segment vertical>
+    <div className="triangle-pointer" />
     <Container text>
-      <Header as="h3" content="How it Works" style={{textAlign: 'center'}}/>
+      <Header as="h3" content="How it Works"
+        style={{textAlign: 'center', margin: '50px 0'}}/>
 
       <Container className="section">
         <Image src="/static/placeholder_image.png" style={{ width: '150px', height: '150px', marginRight: '15px'}}/>

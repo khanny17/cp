@@ -42,9 +42,9 @@ class BrowseView extends React.Component {
     const { my_plans, templates, loading_my_plans, user,
       loadingTemplates, newPlan } = this.props;
     return (
-      <div>
+      <div style={{ overflowY: 'auto', paddingBottom: '50px' }}>
         <MyHeader />
-        <Container text style={{ textAlign: 'left' }}>
+        <Container text className="browse-view">
 
           <MyPlansSection
             my_plans={my_plans}
