@@ -1,43 +1,13 @@
-.landing-header {
-    min-height: 700px;
+.App > .landing {
+    overflow-y: auto;
 }
 
-.landing .landing-title {
-    margin-top: 3em !important;
-    font-size: 4em !important;
-    font-weight: normal;
+.landing {
+    text-align: left;
 }
 
-.small-triangle {
-    width: 0px;
-    height: 0px;
-    border-bottom: 200px solid transparent;
-    border-left: 200px solid #1b1c1d;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+.landing .section {
+    display: flex;
+    margin-bottom: 60px;
 }
 
-.big-triangle {
-    width: 0px;
-    height: 0px;
-    border-bottom: 300px solid transparent;
-    border-left: 300px solid tan;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.alpha {
-    display: inline-block;
-    position: absolute;
-    top: 114px;
-    left: 64px;
-    z-index: 2;
-
-    color: white;
-    font-size: xx-large;
-    font-weight: bold;
-    transform: rotate(-46deg);
-}
