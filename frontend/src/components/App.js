@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import '../css/App.css';
 import Private from './private';
 import Home from '../pages/home';
-import PlanView from './plan-view';
+import Plan from '../pages/plan';
 import Landing from '../pages/landing';
 import LoginPage from './login-page';
 
@@ -13,7 +13,7 @@ const App = () => (
     <Switch>
       <Route exact path="/" component={Landing} />
       <Route exact path="/login" component={LoginPage} />
-      <Route exact path="/plan/:id?" component={PlanView} />
+      <Route exact path="/plan/:id?" component={Plan} />
       <Private>
         <Route exact path="/home" component={Home} />
       </Private>

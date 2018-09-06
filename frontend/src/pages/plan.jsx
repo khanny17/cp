@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../css/plan-view.css';
-import DragDropMaster from './drag-drop-master';
+import DragDropMaster from '../components/drag-drop-master';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { loadPlan, newPlan } from '../actions/plan-api';
 import { Prompt } from 'react-router-dom';
 import Navbar from '../components/navbar';
-import Workspace from './workspace';
-import Requirements from './requirements';
+import Workspace from '../components/workspace';
+import Requirements from '../components/requirements';
 
 const PlanView = ({ plan, showReqsSidebar }) => {
   return (
