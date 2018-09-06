@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import './App.css';
-import Private from './components/private';
-import BrowseView from './components/browse-view';
-import PlanView from './components/plan-view';
-import Landing from './components/landing';
-import LoginPage from './components/login-page';
+import '../css/App.css';
+import Private from './private';
+import Home from '../pages/home';
+import PlanView from './plan-view';
+import Landing from '../pages/landing';
+import LoginPage from './login-page';
 
 
 const App = () => (
@@ -15,7 +15,7 @@ const App = () => (
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/plan/:id?" component={PlanView} />
       <Private>
-        <Route exact path="/browse" component={BrowseView} />
+        <Route exact path="/home" component={Home} />
       </Private>
       <Redirect to="/" />
     </Switch>

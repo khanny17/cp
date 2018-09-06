@@ -16,7 +16,7 @@
     height: 0;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-top: 20px solid black;
+    border-top: 20px solid #1b1c1d;
 
     position: absolute;
     top: 0;
@@ -24,12 +24,12 @@
 }
 
 .landing .ui.inverted.landing-heading {
-    height: 550px;
+    /* height: 550px; */
 
-    position: relative;
-    background-image: url("../images/space_example.jpg");
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    /* position: relative; */
+    /* background-image: url("../images/space_example.jpg"); */
+    /* background-attachment: fixed; */
+    /* background-position: center; */
+    /* background-repeat: no-repeat; */
+    /* background-size: cover; */
 }

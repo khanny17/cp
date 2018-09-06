@@ -6,7 +6,7 @@ import DragDropMaster from './drag-drop-master';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import { loadPlan, newPlan } from '../actions/plan-api';
 import { Prompt } from 'react-router-dom';
-import Header from './header';
+import Navbar from '../components/navbar';
 import Workspace from './workspace';
 import Requirements from './requirements';
 
@@ -94,20 +94,20 @@ const DragDropWrappedPlanViewContainer = connect(
   }),
 )(DragDropWrappedPlanView);
 
-const WithHeader = (props) => (
+const WithNavbar = (props) => (
   <React.Fragment>
-    <Header />
+    <Navbar />
     <DragDropWrappedPlanViewContainer {...props}/>
     <Prompt when={props.unsavedChanges}
       message="You have unsaved changes, are you sure you want to leave?"
     />
   </React.Fragment>
 );
-WithHeader.propTypes = { unsavedChanges: PropTypes.bool, };
+WithNavbar.propTypes = { unsavedChanges: PropTypes.bool, };
 
-const WithHeaderContainer = connect(
+const WithNavbarContainer = connect(
   state => ({ unsavedChanges: state.ui.unsavedChanges }),
   dispatch => ({}),
-)(WithHeader);
+)(WithNavbar);
 
-export default WithHeaderContainer;
+export default WithNavbarContainer;

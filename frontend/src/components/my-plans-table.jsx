@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import POL from './pull-on-load';
+import { getMine } from '../actions/browse';
+import { connect } from 'react-redux';
 import { Button, Header, Icon, Segment, Table } from 'semantic-ui-react';
+import { newPlan } from '../actions/plan-api';
 import HiddenOpenButton from './hidden-open-button';
 import HiddenDeleteButton from './hidden-delete-button';
 
-const MyPlans = ({ my_plans, loading_my_plans, newPlan }) =>
+
+const MyPlans = ({ plans, newPlan }) =>
   <React.Fragment>
     <Header as='h1' attached='top' block>
       My Plans
@@ -12,7 +17,7 @@ const MyPlans = ({ my_plans, loading_my_plans, newPlan }) =>
         <Icon name="file"/>New Plan
       </Button>
     </Header>
-    <Segment attached loading={loading_my_plans}>
+    <Segment attached loading={plans.loading}>
       <Table basic="very" selectable>
         <Table.Header>
           <Table.Row>
@@ -21,8 +26,16 @@ const MyPlans = ({ my_plans, loading_my_plans, newPlan }) =>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {my_plans && !my_plans.error && my_plans.length !== 0 ?
-            my_plans.map(plan => (
+          {plans.loading || plans.error || (plans.data || []).length === 0 ?
+            <Table.Row>
+              <Table.Cell style={{ textAlign: 'center' }}>
+                {plans.loading ?  'Loading Plans' : null }
+                {plans.error ?  'Error while loading plans' : null }
+                {(plans.data || []).length === 0 ? 'No plans yet' : null }
+              </Table.Cell>
+            </Table.Row>
+            :
+            plans.data.map(plan => (
               <Table.Row key={plan._id || plan.fid}>
                 <Table.Cell>{plan.title}</Table.Cell>
                 <Table.Cell>
@@ -32,25 +45,38 @@ const MyPlans = ({ my_plans, loading_my_plans, newPlan }) =>
                 </Table.Cell>
               </Table.Row>
             ))
-            :
-            <Table.Row>
-              <Table.Cell style={{ textAlign: 'center' }}>
-                {my_plans === null || my_plans.error ?
-                  'Unable to load plans' :
-                  'No plans yet!'}
-              </Table.Cell>
-            </Table.Row>
           }
         </Table.Body>
       </Table>
     </Segment>
   </React.Fragment>
 ;
-
 MyPlans.propTypes = {
-  my_plans: PropTypes.array,
-  loading_my_plans: PropTypes.bool,
+  plans: PropTypes.object,
   newPlan: PropTypes.func,
 };
 
-export default MyPlans;
+const MyPlansPOL = (props) =>
+  <POL info={props.plans} pull={props.getMine}>
+    <MyPlans {...props} />
+  </POL>
+;
+MyPlansPOL.propTypes = {
+  plans: PropTypes.object,
+  getMine: PropTypes.func,
+};
+
+
+
+const MyPlansContainer = connect(
+  state => ({
+    plans: state.browse.my_plans,
+  }),
+  dispatch => ({
+    getMine: () => dispatch(getMine()),
+    newPlan: () => dispatch(newPlan()),
+  }),
+)(MyPlansPOL);
+
+
+export default MyPlansContainer;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import AuthModal from './auth-modal';
+import AuthModal from '../components/auth-modal';
 import { newPlan } from '../actions/plan-api';
 import {
   Button,
@@ -14,7 +14,6 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import '../css/landing.css';
-import '../images/space_example.jpg';
 
 
 const Landing = () =>

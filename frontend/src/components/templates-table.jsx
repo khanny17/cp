@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { templates } from '../actions/browse';
+import POL from './pull-on-load';
 import { Header, Segment, Table } from 'semantic-ui-react';
 import PreviewTemplateModal from './preview-template-modal';
 import TemplateStar from './template-star';
@@ -42,10 +45,11 @@ class Templates extends React.Component {
 
   applyFilters() {
     const { schoolFilter } = this.state;
-    const { templates, loadingTemplates } = this.props;
+    const { templates } = this.props;
+
     this.setState({
-      templates: loadingTemplates ? [] :
-        Object.values(templates).filter(template => {
+      templates: !templates.data ? [] :
+        Object.values(templates.data).filter(template => {
           if(schoolFilter && template.school !== schoolFilter) {
             return false;
           }
@@ -71,14 +75,13 @@ class Templates extends React.Component {
   }
 
   render() {
-    const { loadingTemplates } = this.props;
     const { templates } = this.state;
     return (
       <React.Fragment>
         <Header as='h1' attached='top' block>
           Plan Templates
         </Header>
-        <Segment attached loading={loadingTemplates}>
+        <Segment attached loading={this.props.templates.loading}>
           <SchoolSelectionDropdown onChange={this.filterSchool.bind(this)}/>
           <Table basic="very" selectable>
             <Table.Header>
@@ -98,10 +101,25 @@ class Templates extends React.Component {
     );
   }
 }
-
 Templates.propTypes = {
   templates: PropTypes.object,
-  loadingTemplates: PropTypes.bool,
 };
 
-export default Templates;
+const TemplatesPOL = (props) =>
+  <POL info={props.templates} pull={props.getTemplates}>
+    <Templates {...props} />
+  </POL>
+;
+TemplatesPOL.propTypes = {
+  templates: PropTypes.object,
+  getTemplates: PropTypes.func,
+};
+
+
+const TemplatesContainer = connect(
+  state => ({ templates: state.browse.templates }),
+  dispatch => ({ getTemplates: () => dispatch(templates()) }),
+)(TemplatesPOL);
+
+
+export default TemplatesContainer;

@@ -20,7 +20,7 @@ const Header = ({ user }) => (
   <Menu inverted style={{ borderRadius: 0 }}>
     <Menu.Item header style={logoStyle}>
       { user ?
-        <Link to="/browse">cp</Link> :
+        <Link to="/home">cp</Link> :
         <Link to="/">cp</Link> }
     </Menu.Item>
     <Route exact path="/plan/:id?" component={ReqSidebarToggle} />
