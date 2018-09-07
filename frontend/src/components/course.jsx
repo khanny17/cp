@@ -89,9 +89,10 @@ Course.propTypes = {
 const DroppableCourse = (props) =>
   <Droppable droppableId={props.course.fid} type="COURSE-REQ">
     {(provided, snapshot) => (
-      <div ref={provided.innerRef}>
+      <div ref={provided.innerRef}
+        className={snapshot.isDraggingOver ? 'dragging-over' : ''}>
         <Course {...props} />
-        { provided.placeholder }
+        <div style={{display: 'none'}}>{provided.placeholder}</div>
       </div>
     )}
   </Droppable>

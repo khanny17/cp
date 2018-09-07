@@ -41,6 +41,7 @@
 
 .App > div {
     flex: 1;
+    overflow: hidden;
 }
 
 .App > .menu {

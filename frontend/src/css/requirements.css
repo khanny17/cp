@@ -5,6 +5,12 @@
     position: inherit !important;
 
     font-family: 'Lato', Helvetica, sans-serif;
+    z-index: 2;
+
+    /* Fixes position: fixed when used on child elements.
+     * (needed by requirement badges when dragged)
+     */
+    transform: initial !important; 
 }
 
 .requirements > div {
@@ -39,4 +45,17 @@
  */
 .requirement .dropdown > .text {
     display: none;
+}
+
+.requirement .badges {
+    margin: 0 5px;
+}
+
+.badge {
+    width: 15px;
+    height: 15px;
+    border: 1px solid black;
+}
+.requirement .badge.diamond {
+    transform: rotate(45deg);
 }
