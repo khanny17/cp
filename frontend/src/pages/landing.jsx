@@ -41,8 +41,13 @@ const Heading = connect(
           marginTop: 0}} />
 
       <Button inverted color="blue" size="large" style={{marginBottom: '75px'}}
-        onClick={newPlan}>
-        Jump Right In <Icon name="right arrow" />
+        onClick={newPlan} animated>
+        <Button.Content visible>
+          Jump Right In
+        </Button.Content>
+        <Button.Content hidden>
+          <Icon name="right arrow" />
+        </Button.Content>
       </Button>
 
       <Header as="h3" inverted content="Another tagline that I can't think of right now!" 

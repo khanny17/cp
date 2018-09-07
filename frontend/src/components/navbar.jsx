@@ -7,7 +7,6 @@ import AuthModal from './auth-modal';
 import PlanDropdownMenu from './plan-dropdown-menu';
 import UserDropdownMenu from './user-dropdown-menu';
 import SaveButton from './save-button';
-import ReqSidebarToggle from './req-sidebar-toggle';
 import '../css/header.css';
 
 const logoStyle = {
@@ -23,7 +22,6 @@ const Header = ({ user }) => (
         <Link to="/home">cp</Link> :
         <Link to="/">cp</Link> }
     </Menu.Item>
-    <Route exact path="/plan/:id?" component={ReqSidebarToggle} />
     <div style={{ flex: 1 }} />
     {user ?
       <Menu.Menu position="right">

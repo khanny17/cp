@@ -1,8 +1,7 @@
 .requirements {
-    background: #e6e6e6;
-
+    position: relative !important;
     height: auto !important;
-    position: inherit !important;
+    top: auto !important;
 
     font-family: 'Lato', Helvetica, sans-serif;
     z-index: 2;
@@ -10,14 +9,33 @@
     /* Fixes position: fixed when used on child elements.
      * (needed by requirement badges when dragged)
      */
-    transform: initial !important; 
+    transform: initial !important;
 }
 
-.requirements > div {
+.requirements > .requirements-inner {
+    background: #e6e6e6;
+
     height: 100%;
     width: 100%;
     padding: 25px;
     overflow-y: scroll;
+}
+.requirements.hidden > .requirements-inner {
+    padding: 0;
+}
+
+.requirements > .toggle {
+    position: absolute;
+    padding: 10px;
+    top: 50px;
+    right: -38px;
+
+    z-index: -1;
+
+    border: 1px solid black;
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .requirement {

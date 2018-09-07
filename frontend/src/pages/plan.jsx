@@ -10,10 +10,10 @@ import Navbar from '../components/navbar';
 import Workspace from '../components/workspace';
 import Requirements from '../components/requirements';
 
-const PlanView = ({ plan, showReqsSidebar }) => {
+const PlanView = ({ plan }) => {
   return (
     <div className="plan-view">
-      { showReqsSidebar ? <Requirements /> : null }
+      <Requirements />
       <Workspace plan={plan}/>
     </div>
   );
@@ -21,16 +21,13 @@ const PlanView = ({ plan, showReqsSidebar }) => {
 
 PlanView.propTypes = {
   plan: PropTypes.object,
-  showReqsSidebar: PropTypes.bool,
 };
 
 const PlanViewContainer = connect(
   state => ({
     plan: state.plan.plans[state.plan.plan],
-    showReqsSidebar: state.ui.showReqsSidebar,
   }),
-  dispatch => ({
-  }),
+  dispatch => ({}),
 )(PlanView);
 
 const DragDropWrappedPlanView = ({

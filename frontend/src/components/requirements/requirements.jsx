@@ -12,7 +12,7 @@ const Requirements = ({
   updateRequirement,
   failingRequirements,
 }) =>
-  <div>
+  <div className="requirements-inner">
     <Header as='h1'>Requirements</Header>
     <List>
       {Object.values(requirements).map(req => (
