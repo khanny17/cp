@@ -59,7 +59,7 @@ const HeadingMenu = connect(state => ({ user: state.auth.user }), () => ({}))(
         {user ?
           <Menu.Menu position="right">
             <Menu.Item>
-              <Link to="/browse">
+              <Link to="/home">
                 <Button inverted>Home</Button>
               </Link>
             </Menu.Item>

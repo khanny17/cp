@@ -1,3 +1,7 @@
+.App > .landing {
+    overflow: auto;
+}
+
 .landing {
     text-align: left;
 }
