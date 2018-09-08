@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addRequirement, updateRequirement } from '../../actions/plan';
-import findFailingRequirements from '../../util/requirements-met';
+import findFailingRequirements from '../../selectors/find-failing-requirements';
 import { Button, Header, Icon, List } from 'semantic-ui-react';
 import Requirement from './requirement';
 
@@ -40,7 +40,7 @@ Requirements.propTypes = {
 const RequirementsContainer = connect(
   state => ({
     requirements: state.plan.requirements,
-    failingRequirements: findFailingRequirements(state.plan),
+    failingRequirements: findFailingRequirements(state),
   }),
   dispatch => ({
     addRequirement: () => dispatch(addRequirement()),

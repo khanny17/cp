@@ -8,7 +8,9 @@ import { updateCourse, deleteItem } from '../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
+import { Label } from 'semantic-ui-react';
 import validatePlan from '../selectors/validatePlan';
+import courseRequirementsMap from '../selectors/courseRequirementsMap';
 
 const headerDelimiterRegex = /\s|-/;
 
@@ -41,7 +43,7 @@ class Course extends React.Component {
   }
 
   render() {
-    const { course, color, missingPrereqs } = this.props;
+    const { course, color, missingPrereqs, requirements } = this.props;
     return (
       <div className={'course ' + (missingPrereqs ? 'missingPrereqs' : '')}
         style={{ background: color }}
@@ -74,6 +76,12 @@ class Course extends React.Component {
           change={this.handleChange.bind(this)}
           validate={s => this.validateCredits(s)}
           text={ '' + course.credits } />
+
+        {requirements && requirements.length > 0 ?
+          <div className="course-fills-requirements">
+            {(requirements || []).length}
+          </div>
+          : null}
       </div>
     );
   }
@@ -84,6 +92,7 @@ Course.propTypes = {
   missingPrereqs: PropTypes.object,
   color: PropTypes.string,
   updateCourse: PropTypes.func,
+  requirements: PropTypes.array,
 };
 
 const DroppableCourse = (props) =>
@@ -190,6 +199,7 @@ const CourseContainer = connect(
     course: state.plan.courses[course],
     color: state.plan.colorscheme[state.plan.courses[course].subject],
     missingPrereqs: validatePlan(state).missingPrereqs[course],
+    requirements: courseRequirementsMap(state)[course],
   }),
   dispatch => ({
     updateCourse: updates => dispatch(updateCourse(updates)),

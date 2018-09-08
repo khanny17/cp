@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 
-function badgeClassName(badge) {
-  return 'badge ' + (badge.course ? '' : 'empty ') + badge.shape;
-}
-
 const Badge = ({ badge }) =>
   <Draggable draggableId={badge.fid} type="COURSE-REQ" index="">
     {(provided, snapshot) => (
@@ -18,7 +14,8 @@ const Badge = ({ badge }) =>
             ...provided.draggableProps.style,
           }}
         >
-          <div className={badgeClassName(badge)}
+          <div
+            className={'badge ' + (badge.course ? 'shell ':'') + badge.shape}
             style={{ background: badge.color }}/>
           {provided.placeholder}
         </div>

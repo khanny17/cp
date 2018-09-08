@@ -123,7 +123,7 @@ function plan(state = initialState, action) {
       requirements: {
         ...state.requirements,
         [reqId]: { ...state.requirements[reqId], course: destId },
-      }
+      },
     };
   }
 

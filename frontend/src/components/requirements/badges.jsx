@@ -5,7 +5,7 @@ import { Droppable } from 'react-beautiful-dnd';
 
 const Badges = ({ badges }) =>
   <div className="badges">
-    <Droppable droppableId={badges[0].fid} type="COURSE-REQ">
+    <Droppable droppableId="REQUIREMENTS" type="COURSE-REQ">
       {(provided, snapshot) => (
         <div ref={provided.innerRef}>
           {badges.map(badge => <Badge key={badge.fid} badge={badge} />)}

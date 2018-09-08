@@ -1,10 +1,10 @@
 .course {
+    position: relative;
     display: flex;
     flex-flow: column;
     align-items: center;
     height: 100px;
     width: 100px;
-    overflow: hidden;
 
     border: 1px solid #1b1c1d;
     border-radius: 3px;
@@ -66,4 +66,13 @@
     bottom: 0;
     right: 0;
     position: absolute;
+}
+
+.course-fills-requirements {
+    position: absolute;
+    top: -.5em;
+    left: -.5em;
+    background: red;
+    padding: 0px 5px;
+    border-radius: 100%;
 }

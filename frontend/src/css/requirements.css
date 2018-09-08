@@ -77,3 +77,6 @@
 .requirement .badge.diamond {
     transform: rotate(45deg);
 }
+.badge.shell.diamond {
+    opacity: 0.5;
+}

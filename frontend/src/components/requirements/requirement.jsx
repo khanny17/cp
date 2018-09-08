@@ -38,8 +38,21 @@ class Requirement extends React.Component {
     });
   }
 
+  constructor(props) {
+    super(props);
+
+    this.state = { requirement: this.props.requirement };
+  }
+  componentDidUpdate(prevProps) {
+    if(prevProps.requirement !== this.props.requirement) {
+      this.setState({ requirement: this.props.requirement });
+    }
+  }
+
   render() {
-    const { requirement, notMet } = this.props;
+    const { notMet } = this.props;
+    const { requirement } = this.state;
+
     return (
       <div className="requirement">
         <div className="type">
@@ -75,7 +88,7 @@ class Requirement extends React.Component {
             fid: requirement.fid,
             color: 'red',
             shape: 'diamond',
-            course: null,
+            course: requirement.course,
           }]} />
           : null}
       </div>
