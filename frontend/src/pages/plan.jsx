@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import '../css/plan-view.css';
 import DragDropMaster from '../components/drag-drop-master';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Header, Icon, Loader } from 'semantic-ui-react';
 import { loadPlan, newPlan } from '../actions/plan-api';
 import { Prompt } from 'react-router-dom';
 import Navbar from '../components/navbar';
@@ -54,7 +54,17 @@ const DragDropWrappedPlanView = ({
     }
 
     if(plan.failed) {
-      return <p>Failed to Load Plan with id {match.params.id}</p>;
+      return (
+        <div className="couldnt-find-plan">
+          <Icon name="question circle outline" size="massive" />
+          <Header>
+            {'We couldn\'t find that plan! Did you delete it?'}
+            <Header.Subheader>
+              {'Maybe try going back to your home page and refreshing?'}
+            </Header.Subheader>
+          </Header>
+        </div>
+      );
     }
   } else {
     if(!planId || !plans[planId]) {

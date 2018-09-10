@@ -8,7 +8,6 @@ import { updateCourse, deleteItem } from '../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
-import { Label } from 'semantic-ui-react';
 import validatePlan from '../selectors/validatePlan';
 import courseRequirementsMap from '../selectors/courseRequirementsMap';
 

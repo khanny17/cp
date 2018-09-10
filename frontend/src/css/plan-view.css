@@ -38,3 +38,7 @@
 .trash:hover {
     color: red;
 }
+
+.couldnt-find-plan {
+    padding-top: 10%;
+}
