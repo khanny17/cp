@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import '../css/course.css';
+import '../../css/course.css';
 import PropTypes from 'prop-types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import InlineEdit from 'react-edit-inline';
-import { updateCourse, deleteItem } from '../actions/plan';
+import { updateCourse, deleteItem } from '../../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
-import validatePlan from '../selectors/validatePlan';
-import courseRequirementsMap from '../selectors/courseRequirementsMap';
+import validatePlan from '../../selectors/validatePlan';
+import courseRequirementsMap from '../../selectors/courseRequirementsMap';
 
 const headerDelimiterRegex = /\s|-/;
 

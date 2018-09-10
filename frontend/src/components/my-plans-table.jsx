@@ -29,9 +29,9 @@ const MyPlans = ({ plans, newPlan }) =>
           {plans.loading || plans.error || (plans.data || []).length === 0 ?
             <Table.Row>
               <Table.Cell style={{ textAlign: 'center' }}>
-                {plans.loading ?  'Loading Plans' : null }
-                {plans.error ?  'Error while loading plans' : null }
-                {(plans.data || []).length === 0 ? 'No plans yet' : null }
+                {plans.loading ?  'Loading Plans' : 
+                  plans.error ?  'Error while loading plans' : 
+                    (plans.data || []).length === 0 ? 'No plans yet' : null }
               </Table.Cell>
             </Table.Row>
             :

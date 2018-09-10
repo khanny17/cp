@@ -14,12 +14,12 @@ export default createSelector(
     let courseMap = Object.values(courses).reduce((map, course) => {
       map[course.subject + course.number] = true;
       return map;
-    });
+    }, {});
 
     return Object.values(requirements).reduce((failed, req) => {
       failed[req.fid] = !testReq(req, courseMap, courses);
       return failed;
-    });
+    }, {});
   }
 );
 
@@ -37,7 +37,7 @@ function testReq(req, courseMap, courses) {
 // If type is course and we can find a course with one of the given
 // course codes, this is valid.
 function courseType(req, courseMap) {
-  return req.value.split(',').some(code => courseMap[code.trim().split(/\s|-/).join('')]);
+  return !!req.value.split(',').some(code => courseMap[code.trim().split(/\s|-/).join('')]);
 }
 
 function attributeType(req, courses) {

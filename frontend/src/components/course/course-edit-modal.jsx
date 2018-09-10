@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, Button, Form, Modal } from 'semantic-ui-react';
-import EasyInput from './easy-input';
-import { randomColors } from '../util/colors';
+import { Accordion, Button, Segment, Form, Grid, Modal } from 'semantic-ui-react';
+import EasyInput from '../easy-input';
+import { randomColors } from '../../util/colors';
 import AccordionPanels from './course-edit-modal-accordion-panels';
-import '../css/course-edit-modal.css';
+import '../../css/course-edit-modal.css';
 
 const CoursePreview = ({ color, subject, number, title, credits }) =>
   <div className="course" style={{ background: color }}>
@@ -85,28 +85,40 @@ class CourseEditModal extends React.Component {
       <Modal open={modalOpen} onClose={closeModal} size="tiny" closeIcon>
         <Modal.Header>Edit Course</Modal.Header>
         <Modal.Content>
-          <div style={{ display: 'flex', marginBottom: '15px' }}>
-            <CoursePreview color={color} {...course} />
-            <Form style={{ flex: 1, marginLeft: '25px' }}>
-              <EasyInput name="title" value={this.state.title}
-                onChange={this.onChange.bind(this)} />
-              <EasyInput name="subject" value={this.state.subject}
-                onChange={this.onChange.bind(this)} />
-              <EasyInput name="number" value={this.state.number}
-                onChange={this.onChange.bind(this)} />
-              <EasyInput name="credits" value={this.state.credits}
-                onChange={this.onChange.bind(this)} />
-            </Form>
-          </div>
+          <Segment vertical>
+            <Grid stackable columns="2">
+              <Grid.Column width="4">
+                <CoursePreview color={color} {...course} />
+              </Grid.Column>
+              <Grid.Column width="12">
+                <Form>
+                  <EasyInput name="title" value={this.state.title}
+                    onChange={this.onChange.bind(this)} />
+                  <Form.Group widths="equal">
+                    <EasyInput name="subject" value={this.state.subject}
+                      onChange={this.onChange.bind(this)} />
+                    <EasyInput name="number" value={this.state.number}
+                      onChange={this.onChange.bind(this)} />
+                  </Form.Group>
+                  <EasyInput name="credits" value={this.state.credits}
+                    onChange={this.onChange.bind(this)} />
+                </Form>
+              </Grid.Column>
+            </Grid>
+          </Segment>
 
-          <Accordion styled>
-            <AccordionPanels
-              prereqs={course.prereqs}
-              color={color}
-              onChange={this.onChange.bind(this)}
-              onColorChange={this.onColorChange.bind(this)}
-            />
-          </Accordion>
+          <Segment vertical>
+            <Accordion styled>
+              <AccordionPanels
+                prereqs={course.prereqs}
+                attributes={course.attributes}
+                color={color}
+                onChange={this.onChange.bind(this)}
+                onColorChange={this.onColorChange.bind(this)}
+              />
+            </Accordion>
+          </Segment>
+
         </Modal.Content>
         <Modal.Actions>
           <Button primary onClick={() => updateCourse({

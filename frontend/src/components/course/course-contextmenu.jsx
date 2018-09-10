@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
 import { Icon } from 'semantic-ui-react';
-import '../css/react-contextmenu.css';
+import '../../css/react-contextmenu.css';
 
 const CourseContextMenu = ({ id, onClick }) =>
   <ContextMenu id={id}>

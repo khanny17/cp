@@ -5,6 +5,7 @@ import { Form } from 'semantic-ui-react';
 const EasyInput = ({ name, value=null, type='input', onChange }) => {
   return value ?
     <Form.Input
+      fluid
       label={name}
       name={name}
       type={type}
@@ -14,6 +15,7 @@ const EasyInput = ({ name, value=null, type='input', onChange }) => {
     />
     :
     <Form.Input
+      fluid
       label={name}
       name={name}
       type={type}
