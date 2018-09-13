@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CirclePicker } from 'react-color';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import { Accordion, Button, Form, Header, Icon, List } from 'semantic-ui-react';
+import { Accordion, Icon } from 'semantic-ui-react';
 import PrereqList from './course-edit-modal-prereqs';
 import AttributeList from './course-edit-modal-attributes';
 

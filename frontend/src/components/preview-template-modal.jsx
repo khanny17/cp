@@ -14,7 +14,7 @@ const DescriptionTab = ({ template }) =>
     <Header>Description</Header>
     {template.description}
     <Header>Tags</Header>
-    {template.tags}
+    {template.tags.join(', ')}
     <Header>School</Header>
     {template.school}
   </div>

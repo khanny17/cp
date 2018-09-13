@@ -66,7 +66,7 @@ export function register(userData) {
       body: JSON.stringify(userData),
     })
       .then(jwt => dispatch(registerSuccess(jwt)))
-      .then(() => dispatch(push('/browse')))
+      .then(() => dispatch(push('/home')))
       .catch(err => dispatch(registerFailure(err)));
   };
 }
@@ -84,7 +84,7 @@ export function login(userData) {
       .then(data => {
         dispatch(loginSuccess(data.jwt, data.user));
       })
-      .then(() => dispatch(push('/browse')))
+      .then(() => dispatch(push('/home')))
       .catch(err => dispatch(loginFailure(err)));
   };
 }

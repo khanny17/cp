@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, Button, Form, Header, Icon, List } from 'semantic-ui-react';
+import { Button, Form, List } from 'semantic-ui-react';
 
 class AttributeList extends React.Component {
   state = {};
