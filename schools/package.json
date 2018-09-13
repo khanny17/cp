@@ -1,0 +1,24 @@
+{
+    "main": "index.js",
+    "scripts": {
+        "start": "micro",
+        "deploy": "now && now alias",
+        "dev": "micro-dev -p 3004"
+    },
+    "dependencies": {
+        "micro": "^9.3.2",
+        "micro-jwt-auth": "^1.10.0",
+        "mongoose": "^5.2.5"
+    },
+    "now": {
+        "name": "schools",
+        "alias": "schools.cp-api.tech",
+        "env": {
+            "JWT_SECRET": "@jwt_secret",
+            "DB_URL": "@db_url"
+        }
+    },
+    "devDependencies": {
+        "micro-dev": "^3.0.0"
+    }
+}

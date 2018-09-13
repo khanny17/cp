@@ -20,3 +20,4 @@ fs.readFile('./schools.json', 'utf8', async function(err, schoolFileData){
     });
   });
 });
+

@@ -4,7 +4,6 @@ const { json, send } = require('micro');
 const jwt_auth = require('micro-jwt-auth');
 const match = require('micro-match');
 const Template = require('./template_model');
-const School = require('./school_model');
 
 const mongooseOptions = {
   reconnectTries: 120,
@@ -26,7 +25,6 @@ module.exports = cors(jwt_auth(process.env.JWT_SECRET)
     case 'publish': return await publish(req);
     case 'list': return await list(req);
     case 'tags': return await tags(req);
-    case 'schools': return await schools(req);
     case 'star': return await star(req);
     case 'get': return await get(req);
     default: return `Templates API Root`;
@@ -67,11 +65,6 @@ async function list(req) {
 async function tags(req) {
   // TODO one day this may be its own microservice
   return ['Example tag', 'ANOTHER_EXAMPLE', '1234'];
-}
-
-async function schools(req) {
-  // TODO one day this may be its own microservice
-  return School.find({}, { name: true, aliases: true }).lean();
 }
 
 async function star(req) {
