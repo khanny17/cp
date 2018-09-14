@@ -45,7 +45,7 @@ class Course extends React.Component {
 
   render() {
     const { course, color, missingPrereqs, requirements,
-      mouseEnterCourse, mouseLeaveCourse } = this.props;
+      mouseEnterCourse, mouseLeaveCourse, openEditModal } = this.props;
 
     return (
       <div className={'course ' + course.subject + '-' + course.number +
@@ -54,6 +54,7 @@ class Course extends React.Component {
       onKeyPress={this.handleKeyPress.bind(this)}
       onMouseEnter={() => mouseEnterCourse(course.fid)}
       onMouseLeave={() => mouseLeaveCourse(course.fid)}
+      onDoubleClick={openEditModal}
       >
         <InlineEdit
           className="course-header"
@@ -99,6 +100,7 @@ Course.propTypes = {
   requirements: PropTypes.array,
   mouseEnterCourse: PropTypes.func,
   mouseLeaveCourse: PropTypes.func,
+  openEditModal: PropTypes.func,
 };
 
 const DroppableCourse = (props) =>
@@ -174,7 +176,8 @@ class ContextMenuCourse extends React.Component {
     return (
       <React.Fragment>
         <ContextMenuTrigger id={this.props.course.fid}>
-          <DraggableCourse {...this.props}/>
+          <DraggableCourse {...this.props}
+            openEditModal={() => this.handleAction(null, {action:'edit'})}/>
         </ContextMenuTrigger>
 
         <CourseContextMenu id={this.props.course.fid}

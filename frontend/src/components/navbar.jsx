@@ -22,6 +22,7 @@ const Header = ({ user }) => (
         <Link to="/home">cp</Link> :
         <Link to="/">cp</Link> }
     </Menu.Item>
+    <Menu.Item>[ALPHA]</Menu.Item>
     <div style={{ flex: 1 }} />
     {user ?
       <Menu.Menu position="right">
