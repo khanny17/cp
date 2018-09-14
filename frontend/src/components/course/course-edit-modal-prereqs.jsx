@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, List } from 'semantic-ui-react';
+import { Button, Checkbox, Form, List } from 'semantic-ui-react';
 
 class PrereqList extends React.Component {
   state = {};
@@ -10,15 +10,31 @@ class PrereqList extends React.Component {
   }
 
   addPrereq() {
-    const { subject, number } = this.state;
+    const { subject, number, coreq } = this.state;
     if(!subject || !number) {
-      return; //TODO error handling 
+      return; //TODO error handling
     }
 
     this.props.onChange({
       target: {
         name: 'prereqs',
-        value: this.props.prereqs.concat({ subject, number }),
+        value: this.props.prereqs.concat({ subject, number, coreq }),
+      },
+    });
+  }
+
+  toggleCoreq(prereq) {
+    this.props.onChange({
+      target: {
+        name: 'prereqs',
+        value: this.props.prereqs.map(p => {
+          if(p.subject !== prereq.subject || p.number !== prereq.number) {
+            return p;
+          }
+
+          // Flip coreq flag
+          return { subject: p.subject, number: p.number, coreq: !p.coreq };
+        }),
       },
     });
   }
@@ -52,6 +68,8 @@ class PrereqList extends React.Component {
           {prereqs.map((prereq,i) =>
             <List.Item key={i} style={{ display: 'flex', alignItems: 'center' }}>
               <div>{prereq.subject + ' ' + prereq.number}</div>
+              <Checkbox label="Co-Req" checked={prereq.coreq}
+                onClick={() => this.toggleCoreq(prereq)}/>
               <div style={{flex: 1}} />
               <Button size="tiny" className="show-on-hover"
                 onClick={() => this.delPrereq(prereq)}>Delete</Button>

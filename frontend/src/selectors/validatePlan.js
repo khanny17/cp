@@ -77,7 +77,7 @@ export default createSelector(
           problem = 'Planned for after this course';
         } else if(prereqCourse.yearIndex === course.yearIndex &&
           prereqCourse.termIndex === course.termIndex &&
-          !prereq.corequisite
+          !prereq.coreq
         ) {
           //Course is in the same year and term, and is NOT marked a corequisite
           problem = 'Planned for same term as this course';
