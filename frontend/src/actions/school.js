@@ -1,6 +1,4 @@
-// Currently schools live on the template api
-// This will change as we expand microservices
-import { TEMPLATE_API_ROOT } from '../util/api-config';
+import { SCHOOL_API_ROOT } from '../util/api-config';
 import { handleErrors } from '../util/fetch-utils';
 
 export const GET_SCHOOLS_REQUEST = 'GET_SCHOOLS_REQUEST';
@@ -29,7 +27,7 @@ export function getSchools() {
   return dispatch => {
     dispatch(getSchoolsRequest());
 
-    return fetch(TEMPLATE_API_ROOT+'/schools', {
+    return fetch(SCHOOL_API_ROOT+'/schools', {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',

@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "micro": "^9.3.2",
-        "micro-jwt-auth": "^1.10.0",
+        "micro-cors": "^0.1.0",
         "mongoose": "^5.2.5"
     },
     "now": {

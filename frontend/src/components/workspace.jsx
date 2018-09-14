@@ -10,6 +10,7 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import WorkspaceContextMenu from './workspace-contextmenu';
 import { addYear } from '../actions/plan';
 import '../css/workspace.css';
+import CoursePrereqLines from './course-prereq-lines';
 
 const Workspace = ({ plan }) =>
   <div className="workspace">
@@ -27,6 +28,7 @@ const Workspace = ({ plan }) =>
       )}
     </Droppable>
     <Trash />
+    <CoursePrereqLines />
   </div>
 ;
 Workspace.propTypes = { plan: PropTypes.object };

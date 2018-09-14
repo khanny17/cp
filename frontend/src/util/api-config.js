@@ -14,3 +14,7 @@ export const PLAN_API_ROOT = isLocal() ?
 export const TEMPLATE_API_ROOT = isLocal() ?
   'http://127.0.0.1:3003' :
   'https://templates.cp-api.tech' ;
+
+export const SCHOOL_API_ROOT = isLocal() ?
+  'http://127.0.0.1:3004' :
+  'https://schools.cp-api.tech' ;

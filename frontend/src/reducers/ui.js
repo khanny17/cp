@@ -11,6 +11,8 @@ import {
   SHOW_TRASH,
   HIDE_TRASH,
   TOGGLE_REQUIREMENTS_SIDEBAR,
+  MOUSE_ENTER_COURSE,
+  MOUSE_LEAVE_COURSE,
 } from '../actions/ui';
 
 import {
@@ -27,6 +29,7 @@ import {
   ADD_REQUIREMENT,
   UPDATE_REQUIREMENT,
   ASSIGN_REQUIREMENT,
+  DELETE_REQUIREMENT,
 } from '../actions/plan';
 
 import {
@@ -66,6 +69,11 @@ function ui(state = initialState, action) {
   case TOGGLE_REQUIREMENTS_SIDEBAR:
     return { ...state, showReqsSidebar: !state.showReqsSidebar };
 
+  case MOUSE_ENTER_COURSE:
+    return { ...state, courseHoveringOver: action.courseId };
+  case MOUSE_LEAVE_COURSE:
+    return { ...state, courseHoveringOver: null };
+
   case ADD_YEAR:
   case ADD_TERM:
   case ADD_COURSE:
@@ -78,6 +86,7 @@ function ui(state = initialState, action) {
   case ADD_REQUIREMENT:
   case UPDATE_REQUIREMENT:
   case ASSIGN_REQUIREMENT:
+  case DELETE_REQUIREMENT:
   case UPDATE_TERM:
   case NEW_PLAN:
     return { ...state, unsavedChanges: true };

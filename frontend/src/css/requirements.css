@@ -70,13 +70,21 @@
 }
 
 .badge {
-    width: 15px;
-    height: 15px;
+    color: black;
+}
+
+i.delete-requirement {
+    display: none;
+    cursor: pointer;
+    float: right;
+}
+i.delete-requirement:hover {
+    color: red;
+}
+.requirement:hover .delete-requirement {
+    display: inline-block;
+}
+
+.requirement.highlight {
     border: 1px solid black;
-}
-.requirement .badge.diamond {
-    transform: rotate(45deg);
-}
-.badge.shell.diamond {
-    opacity: 0.5;
 }

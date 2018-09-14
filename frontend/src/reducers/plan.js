@@ -22,6 +22,7 @@ import {
   ADD_REQUIREMENT,
   UPDATE_REQUIREMENT,
   ASSIGN_REQUIREMENT,
+  DELETE_REQUIREMENT,
 } from '../actions/plan';
 
 import {
@@ -124,6 +125,14 @@ function plan(state = initialState, action) {
         ...state.requirements,
         [reqId]: { ...state.requirements[reqId], course: destId },
       },
+    };
+  }
+
+  case DELETE_REQUIREMENT: {
+    const { [action.reqId]: deleted, ...newReqState } = state.requirements;
+    return {
+      ...state,
+      requirements: newReqState,
     };
   }
 
@@ -294,10 +303,10 @@ function deleteItem(state, action) {
     ...state,
     // Remove from the list
     [list_type]: {
-      ...state[list_type], 
+      ...state[list_type],
       [list_fid]: {
-        ...state[list_type][list_fid], 
-        [item_type]: 
+        ...state[list_type][list_fid],
+        [item_type]:
           state[list_type][list_fid][item_type].filter(x => x !== item_fid),
       },
     },

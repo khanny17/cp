@@ -13,15 +13,9 @@ const mongooseOptions = {
 };
 mongoose.connect(process.env.DB_URL, mongooseOptions)
   .then(() => console.log('DB Connected'))
-  .then(() => {
-    schools = await School.find({}, { name: true, aliases: true }).lean();
-  })
+  .then(() =>  School.find({}, { name: true, aliases: true }).lean())
+  .then(s => schools = s)
   .catch(err => console.log('DB failed to connect', err));
 
 
-module.exports = cors(jwt_auth(process.env.JWT_SECRET)
-(async(req, res) => {
-  switch(action) {
-    default: return schools;
-  }
-}));
+module.exports = cors((async(req, res) => schools));

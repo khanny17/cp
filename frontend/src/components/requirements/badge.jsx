@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
+import { Icon } from 'semantic-ui-react';
 
 const Badge = ({ badge }) =>
   <Draggable draggableId={badge.fid} type="COURSE-REQ" index="">
@@ -14,9 +15,8 @@ const Badge = ({ badge }) =>
             ...provided.draggableProps.style,
           }}
         >
-          <div
-            className={'badge ' + (badge.course ? 'shell ':'') + badge.shape}
-            style={{ background: badge.color }}/>
+          <Icon name={badge.course ? 'circle outline' : 'certificate'}
+            className="badge"/>
           {provided.placeholder}
         </div>
       </div>

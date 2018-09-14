@@ -42,3 +42,10 @@
 .couldnt-find-plan {
     padding-top: 10%;
 }
+
+.plan-preview {
+    display: flex;
+
+    transform: scale(.65, .65);
+    transform-origin: left top;
+}

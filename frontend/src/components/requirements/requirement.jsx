@@ -50,11 +50,11 @@ class Requirement extends React.Component {
   }
 
   render() {
-    const { notMet } = this.props;
+    const { notMet, deleteRequirement, highlight } = this.props;
     const { requirement } = this.state;
 
     return (
-      <div className="requirement">
+      <div className={'requirement '+(highlight ? 'highlight' : '')}>
         <div className="type">
           <Dropdown options={this.typeOptions} inline
             icon={notMet ? 'circle outline' : 'circle'}
@@ -91,6 +91,11 @@ class Requirement extends React.Component {
             course: requirement.course,
           }]} />
           : null}
+
+        <div style={{ flex: 1 }} />
+
+        <Icon name="times" className="delete-requirement"
+          onClick={() => deleteRequirement(requirement.fid)}/>
       </div>
     );
   }
@@ -98,7 +103,9 @@ class Requirement extends React.Component {
 Requirement.propTypes = {
   requirement: PropTypes.object,
   updateRequirement: PropTypes.func,
+  deleteRequirement: PropTypes.func,
   notMet: PropTypes.bool,
+  highlight: PropTypes.bool,
 };
 
 export default Requirement;

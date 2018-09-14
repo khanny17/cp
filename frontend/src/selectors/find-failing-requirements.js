@@ -46,6 +46,11 @@ function attributeType(req, courses) {
     return false;
   }
 
+  // Course doesn't exist? No good.
+  if(!courses[req.course]) {
+    return false;
+  }
+
   // Course has no attributes? No good.
   if(!courses[req.course].attributes) {
     return false;

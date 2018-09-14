@@ -38,6 +38,7 @@
 
 .course-title {
     max-height: 4em;
+    max-width: 100%;
     overflow: hidden;
 }
 
@@ -72,7 +73,6 @@
     position: absolute;
     top: -.5em;
     left: -.5em;
-    background: red;
-    padding: 0px 5px;
-    border-radius: 100%;
+
+    color: black;
 }

@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import InlineEdit from 'react-edit-inline';
 import { updateCourse, deleteItem } from '../../actions/plan';
+import { mouseEnterCourse, mouseLeaveCourse } from '../../actions/ui';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
 import validatePlan from '../../selectors/validatePlan';
 import courseRequirementsMap from '../../selectors/courseRequirementsMap';
+import { Icon } from 'semantic-ui-react';
 
 const headerDelimiterRegex = /\s|-/;
 
@@ -42,11 +44,16 @@ class Course extends React.Component {
   }
 
   render() {
-    const { course, color, missingPrereqs, requirements } = this.props;
+    const { course, color, missingPrereqs, requirements,
+      mouseEnterCourse, mouseLeaveCourse } = this.props;
+
     return (
-      <div className={'course ' + (missingPrereqs ? 'missingPrereqs' : '')}
-        style={{ background: color }}
-        onKeyPress={this.handleKeyPress.bind(this)}
+      <div className={'course ' + course.subject + '-' + course.number +
+        (missingPrereqs ? ' missingPrereqs ' : '')}
+      style={{ background: color }}
+      onKeyPress={this.handleKeyPress.bind(this)}
+      onMouseEnter={() => mouseEnterCourse(course.fid)}
+      onMouseLeave={() => mouseLeaveCourse(course.fid)}
       >
         <InlineEdit
           className="course-header"
@@ -77,9 +84,7 @@ class Course extends React.Component {
           text={ '' + course.credits } />
 
         {requirements && requirements.length > 0 ?
-          <div className="course-fills-requirements">
-            {(requirements || []).length}
-          </div>
+          <Icon name="certificate" className="course-fills-requirements" />
           : null}
       </div>
     );
@@ -92,6 +97,8 @@ Course.propTypes = {
   color: PropTypes.string,
   updateCourse: PropTypes.func,
   requirements: PropTypes.array,
+  mouseEnterCourse: PropTypes.func,
+  mouseLeaveCourse: PropTypes.func,
 };
 
 const DroppableCourse = (props) =>
@@ -203,6 +210,8 @@ const CourseContainer = connect(
   dispatch => ({
     updateCourse: updates => dispatch(updateCourse(updates)),
     deleteCourse: fid => dispatch(deleteItem('TERM-COURSE', fid)),
+    mouseEnterCourse: fid => dispatch(mouseEnterCourse(fid)),
+    mouseLeaveCourse: fid => dispatch(mouseLeaveCourse(fid)),
   }),
 )(ContextMenuCourse);
 

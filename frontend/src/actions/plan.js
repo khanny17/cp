@@ -14,6 +14,7 @@ export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const ADD_REQUIREMENT = 'ADD_REQUIREMENT';
 export const UPDATE_REQUIREMENT = 'UPDATE_REQUIREMENT';
 export const ASSIGN_REQUIREMENT = 'ASSIGN_REQUIREMENT';
+export const DELETE_REQUIREMENT = 'DELETE_REQUIREMENT';
 
 const initialCourse = {
   title: 'New Course',
@@ -38,6 +39,12 @@ export function assignRequirement(reqId, destId) {
     type: ASSIGN_REQUIREMENT,
     reqId,
     destId,
+  };
+}
+export function deleteRequirement(reqId) {
+  return {
+    type: DELETE_REQUIREMENT,
+    reqId,
   };
 }
 
