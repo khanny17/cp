@@ -5,6 +5,7 @@ import ui from './ui';
 import browse from './browse';
 import template from './template';
 import school from './school';
+import preferences from './preferences';
 
 const reducers = combineReducers({
   plan,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   browse,
   template,
   school,
+  preferences,
 });
 
 export default reducers;

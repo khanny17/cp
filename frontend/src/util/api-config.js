@@ -18,3 +18,7 @@ export const TEMPLATE_API_ROOT = isLocal() ?
 export const SCHOOL_API_ROOT = isLocal() ?
   'http://127.0.0.1:3004' :
   'https://schools.cp-api.tech' ;
+
+export const PREFERENCES_API_ROOT = isLocal() ?
+  'http://127.0.0.1:3005' :
+  'https://preferences.cp-api.tech' ;

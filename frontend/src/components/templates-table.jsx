@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { templates } from '../actions/browse';
+import { getPrefs } from '../actions/preferences';
 import POL from './pull-on-load';
 import { Header, Segment, Table } from 'semantic-ui-react';
 import PreviewTemplateModal from './preview-template-modal';
@@ -68,6 +69,15 @@ class Templates extends React.Component {
       prevProps.templates !== this.props.templates) {
       this.applyFilters();
     }
+
+    // If we haven't filtered the school yet, and we have a preferred school,
+    // set the filter to that
+    const prevPrefData = prevProps.preferences.data;
+    const prefData = this.props.preferences.data;
+    if(prefData && !this.state.schoolFilter &&
+      (!prevPrefData || prevPrefData.school !== prefData.school)) {
+      this.setState({ schoolFilter: prefData.school });
+    }
   }
 
   filterSchool(e, data) {
@@ -75,6 +85,7 @@ class Templates extends React.Component {
   }
 
   render() {
+    const { preferences, getPrefs } = this.props;
     const { templates } = this.state;
     return (
       <React.Fragment>
@@ -82,7 +93,10 @@ class Templates extends React.Component {
           Plan Templates
         </Header>
         <Segment attached loading={this.props.templates.loading}>
-          <SchoolSelectionDropdown onChange={this.filterSchool.bind(this)}/>
+          <POL info={preferences} pull={getPrefs}>
+            <SchoolSelectionDropdown school={this.state.schoolFilter}
+              onChange={this.filterSchool.bind(this)}/>
+          </POL>
           <Table basic="very" selectable>
             <Table.Header>
               <Table.Row>
@@ -103,6 +117,8 @@ class Templates extends React.Component {
 }
 Templates.propTypes = {
   templates: PropTypes.object,
+  preferences: PropTypes.object,
+  getPrefs: PropTypes.func,
 };
 
 const TemplatesPOL = (props) =>
@@ -117,8 +133,14 @@ TemplatesPOL.propTypes = {
 
 
 const TemplatesContainer = connect(
-  state => ({ templates: state.browse.templates }),
-  dispatch => ({ getTemplates: () => dispatch(templates()) }),
+  state => ({
+    templates: state.browse.templates,
+    preferences: state.preferences,
+  }),
+  dispatch => ({
+    getTemplates: () => dispatch(templates()),
+    getPrefs: () => dispatch(getPrefs()),
+  }),
 )(TemplatesPOL);
 
 

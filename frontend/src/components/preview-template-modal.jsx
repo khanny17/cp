@@ -72,7 +72,7 @@ class PreviewTemplateModal extends React.Component {
           </div>
         </Modal.Header>
 
-        <Modal.Content>
+        <Modal.Content scrolling>
           <Menu tabular>
             <Menu.Item name='description' active={ activeTab === 'description' }
               onClick={() => this.setTab('description')} />
@@ -82,14 +82,16 @@ class PreviewTemplateModal extends React.Component {
               onClick={() => this.setTab('requirements')} />
           </Menu>
 
-          { activeTab === 'plan' ?
-            <PlanTab template={template}/> : null }
+          <div style={{ overflow: 'auto' }}>
+            { activeTab === 'plan' ?
+              <PlanTab template={template}/> : null }
 
-          { activeTab === 'requirements' ?
-            <ReqTab template={template}/> : null }
+            { activeTab === 'requirements' ?
+              <ReqTab template={template}/> : null }
 
-          { activeTab === 'description' ?
-            <DescriptionTab template={template}/> : null }
+            { activeTab === 'description' ?
+              <DescriptionTab template={template}/> : null }
+          </div>
 
         </Modal.Content>
         <Modal.Actions>

@@ -7,7 +7,7 @@ import {
 } from '../actions/school';
 
 const initialState = {
-  schools: null,
+  data: null,
   loading: false,
   error: null,
 };
@@ -24,13 +24,13 @@ function school(state = initialState, action) {
   case GET_SCHOOLS_SUCCESS:
     return {
       ...state,
-      schools: arrToObj(action.schools, '_id'),
+      data: arrToObj(action.schools, '_id'),
       loading: false,
     };
   case GET_SCHOOLS_FAILURE:
     return {
       ...state,
-      schools: {},
+      data: {},
       loading: false,
       error: true, //TODO maybe an error message? idk...
     };

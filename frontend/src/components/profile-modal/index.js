@@ -12,42 +12,8 @@ import {
   Modal,
   Segment,
 } from 'semantic-ui-react';
-import EasyInput from './easy-input';
-
-class Account extends React.Component {
-  state = {};
-
-  onChange(update) {
-    this.setState({ [update.name]: update.value });
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <Header>Account</Header>
-        <Form>
-          <EasyInput name="name" value={this.props.name}
-            onChange={this.onChange.bind(this)}/>
-          <EasyInput name="email" type="email" value={this.props.email}
-            onChange={this.onChange.bind(this)}/>
-          <Button type='submit'>Submit</Button>
-        </Form>
-      </React.Fragment>
-    );
-  }
-}
-Account.propTypes = { name: PropTypes.string, email: PropTypes.string };
-
-const AccountContainer = connect(
-  state => ({ name: state.auth.user.name, email: state.auth.user.email }),
-  dispatch => ({}),
-)(Account);
-
-const Preferences = () =>
-  <React.Fragment>
-    <Header>Preferences</Header>
-  </React.Fragment>
-;
+import Account from './account';
+import Preferences from './preferences';
 
 class Content extends React.Component {
   state = { activeItem: 'account' };
@@ -71,7 +37,7 @@ class Content extends React.Component {
 
         <Grid.Column stretched width={12}>
           <Segment>
-            {activeItem === 'account' ? <AccountContainer /> : null}
+            {activeItem === 'account' ? <Account /> : null}
             {activeItem === 'preferences' ? <Preferences /> : null}
           </Segment>
         </Grid.Column>

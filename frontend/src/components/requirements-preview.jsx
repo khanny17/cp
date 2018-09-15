@@ -5,8 +5,7 @@ const RequirementsPreview = ({ requirements }) =>
   <div>
     {Object.values(requirements).map(req => (
       <div key={req.fid}>
-        {req.type}
-        {req.value}
+        {req.type + ' ' + req.value}
       </div>
     ))}
   </div>
