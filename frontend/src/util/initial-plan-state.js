@@ -2,7 +2,7 @@ import uuidv4 from 'uuid/v4';
 import getRandomInt from './get-random-int';
 
 export default function makeNewPlan() {
-  let plan = { fid: 'new', title: 'New Plan', years: [] };
+  let plan = { fid: 'new', title: 'New Plan', years: [], requirements: [] };
 
   let plans = { [plan.fid]: plan };
   let years = {};

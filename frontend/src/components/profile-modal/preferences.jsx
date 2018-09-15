@@ -36,7 +36,7 @@ class Preferences extends React.Component {
   }
 
   render() {
-    const { loading, error } = this.props.preferences;
+    const { loading } = this.props.preferences;
     const { school } = this.state;
     return (
       <React.Fragment>

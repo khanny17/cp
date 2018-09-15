@@ -1,160 +1,28 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../../css/course.css';
-import PropTypes from 'prop-types';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
-import InlineEdit from 'react-edit-inline';
-import { updateCourse, deleteItem } from '../../actions/plan';
-import { mouseEnterCourse, mouseLeaveCourse } from '../../actions/ui';
+import { deleteItem } from '../../actions/plan';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import CourseContextMenu from './course-contextmenu';
 import CourseEditModal from './course-edit-modal';
-import validatePlan from '../../selectors/validatePlan';
-import courseRequirementsMap from '../../selectors/courseRequirementsMap';
-import { Icon } from 'semantic-ui-react';
-
-const headerDelimiterRegex = /\s|-/;
-
-class Course extends React.Component {
-  state = { editing: null, menu: {} }
-
-  handleChange(c) {
-    if(c.header) {
-      c.subject = c.header.split(headerDelimiterRegex)[0];
-      c.number = c.header.split(headerDelimiterRegex)[1];
-      delete c.header;
-    }
-    c.fid = this.props.course.fid;
-    this.props.updateCourse(c);
-  }
-
-  handleKeyPress(e) {
-    if(e.key === 'Enter' || !this.state.editing) {
-      const element_class_name = document.activeElement.className;
-      this.setState({ editing: element_class_name });
-    }
-  }
-
-  validateHeader(s) {
-    return s.split(headerDelimiterRegex).length === 2;
-  }
-
-  validateCredits(s) {
-    return !isNaN(s);
-  }
-
-  render() {
-    const { course, color, missingPrereqs, requirements,
-      mouseEnterCourse, mouseLeaveCourse, openEditModal } = this.props;
-
-    return (
-      <div className={'course ' + course.subject + '-' + course.number +
-        (missingPrereqs ? ' missingPrereqs ' : '')}
-      style={{ background: color }}
-      onKeyPress={this.handleKeyPress.bind(this)}
-      onMouseEnter={() => mouseEnterCourse(course.fid)}
-      onMouseLeave={() => mouseLeaveCourse(course.fid)}
-      onDoubleClick={openEditModal}
-      >
-        <InlineEdit
-          className="course-header"
-          activeClassName="editing"
-          editing={this.state.editing === 'course-header'}
-          tabIndex={0}
-          paramName="header"
-          change={this.handleChange.bind(this)}
-          validate={s => this.validateHeader(s)}
-          text={ course.subject + ' ' + course.number } />
-        <InlineEdit
-          className="course-title"
-          activeClassName="editing"
-          editing={this.state.editing === 'course-title'}
-          tabIndex={0}
-          paramName="title"
-          change={this.handleChange.bind(this)}
-          text={ course.title } />
-        <div style={{ flex: 1 }} />
-        <InlineEdit
-          className="course-credits"
-          activeClassName="editing"
-          editing={this.state.editing === 'course-credits'}
-          tabIndex={0}
-          paramName="credits"
-          change={this.handleChange.bind(this)}
-          validate={s => this.validateCredits(s)}
-          text={ '' + course.credits } />
-
-        {requirements && requirements.length > 0 ?
-          <Icon name="certificate" className="course-fills-requirements" />
-          : null}
-      </div>
-    );
-  }
-}
-
-Course.propTypes = {
-  course: PropTypes.object,
-  missingPrereqs: PropTypes.object,
-  color: PropTypes.string,
-  updateCourse: PropTypes.func,
-  requirements: PropTypes.array,
-  mouseEnterCourse: PropTypes.func,
-  mouseLeaveCourse: PropTypes.func,
-  openEditModal: PropTypes.func,
-};
-
-const DroppableCourse = (props) =>
-  <Droppable droppableId={props.course.fid} type="COURSE-REQ">
-    {(provided, snapshot) => (
-      <div ref={provided.innerRef}
-        className={snapshot.isDraggingOver ? 'dragging-over' : ''}>
-        <Course {...props} />
-        <div style={{display: 'none'}}>{provided.placeholder}</div>
-      </div>
-    )}
-  </Droppable>
-;
-DroppableCourse.propTypes = { course: PropTypes.object };
-
-
-
-const DraggableCourse = (props) => (
-  <Draggable
-    draggableId={props.course.fid}
-    type="TERM-COURSE"
-    index={props.index}
-  >
-    {(provided, snapshot) => (
-      <div>
-        <div
-          className="course-wrapper"
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={{
-            opacity: snapshot.isDragging ? '.5' : '1',
-            ...provided.draggableProps.style,
-          }}
-        >
-          <DroppableCourse {...props}/>
-        </div>
-        {provided.placeholder}
-      </div>
-    )}
-  </Draggable>
-);
-
-DraggableCourse.propTypes = {
-  course: PropTypes.object,
-  index: PropTypes.number,
-};
+import Course from './course';
 
 
 class ContextMenuCourse extends React.Component {
+  state = { modalOpen: false };
+
+  constructor(props) {
+    super(props);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleAction = this.handleAction.bind(this);
+  }
+
   handleAction(e, data) {
     switch(data.action) {
     case 'delete':
-      this.props.deleteCourse(this.props.course.fid);
+      this.props.deleteCourse(this.props.course);
       break;
     case 'edit':
       this.openModal();
@@ -164,7 +32,6 @@ class ContextMenuCourse extends React.Component {
     }
   }
 
-  state = { modalOpen: false };
   closeModal() {
     this.setState({ modalOpen: false });
   }
@@ -175,47 +42,38 @@ class ContextMenuCourse extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <ContextMenuTrigger id={this.props.course.fid}>
-          <DraggableCourse {...this.props}
-            openEditModal={() => this.handleAction(null, {action:'edit'})}/>
+        <ContextMenuTrigger id={this.props.course}>
+          <Course
+            index={this.props.index}
+            course={this.props.course}
+            openEditModal={this.openModal}
+          />
         </ContextMenuTrigger>
 
-        <CourseContextMenu id={this.props.course.fid}
-          onClick={this.handleAction.bind(this)} />
+        <CourseContextMenu id={this.props.course}
+          onClick={this.handleAction} />
 
         <CourseEditModal
-          color={this.props.color}
           modalOpen={this.state.modalOpen}
-          closeModal={this.closeModal.bind(this)}
+          closeModal={this.closeModal}
           course={this.props.course}
           deleteCourse={this.props.deleteCourse}
-          updateCourse={this.props.updateCourse}
         />
       </React.Fragment>
     );
   }
 }
 ContextMenuCourse.propTypes = {
-  course: PropTypes.object,
-  color: PropTypes.string,
+  course: PropTypes.string,
+  index: PropTypes.number,
   deleteCourse: PropTypes.func,
-  updateCourse: PropTypes.func,
 };
 
-
-const CourseContainer = connect(
-  (state, { course }) => ({
-    course: state.plan.courses[course],
-    color: state.plan.colorscheme[state.plan.courses[course].subject],
-    missingPrereqs: validatePlan(state).missingPrereqs[course],
-    requirements: courseRequirementsMap(state)[course],
-  }),
-  dispatch => ({
-    updateCourse: updates => dispatch(updateCourse(updates)),
-    deleteCourse: fid => dispatch(deleteItem('TERM-COURSE', fid)),
-    mouseEnterCourse: fid => dispatch(mouseEnterCourse(fid)),
-    mouseLeaveCourse: fid => dispatch(mouseLeaveCourse(fid)),
+const ContextMenuCourseContainer = connect(
+  state => ({}),
+  (dispatch, { course }) => ({
+    deleteCourse: () => dispatch(deleteItem('TERM-COURSE', course)),
   }),
 )(ContextMenuCourse);
 
-export default CourseContainer;
+export default ContextMenuCourseContainer;

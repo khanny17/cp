@@ -99,6 +99,13 @@ function plan(state = initialState, action) {
     return {
       ...state,
       requirements: { ...state.requirements, [req.fid]: req },
+      plans: {
+        ...state.plans,
+        [state.plan]: {
+          ...state.plans[state.plan],
+          requirements: state.plans[state.plan].requirements.concat(req.fid),
+        },
+      },
     };
   }
   case UPDATE_REQUIREMENT: {
@@ -127,12 +134,20 @@ function plan(state = initialState, action) {
       },
     };
   }
-
   case DELETE_REQUIREMENT: {
+    const planId = state.plan;
     const { [action.reqId]: deleted, ...newReqState } = state.requirements;
     return {
       ...state,
       requirements: newReqState,
+      plans: {
+        ...state.plans,
+        [planId]: {
+          ...state.plans[planId],
+          requirements:
+            state.plans[planId].requirements.filter(r => r !== action.reqId),
+        },
+      }
     };
   }
 

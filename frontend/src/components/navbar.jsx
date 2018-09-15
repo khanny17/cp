@@ -44,10 +44,9 @@ Header.propTypes = {
   user: PropTypes.object,
 };
 
-const HeaderContainer = withRouter(connect(
+const HeaderContainer = connect(
   state => ({ user: state.auth.user }),
-  dispatch => ({
-  }),
-)(Header));
+  dispatch => ({}),
+)(withRouter(Header));
 
 export default HeaderContainer;

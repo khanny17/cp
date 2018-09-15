@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updateCourse } from '../../actions/plan';
 import { Accordion, Button, Segment, Form, Grid, Modal } from 'semantic-ui-react';
 import EasyInput from '../easy-input';
 import { randomColors } from '../../util/colors';
@@ -146,4 +148,14 @@ CourseEditModal.propTypes = {
   updateCourse: PropTypes.func,
 };
 
-export default CourseEditModal;
+const CourseEditModalContainer = connect(
+  (state, { course }) => ({
+    course: state.plan.courses[course],
+    color: state.plan.colorscheme[state.plan.courses[course].subject],
+  }),
+  dispatch => ({
+    updateCourse: updates => dispatch(updateCourse(updates)),
+  }),
+)(CourseEditModal);
+
+export default CourseEditModalContainer;

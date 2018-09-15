@@ -4,9 +4,17 @@ import PropTypes from 'prop-types';
 import { Icon } from 'semantic-ui-react';
 import { Droppable } from 'react-beautiful-dnd';
 
-const Trash = ({ show }) => (
-  <Droppable droppableId="TRASH" type="TERM-COURSE">
-    {(provided, snapshot) => (
+
+class Trash extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.inner = this.inner.bind(this);
+  }
+
+  inner(provided, snapshot) {
+    const { show } = this.props;
+    return (
       <div 
         ref={provided.innerRef}
         className="trash"
@@ -21,9 +29,17 @@ const Trash = ({ show }) => (
         <Icon name="trash" size="huge"/>
         <div style={{display: 'none'}}>{provided.placeholder}</div>
       </div>
-    )}
-  </Droppable>
-);
+    );
+  }
+
+  render() {
+    return (
+      <Droppable droppableId="TRASH" type="TERM-COURSE">
+        {this.inner}
+      </Droppable>
+    );
+  }
+}
 
 Trash.propTypes = {
   show: PropTypes.bool,

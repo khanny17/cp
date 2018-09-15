@@ -12,33 +12,56 @@ import { addYear } from '../actions/plan';
 import '../css/workspace.css';
 import CoursePrereqLines from './course-prereq-lines';
 
-const Workspace = ({ plan }) =>
-  <div className="workspace">
-    <div className="plan-title-wrapper">
-      <PlanTitle />
-      <div style={{ flex: 1 }} />
-      <PlanSchool />
-    </div>
-    <Droppable droppableId={plan.fid} type="PLAN-YEAR" direction="horizontal">
-      {(provided, snapshot) => (
-        <div ref={provided.innerRef} className="year-container">
-          { plan.years.map((p, i) => <Year year={p} key={p} index={i} />) }
-          { provided.placeholder }
+class Workspace extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inner = this.inner.bind(this);
+  }
+
+  inner(provided, snapshot) {
+    const { years } = this.props;
+    return (
+      <div ref={provided.innerRef} className="year-container">
+        { years.map((p, i) => <Year year={p} key={p} index={i} />) }
+        { provided.placeholder }
+      </div>
+    );
+  }
+
+  render() {
+    const { planId } = this.props;
+    return (
+      <div className="workspace">
+        <div className="plan-title-wrapper">
+          <PlanTitle />
+          <div style={{ flex: 1 }} />
+          <PlanSchool />
         </div>
-      )}
-    </Droppable>
-    <Trash />
-    <CoursePrereqLines />
-  </div>
-;
-Workspace.propTypes = { plan: PropTypes.object };
+        <Droppable droppableId={planId} type="PLAN-YEAR" direction="horizontal">
+          {this.inner}
+        </Droppable>
+        <Trash />
+        <CoursePrereqLines />
+      </div>
+    );
+  }
+}
+Workspace.propTypes = { planId: PropTypes.string, years: PropTypes.array };
+
+const WorkspaceContainer = connect(
+  state => ({
+    planId: state.plan.plan,
+    years: state.plan.plans[state.plan.plan].years,
+  }),
+)(Workspace);
+
 
 class ContextMenuWorkspace extends React.Component {
   handleAction(e, data) {
     switch(data.action) {
     case 'addYear':
       this.props.addYear({
-        title: 'Year ' + (this.props.plan.years.length+1)
+        title: 'Year ' + (this.props.years.length+1)
       });
       break;
     default:
@@ -50,7 +73,7 @@ class ContextMenuWorkspace extends React.Component {
     return (
       <React.Fragment>
         <ContextMenuTrigger id={'WORKSPACE'} >
-          <Workspace {...this.props} />
+          <WorkspaceContainer />
         </ContextMenuTrigger>
 
         <WorkspaceContextMenu id={'WORKSPACE'}
@@ -61,19 +84,20 @@ class ContextMenuWorkspace extends React.Component {
   }
 }
 ContextMenuWorkspace.propTypes = {
-  plan: PropTypes.object,
+  years: PropTypes.array,
   addYear: PropTypes.func,
   //I'm thinking of adding an 'Edit Colorscheme' option?
   //  you know, a modal to change subject colors all at once?
 };
 
 const ContextMenuWorkspaceContainer = connect(
-  state => ({}),
+  state => ({
+    years: state.plan.plans[state.plan.plan].years,
+  }),
   dispatch => ({
     addYear: year => dispatch(addYear(year)),
   }),
 )(ContextMenuWorkspace);
-
 
 
 export default ContextMenuWorkspaceContainer;

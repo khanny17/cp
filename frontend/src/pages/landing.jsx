@@ -26,7 +26,7 @@ const Landing = () =>
 
 
 const Heading = connect(
-  () => ({}),
+  () => null,
   dispatch => ({ newPlan: () => dispatch(newPlan()) }),
 )(({ newPlan }) =>
   <Segment inverted vertical className="landing-heading">

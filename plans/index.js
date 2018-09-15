@@ -100,7 +100,5 @@ async function update(req, plan) {
     lastAccessed: Date.now(),
   }, { 'new': true });
 
-  console.log('-----', updatedPlan);
-
   return updatedPlan.toObject();
 }

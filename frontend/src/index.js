@@ -26,3 +26,9 @@ ReactDOM.render(
   </Provider>, document.getElementById('root')
 );
 registerServiceWorker();
+
+//Why did you update?
+if (process.env.NODE_ENV !== 'production') {
+  const {whyDidYouUpdate} = require('why-did-you-update');
+  whyDidYouUpdate(React);
+}

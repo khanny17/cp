@@ -1,58 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addRequirement, updateRequirement, deleteRequirement } from '../../actions/plan';
-import findFailingRequirements from '../../selectors/find-failing-requirements';
+import { addRequirement } from '../../actions/plan';
 import { Button, Header, Icon, List } from 'semantic-ui-react';
 import Requirement from './requirement';
 
-const Requirements = ({
-  requirements,
-  addRequirement,
-  updateRequirement,
-  deleteRequirement,
-  failingRequirements,
-  courseHoveringOver,
-}) =>
+const ReqList = ({ requirements }) => requirements.map(id => (
+  <List.Item key={id}>
+    <Requirement id={id} />
+  </List.Item>
+));
+ReqList.propTypes = { requirements: PropTypes.array };
+
+const ReqListContainer = connect(
+  state => ({
+    requirements: state.plan.plans[state.plan.plan].requirements,
+  }),
+  dispatch => ({}),
+)(ReqList);
+
+
+const Requirements = ({ add }) =>
   <div className="requirements-inner">
     <Header as='h1'>Requirements</Header>
     <List>
-      {Object.values(requirements).map(req => (
-        <List.Item key={req.fid}>
-          <Requirement
-            notMet={!!failingRequirements[req.fid]}
-            requirement={req}
-            updateRequirement={updateRequirement}
-            deleteRequirement={deleteRequirement}
-            highlight={courseHoveringOver && courseHoveringOver === req.course}
-          />
-        </List.Item>
-      ))}
+      <ReqListContainer />
     </List>
-    <Button onClick={addRequirement}>
+    <Button onClick={add}>
       <Icon name="plus" />Add
     </Button>
   </div>
 ;
-Requirements.propTypes = {
-  addRequirement: PropTypes.func,
-  updateRequirement: PropTypes.func,
-  deleteRequirement: PropTypes.func,
-  requirements: PropTypes.object,
-  failingRequirements: PropTypes.object,
-  courseHoveringOver: PropTypes.string,
-};
+Requirements.propTypes = { add: PropTypes.func };
 
 const RequirementsContainer = connect(
-  state => ({
-    requirements: state.plan.requirements,
-    failingRequirements: findFailingRequirements(state),
-    courseHoveringOver: state.ui.courseHoveringOver,
-  }),
+  state => ({}),
   dispatch => ({
-    addRequirement: () => dispatch(addRequirement()),
-    updateRequirement: toUpdate => dispatch(updateRequirement(toUpdate)),
-    deleteRequirement: toDelete => dispatch(deleteRequirement(toDelete)),
+    add: () => dispatch(addRequirement()),
   }),
 )(Requirements);
 

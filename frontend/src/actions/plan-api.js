@@ -90,6 +90,7 @@ export function savePlan(planData) {
       details: {
         title: planData.plans[planData.plan].title,
         years: planData.plans[planData.plan].years,
+        requirements: planData.plans[planData.plan].requirements,
       },
       _id: planData.plans[planData.plan]._id,
     };

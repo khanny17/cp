@@ -9,6 +9,7 @@ const schema = new mongoose.Schema({
   details: {
     title: { type: String, required: true },
     years: { type: Array, required: true },
+    requirements: { type: Array, required: true },
   },
   years: { type: Object, required: true },
   terms: { type: Object, required: true },

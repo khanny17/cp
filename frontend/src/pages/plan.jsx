@@ -5,30 +5,17 @@ import '../css/plan-view.css';
 import DragDropMaster from '../components/drag-drop-master';
 import { Dimmer, Header, Icon, Loader } from 'semantic-ui-react';
 import { loadPlan, newPlan } from '../actions/plan-api';
-import { Prompt } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import Workspace from '../components/workspace';
 import Requirements from '../components/requirements';
+import UnsavedPrompt from '../components/unsaved-prompt';
 
-const PlanView = ({ plan }) => {
-  return (
-    <div className="plan-view">
-      <Requirements />
-      <Workspace plan={plan}/>
-    </div>
-  );
-};
-
-PlanView.propTypes = {
-  plan: PropTypes.object,
-};
-
-const PlanViewContainer = connect(
-  state => ({
-    plan: state.plan.plans[state.plan.plan],
-  }),
-  dispatch => ({}),
-)(PlanView);
+const PlanView = () =>
+  <div className="plan-view">
+    <Requirements />
+    <Workspace />
+  </div>
+;
 
 const DragDropWrappedPlanView = ({
   plans, match, loading, load, newPlan, planId,
@@ -74,7 +61,7 @@ const DragDropWrappedPlanView = ({
 
   return(
     <DragDropMaster>
-      <PlanViewContainer />
+      <PlanView />
     </DragDropMaster>
   );
 };
@@ -105,16 +92,8 @@ const WithNavbar = (props) => (
   <React.Fragment>
     <Navbar />
     <DragDropWrappedPlanViewContainer {...props}/>
-    <Prompt when={props.unsavedChanges}
-      message="You have unsaved changes, are you sure you want to leave?"
-    />
+    <UnsavedPrompt />
   </React.Fragment>
 );
-WithNavbar.propTypes = { unsavedChanges: PropTypes.bool, };
 
-const WithNavbarContainer = connect(
-  state => ({ unsavedChanges: state.ui.unsavedChanges }),
-  dispatch => ({}),
-)(WithNavbar);
-
-export default WithNavbarContainer;
+export default WithNavbar;

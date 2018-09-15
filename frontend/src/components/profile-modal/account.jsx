@@ -34,7 +34,7 @@ Account.propTypes = { name: PropTypes.string, email: PropTypes.string };
 
 const AccountContainer = connect(
   state => ({ name: state.auth.user.name, email: state.auth.user.email }),
-  dispatch => ({}),
+  dispatch => null,
 )(Account);
 
 export default AccountContainer;

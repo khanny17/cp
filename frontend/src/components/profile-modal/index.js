@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Button,
   Dropdown,
-  Form,
   Grid,
-  Header,
   Icon,
   Menu,
   Modal,

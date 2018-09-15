@@ -12,9 +12,9 @@ Private.propTypes = {
   children: PropTypes.any
 };
 
-const PrivateContainer = withRouter(connect(
+const PrivateContainer = connect(
   state => ({ user: state.auth.user }),
   dispatch => ({}),
-)(Private));
+)(withRouter(Private));
 
 export default PrivateContainer;

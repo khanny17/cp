@@ -1,35 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import InlineEdit from 'react-edit-inline';
 import { Dropdown, Icon } from 'semantic-ui-react';
+import { updateRequirement, deleteRequirement } from '../../actions/plan';
+import findFailingRequirements from '../../selectors/find-failing-requirements';
 import Badges from './badges';
 
-class Requirement extends React.Component {
-  typeColors = {
-    COURSE: 'blue',
-    ATTRIBUTE: 'purple',
-  };
+const typeStyles = {
+  COURSE: { color: 'blue' },
+  ATTRIBUTE: { color: 'purple' },
+};
 
-  typeOptions = [
-    {
-      text: (
-        <span>
-          <Icon name="circle" style={{ color: this.typeColors.COURSE }}/>
-          Course
-        </span>
-      ),
-      value: 'COURSE',
-    },
-    {
-      text: (
-        <span>
-          <Icon name="circle" style={{ color: this.typeColors.ATTRIBUTE }}/>
-          Attribute
-        </span>
-      ),
-      value: 'ATTRIBUTE',
-    },
-  ];
+const typeOptions = [
+  {
+    text: (
+      <span>
+        <Icon name="circle" style={typeStyles.COURSE} />
+        Course
+      </span>
+    ),
+    value: 'COURSE',
+  },
+  {
+    text: (
+      <span>
+        <Icon name="circle" style={typeStyles.ATTRIBUTE} />
+        Attribute
+      </span>
+    ),
+    value: 'ATTRIBUTE',
+  },
+];
+
+const RequirementTypeSelect = ({ type, met, onChange }) =>
+  <div className="type">
+    <Dropdown
+      inline
+      options={typeOptions}
+      icon={met ? 'circle' : 'circle outline'}
+      style={typeStyles[type]}
+      onChange={onChange}
+    />
+  </div>
+;
+RequirementTypeSelect.propTypes = {
+  options: PropTypes.object,
+  type: PropTypes.string,
+  met: PropTypes.bool,
+  onChange: PropTypes.func,
+};
+
+class Requirement extends React.PureComponent {
+
+  constructor(props) {
+    super(props);
+
+    this.delete = this.delete.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onDropdownChange = this.onDropdownChange.bind(this);
+
+    this.state = { requirement: this.props.requirement };
+  }
 
   onChange(toUpdate) {
     this.props.updateRequirement({
@@ -38,30 +70,29 @@ class Requirement extends React.Component {
     });
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = { requirement: this.props.requirement };
-  }
   componentDidUpdate(prevProps) {
     if(prevProps.requirement !== this.props.requirement) {
       this.setState({ requirement: this.props.requirement });
     }
   }
 
+  delete() {
+    this.props.deleteRequirement(this.state.requirement.fid);
+  }
+
+  onDropdownChange = (e, data) => this.onChange({ type: data.value });
+
   render() {
-    const { notMet, deleteRequirement, highlight } = this.props;
+    const { notMet } = this.props;
     const { requirement } = this.state;
 
     return (
-      <div className={'requirement '+(highlight ? 'highlight' : '')}>
-        <div className="type">
-          <Dropdown options={this.typeOptions} inline
-            icon={notMet ? 'circle outline' : 'circle'}
-            style={{ color: this.typeColors[requirement.type] }}
-            onChange={(e, data) => this.onChange({ type: data.value })}
-          />
-        </div>
+      <React.Fragment>
+        <RequirementTypeSelect
+          type={requirement.type}
+          met={!notMet}
+          onChange={this.onDropdownChange}
+        />
 
         <div className="value">
           {requirement.value.length === 0 ?
@@ -78,7 +109,7 @@ class Requirement extends React.Component {
               tabIndex={0}
               editing={requirement.value.length === 0}
               text={requirement.value}
-              change={this.onChange.bind(this)}
+              change={this.onChange}
             />
           }
         </div>
@@ -95,8 +126,8 @@ class Requirement extends React.Component {
         <div style={{ flex: 1 }} />
 
         <Icon name="times" className="delete-requirement"
-          onClick={() => deleteRequirement(requirement.fid)}/>
-      </div>
+          onClick={this.delete} />
+      </React.Fragment>
     );
   }
 }
@@ -105,7 +136,27 @@ Requirement.propTypes = {
   updateRequirement: PropTypes.func,
   deleteRequirement: PropTypes.func,
   notMet: PropTypes.bool,
-  highlight: PropTypes.bool,
 };
 
-export default Requirement;
+const RequirementHighlightWrapper = ({ highlight, ...props }) =>
+  <div className={'requirement '+(highlight ? 'highlight' : '')}>
+    <Requirement {...props} />
+  </div>
+;
+RequirementHighlightWrapper.propTypes = { highlight: PropTypes.bool };
+
+
+const RequirementHighlightContainer = connect(
+  (state, { id }) => ({
+    notMet: !!findFailingRequirements(state)[id],
+    highlight: state.ui.courseHoveringOver &&
+      state.ui.courseHoveringOver === state.plan.requirements[id].course,
+    requirement: state.plan.requirements[id],
+  }),
+  dispatch => ({
+    updateRequirement: toUpdate => dispatch(updateRequirement(toUpdate)),
+    deleteRequirement: toDelete => dispatch(deleteRequirement(toDelete)),
+  }),
+)(RequirementHighlightWrapper);
+
+export default RequirementHighlightContainer;
