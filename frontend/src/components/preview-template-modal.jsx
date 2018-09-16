@@ -37,7 +37,16 @@ const ReqTab = ({ template }) =>
 ;
 ReqTab.propTypes = { template: PropTypes.object };
 
+
 class PreviewTemplateModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.setTab = this.setTab.bind(this);
+    this.setTabDescription = this.setTabDescription.bind(this);
+    this.setTabPlan = this.setTabPlan.bind(this);
+    this.setTabRequirements = this.setTabRequirements.bind(this);
+  }
+
   getIfNeeded() {
     const { template, getFullTemplate } = this.props;
     if(!template.plan.years && !template.loading){
@@ -50,18 +59,29 @@ class PreviewTemplateModal extends React.Component {
   setTab(name) {
     this.setState({ activeTab: name });
   }
+  setTabDescription() {
+    this.setTab('description');
+  }
+  setTabPlan() {
+    this.setTab('plan');
+  }
+  setTabRequirements() {
+    this.setTab('requirements');
+  }
+
+  trigger = (
+    <Button icon inverted color="blue" size="mini"
+      className="show-on-hover" style={this.floatRight}>
+      <Icon name="copy"/>Preview
+    </Button>
+  );
 
   render() {
     const { activeTab } = this.state;
     const { template, loadTemplate } = this.props;
     return (
       <Modal closeIcon onOpen={this.getIfNeeded.bind(this)}
-        trigger={(
-          <Button icon inverted color="blue" size="mini"
-            className="show-on-hover" style={{float: 'right'}}>
-            <Icon name="copy"/>Preview
-          </Button>
-        )}
+        trigger={this.trigger}
       >
 
         <Modal.Header style={{ display: 'flex' }}>
@@ -75,11 +95,11 @@ class PreviewTemplateModal extends React.Component {
         <Modal.Content scrolling>
           <Menu tabular>
             <Menu.Item name='description' active={ activeTab === 'description' }
-              onClick={() => this.setTab('description')} />
+              onClick={this.setTabDescription} />
             <Menu.Item name='plan' active={ activeTab === 'plan' }
-              onClick={() => this.setTab('plan')} />
+              onClick={this.setTabPlan} />
             <Menu.Item name='requirements' active={ activeTab === 'requirements' }
-              onClick={() => this.setTab('requirements')} />
+              onClick={this.setTabRequirements} />
           </Menu>
 
           <div style={{ overflow: 'auto' }}>
@@ -119,7 +139,6 @@ const PreviewTemplateModalContainer = connect(
     loadTemplate: template => dispatch(newPlan(template.plan)),
   }),
 )(PreviewTemplateModal);
-
 
 
 export default PreviewTemplateModalContainer;

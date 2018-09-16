@@ -10,18 +10,15 @@ class Badges extends React.Component {
     this.inner = this.inner.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return this.props.badges.some(b => {
-      return nextProps.badges.find(n => n.fid === b.fid && n.course !== b.course);
-    });
+  inner(provided, snapshot) {
+    const { badges } = this.props;
+    return (
+      <div ref={provided.innerRef}>
+        {badges.map(badge => <Badge key={badge.fid} badge={badge} />)}
+        { provided.placeholder }
+      </div>
+    );
   }
-
-  inner = (provided, snapshot) =>
-    <div ref={provided.innerRef}>
-      {this.props.badges.map(badge => <Badge key={badge.fid} badge={badge} />)}
-      { provided.placeholder }
-    </div>
-  ;
 
   render() {
     return (

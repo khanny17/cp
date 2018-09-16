@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import { Icon } from 'semantic-ui-react';
 
-const Badge = ({ badge }) =>
-  <Draggable draggableId={badge.fid} type="COURSE-REQ" index="">
-    {(provided, snapshot) => (
+class Badge extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.inner = this.inner.bind(this);
+  }
+
+  inner(provided, snapshot) {
+    const { badge } = this.props;
+    return (
       <div>
         <div
           ref={provided.innerRef}
@@ -20,9 +26,18 @@ const Badge = ({ badge }) =>
           {provided.placeholder}
         </div>
       </div>
-    )}
-  </Draggable>
-;
+    );
+  }
+
+  render() {
+    const { badge } = this.props;
+    return (
+      <Draggable draggableId={badge.fid} type="COURSE-REQ" index="">
+        {this.inner}
+      </Draggable>
+    );
+  }
+}
 Badge.propTypes = { badge: PropTypes.object };
 
 export default Badge;

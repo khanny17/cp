@@ -44,6 +44,11 @@ const TemplateRows = ({ templates }) => {
 class Templates extends React.Component {
   state = {};
 
+  constructor(props) {
+    super(props);
+    this.filterSchool = this.filterSchool.bind(this);
+  }
+
   applyFilters() {
     const { schoolFilter } = this.state;
     const { templates } = this.props;
@@ -95,7 +100,7 @@ class Templates extends React.Component {
         <Segment attached loading={this.props.templates.loading}>
           <POL info={preferences} pull={getPrefs}>
             <SchoolSelectionDropdown school={this.state.schoolFilter}
-              onChange={this.filterSchool.bind(this)}/>
+              onChange={this.filterSchool}/>
           </POL>
           <Table basic="very" selectable>
             <Table.Header>

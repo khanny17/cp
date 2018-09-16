@@ -10,6 +10,11 @@ class RndRequirements extends React.Component {
   prevWidth = 350;
   state = { width: 0, height: 300, show: false };
 
+  constructor(props) {
+    super(props);
+    this.onResize = this.onResize.bind(this);
+  }
+
   componentDidUpdate(prevProps) {
     // Remember the width when closing/opening
     if(this.state.show) {
@@ -31,22 +36,32 @@ class RndRequirements extends React.Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.show !== this.props.show ||
+      nextState.width !== this.state.width ||
+      nextState.height !== this.state.height;
+  }
+
+  position = { x: 0, y: 0 };
+  enableResizing = { right: true };
+  onResize(e, direction, ref, delta, position) {
+    this.setState({
+      width: ref.style.width,
+      height: ref.style.height,
+      ...position,
+    });
+  }
+
   render() {
     const { width, height, show } = this.state;
     return (
       <Rnd
         className={'requirements ' + (show ? '' : 'hidden')}
         size={{ width: width, height: height }}
-        position={{ x: 0, y: 0 }}
+        position={this.position}
         disableDragging={true}
-        enableResizing={{ right: true }}
-        onResize={(e, direction, ref, delta, position) => {
-          this.setState({
-            width: ref.style.width,
-            height: ref.style.height,
-            ...position,
-          });
-        }}
+        enableResizing={this.enableResizing}
+        onResize={this.onResize}
       >
         <Requirements {...this.props} />
         <SidebarToggle />

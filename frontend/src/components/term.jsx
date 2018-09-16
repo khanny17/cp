@@ -41,18 +41,25 @@ const Term = ({ term, addCourse, updateTerm }) =>
     </Droppable>
   </div>
 ;
-
 Term.propTypes = {
   term: PropTypes.object,
   addCourse: PropTypes.func,
   updateTerm: PropTypes.func,
 };
 
-const DraggableTerm = (props) => (
+const TermContainer = connect(
+  (state, { term }) => ({ term: state.plan.terms[term] }),
+  dispatch => ({
+    addCourse: termId => dispatch(addCourse(termId)),
+    updateTerm: (fid, updates) => dispatch(updateTerm(fid, updates)),
+  }),
+)(Term);
+
+const DraggableTerm = ({ term, index }) => (
   <Draggable
-    draggableId={props.term.fid}
+    draggableId={term}
     type="YEAR-TERM"
-    index={props.index}
+    index={index}
   >
     {(provided, snapshot) => (
       <div className="pre-draggable">
@@ -67,26 +74,17 @@ const DraggableTerm = (props) => (
             ...provided.draggableProps.style,
           }}
         >
-          <Term {...props}/>
+          <TermContainer term={term}/>
         </div>
         {provided.placeholder}
       </div>
     )}
   </Draggable>
 );
-
 DraggableTerm.propTypes = {
-  term: PropTypes.object,
+  term: PropTypes.string,
   index: PropTypes.number,
 };
-
-const TermContainer = connect(
-  (state, { term }) => ({ term: state.plan.terms[term] }),
-  dispatch => ({
-    addCourse: termId => dispatch(addCourse(termId)),
-    updateTerm: (fid, updates) => dispatch(updateTerm(fid, updates)),
-  }),
-)(DraggableTerm);
 
 
 class ContextMenuTerm extends React.Component {
@@ -110,7 +108,7 @@ class ContextMenuTerm extends React.Component {
     return (
       <div className="pre-term-context-menu">
         <ContextMenuTrigger id={this.props.term}>
-          <TermContainer {...this.props} />
+          <DraggableTerm {...this.props} />
         </ContextMenuTrigger>
 
         <TermContextMenu id={this.props.term}

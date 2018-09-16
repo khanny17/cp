@@ -31,16 +31,20 @@ const Year = ({ year }) => (
     </Droppable>
   </div>
 );
-
 Year.propTypes = {
   year: PropTypes.object,
 };
 
-const DraggableYear = (props) => (
+const YearContainer = connect(
+  (state, { year }) => ({ year: state.plan.years[year] }),
+  dispatch => ({}),
+)(Year);
+
+const DraggableYear = ({ year, index }) => (
   <Draggable
-    draggableId={props.year.fid}
+    draggableId={year}
     type="PLAN-YEAR"
-    index={props.index}
+    index={index}
   >
     {(provided, snapshot) => (
       <div className="pre-draggable">
@@ -55,24 +59,17 @@ const DraggableYear = (props) => (
             ...provided.draggableProps.style,
           }}
         >
-          <Year {...props}/>
+          <YearContainer year={year}/>
         </div>
         {provided.placeholder}
       </div>
     )}
   </Draggable>
 );
-
 DraggableYear.propTypes = {
-  year: PropTypes.object,
+  year: PropTypes.string,
   index: PropTypes.number,
 };
-
-const YearContainer = connect(
-  (state, { year }) => ({ year: state.plan.years[year] }),
-  dispatch => ({}),
-)(DraggableYear);
-
 
 
 class ContextMenuYear extends React.Component {
@@ -93,7 +90,7 @@ class ContextMenuYear extends React.Component {
     return (
       <div>
         <ContextMenuTrigger id={this.props.year} >
-          <YearContainer {...this.props} />
+          <DraggableYear {...this.props} />
         </ContextMenuTrigger>
 
         <YearContextMenu id={this.props.year}

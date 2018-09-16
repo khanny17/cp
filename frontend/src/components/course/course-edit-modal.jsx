@@ -130,7 +130,7 @@ class CourseEditModal extends React.Component {
             Update
           </Button>
           <Button color='red' style={{ float: 'left' }}
-            onClick={() => deleteCourse(course.fid)}>
+            onClick={deleteCourse}>
             Delete
           </Button>
         </Modal.Actions>

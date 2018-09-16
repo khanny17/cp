@@ -7,6 +7,10 @@ import POL from './pull-on-load';
 
 class SchoolSelectionDropdown extends React.PureComponent {
   state = { schoolOptions: null, searchQuery: '' };
+  constructor(props) {
+    super(props);
+    this.onSearchChange = this.onSearchChange.bind(this);
+  }
 
   onSearchChange(e, data) {
     this.setState({ searchQuery: data.searchQuery });
@@ -52,7 +56,7 @@ class SchoolSelectionDropdown extends React.PureComponent {
     return (
       <Dropdown search selection placeholder="School"
         onChange={onChange}
-        onSearchChange={this.onSearchChange.bind(this)}
+        onSearchChange={this.onSearchChange}
         options={schoolOptions}
         value={school}
       />

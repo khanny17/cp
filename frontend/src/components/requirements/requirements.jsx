@@ -5,10 +5,20 @@ import { addRequirement } from '../../actions/plan';
 import { Button, Header, Icon, List } from 'semantic-ui-react';
 import Requirement from './requirement';
 
+class ReqListItem extends React.PureComponent {
+  render() {
+    const { id } = this.props;
+    return (
+      <List.Item key={id}>
+        <Requirement id={id} />
+      </List.Item>
+    );
+  }
+}
+ReqListItem.propTypes = { id: PropTypes.string };
+
 const ReqList = ({ requirements }) => requirements.map(id => (
-  <List.Item key={id}>
-    <Requirement id={id} />
-  </List.Item>
+  <ReqListItem key={id} id={id} />
 ));
 ReqList.propTypes = { requirements: PropTypes.array };
 

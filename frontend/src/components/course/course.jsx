@@ -48,8 +48,8 @@ class Course extends React.Component {
         (missingPrereqs ? ' missingPrereqs ' : '')}
       style={{ background: color }}
       onKeyPress={this.handleKeyPress.bind(this)}
-      onMouseEnter={() => mouseEnterCourse(course.fid)}
-      onMouseLeave={() => mouseLeaveCourse(course.fid)}
+      onMouseEnter={mouseEnterCourse}
+      onMouseLeave={mouseLeaveCourse}
       onDoubleClick={openEditModal}
       >
         <InlineEdit
@@ -89,7 +89,7 @@ class Course extends React.Component {
 }
 Course.propTypes = {
   course: PropTypes.object,
-  missingPrereqs: PropTypes.object,
+  missingPrereqs: PropTypes.bool,
   color: PropTypes.string,
   updateCourse: PropTypes.func,
   requirements: PropTypes.array,
@@ -102,13 +102,13 @@ const CourseContainer = connect(
   (state, { course }) => ({
     course: state.plan.courses[course],
     color: state.plan.colorscheme[state.plan.courses[course].subject],
-    missingPrereqs: validatePlan(state).missingPrereqs[course],
+    missingPrereqs: !!validatePlan(state).missingPrereqs[course],
     requirements: courseRequirementsMap(state)[course],
   }),
-  dispatch => ({
+  (dispatch, { course }) => ({
     updateCourse: updates => dispatch(updateCourse(updates)),
-    mouseEnterCourse: fid => dispatch(mouseEnterCourse(fid)),
-    mouseLeaveCourse: fid => dispatch(mouseLeaveCourse(fid)),
+    mouseEnterCourse: () => dispatch(mouseEnterCourse(course)),
+    mouseLeaveCourse: () => dispatch(mouseLeaveCourse(course)),
   }),
 )(Course);
 
