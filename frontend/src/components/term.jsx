@@ -10,37 +10,52 @@ import { addCourse, deleteItem, minimizeTerm, updateTerm } from '../actions/plan
 import InlineEdit from 'react-edit-inline';
 
 
-const Term = ({ term, addCourse, updateTerm }) =>
-  <div className={term.minimized ? 'term minimized' : 'term' }>
-    <InlineEdit
-      className="term-title"
-      text={term.title}
-      paramName="title"
-      change={update => updateTerm(term.fid, update)}
-      staticElement="h3"
-    />
-    <Droppable droppableId={term.fid} type="TERM-COURSE">
-      {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          style={{
-            border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
-            borderRadius: '5px',
-          }}
-          {...provided.droppableProps}
-          className="course-container"
-        >
-          { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
-          { provided.placeholder }
-          <button className="add-course-button"
-            onClick={() => addCourse(term.fid)}>
-            +
-          </button>
-        </div>
-      )}
-    </Droppable>
-  </div>
-;
+class Term extends React.Component {
+  constructor(props) {
+    super(props);
+    this.inner = this.inner.bind(this);
+  }
+
+  inner(provided, snapshot) {
+    const { term } = this.props;
+    return (
+      <div
+        ref={provided.innerRef}
+        style={{
+          border: snapshot.isDraggingOver ? '1px dashed gray' : 'none',
+          borderRadius: '5px',
+        }}
+        {...provided.droppableProps}
+        className="course-container"
+      >
+        { term.courses.map((c, i) => <Course course={c} key={c} index={i} />) }
+        { provided.placeholder }
+        <button className="add-course-button"
+          onClick={() => addCourse(term.fid)}>
+          +
+        </button>
+      </div>
+    );  
+  }
+
+  render() {
+    const { term, addCourse, updateTerm } = this.props;
+    return (
+      <div className={term.minimized ? 'term minimized' : 'term' }>
+        <InlineEdit
+          className="term-title"
+          text={term.title}
+          paramName="title"
+          change={update => updateTerm(term.fid, update)}
+          staticElement="h3"
+        />
+        <Droppable droppableId={term.fid} type="TERM-COURSE">
+          {this.inner}
+        </Droppable>
+      </div>
+    );
+  }
+}
 Term.propTypes = {
   term: PropTypes.object,
   addCourse: PropTypes.func,

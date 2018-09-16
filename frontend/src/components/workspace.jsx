@@ -61,7 +61,7 @@ class ContextMenuWorkspace extends React.Component {
     switch(data.action) {
     case 'addYear':
       this.props.addYear({
-        title: 'Year ' + (this.props.years.length+1)
+        title: 'Year ' + (this.props.numYears+1)
       });
       break;
     default:
@@ -84,7 +84,7 @@ class ContextMenuWorkspace extends React.Component {
   }
 }
 ContextMenuWorkspace.propTypes = {
-  years: PropTypes.array,
+  numYears: PropTypes.number,
   addYear: PropTypes.func,
   //I'm thinking of adding an 'Edit Colorscheme' option?
   //  you know, a modal to change subject colors all at once?
@@ -92,7 +92,7 @@ ContextMenuWorkspace.propTypes = {
 
 const ContextMenuWorkspaceContainer = connect(
   state => ({
-    years: state.plan.plans[state.plan.plan].years,
+    numYears: state.plan.plans[state.plan.plan].years.length,
   }),
   dispatch => ({
     addYear: year => dispatch(addYear(year)),

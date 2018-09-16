@@ -22,6 +22,18 @@ class PublishModal extends React.Component {
     template: {}
   };
 
+  constructor(props) {
+    super(props);
+
+    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.publish = this.publish.bind(this);
+    this.validate = this.validate.bind(this);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
+    this.onSchoolChange = this.onSchoolChange.bind(this);
+    this.onTagChange = this.onTagChange.bind(this);
+  }
+
   validate() {
     if(!this.state.template.description ||
       this.state.template.description.length === 0) {
@@ -61,9 +73,9 @@ class PublishModal extends React.Component {
 
   render() {
     return (
-      <Modal open={this.state.modalOpen} onClose={this.closeModal.bind(this)}
+      <Modal open={this.state.modalOpen} onClose={this.closeModal}
         trigger={
-          <Dropdown.Item onClick={this.openModal.bind(this)}>
+          <Dropdown.Item onClick={this.openModal}>
             <Icon name="clone"/>Publish
           </Dropdown.Item>
         }
@@ -75,21 +87,21 @@ class PublishModal extends React.Component {
 
           <Form>
             <TextArea
-              onChange={this.onDescriptionChange.bind(this)}
+              onChange={this.onDescriptionChange}
               placeholder={description_description} />
 
-            <SchoolSelectionDropdown onChange={this.onSchoolChange.bind(this)}/>
-            <TagSelectionDropdown onChange={this.onTagChange.bind(this)}/>
+            <SchoolSelectionDropdown onChange={this.onSchoolChange}/>
+            <TagSelectionDropdown onChange={this.onTagChange}/>
 
           </Form>
 
         </Modal.Content>
 
         <Modal.Actions>
-          <Button onClick={this.closeModal.bind(this)}>
+          <Button onClick={this.closeModal}>
             Cancel
           </Button>
-          <Button primary onClick={this.publish.bind(this)}>
+          <Button primary onClick={this.publish}>
             Publish
           </Button>
         </Modal.Actions>
