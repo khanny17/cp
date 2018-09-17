@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import { Icon } from 'semantic-ui-react';
 
-class Badge extends React.PureComponent {
+class Badge extends React.Component {
   constructor(props) {
     super(props);
     this.inner = this.inner.bind(this);

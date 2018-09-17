@@ -24,15 +24,11 @@
     display: flex;
 }
 
-/* Internet Explorer has not grabby hand */
+/* Internet Explorer has no grabby hand */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
     .pre-draggable {
         cursor: move;
     }
-}
-
-.pre-draggable > div {
-    height: 100%;
 }
 
 .trash:hover {

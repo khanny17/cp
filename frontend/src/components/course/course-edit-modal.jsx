@@ -6,6 +6,7 @@ import { Accordion, Button, Segment, Form, Grid, Modal } from 'semantic-ui-react
 import EasyInput from '../easy-input';
 import { randomColors } from '../../util/colors';
 import AccordionPanels from './course-edit-modal-accordion-panels';
+import { deleteItem } from '../../actions/plan';
 import '../../css/course-edit-modal.css';
 
 const CoursePreview = ({ color, subject, number, title, credits }) =>
@@ -153,8 +154,9 @@ const CourseEditModalContainer = connect(
     course: state.plan.courses[course],
     color: state.plan.colorscheme[state.plan.courses[course].subject],
   }),
-  dispatch => ({
+  (dispatch, { course }) => ({
     updateCourse: updates => dispatch(updateCourse(updates)),
+    deleteCourse: () => dispatch(deleteItem('TERM-COURSE', course)),
   }),
 )(CourseEditModal);
 

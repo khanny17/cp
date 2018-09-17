@@ -19,4 +19,3 @@ tr:hover .show-on-hover,
 div:hover > .show-on-hover {
     visibility: visible;
 }
-

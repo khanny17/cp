@@ -22,7 +22,7 @@ class ContextMenuCourse extends React.Component {
   handleAction(e, data) {
     switch(data.action) {
     case 'delete':
-      this.props.deleteCourse(this.props.course);
+      this.props.deleteCourse();
       break;
     case 'edit':
       this.openModal();
@@ -54,10 +54,9 @@ class ContextMenuCourse extends React.Component {
           onClick={this.handleAction} />
 
         <CourseEditModal
+          course={this.props.course}
           modalOpen={this.state.modalOpen}
           closeModal={this.closeModal}
-          course={this.props.course}
-          deleteCourse={this.props.deleteCourse}
         />
       </React.Fragment>
     );

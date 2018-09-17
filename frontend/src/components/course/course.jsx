@@ -164,7 +164,7 @@ class DraggableCourse extends React.PureComponent {
             ...provided.draggableProps.style,
           }}
         >
-          <DroppableCourse 
+          <DroppableCourse
             course={course}
             index={index}
             openEditModal={openEditModal}
