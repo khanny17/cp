@@ -124,10 +124,10 @@ class CourseEditModal extends React.Component {
 
         </Modal.Content>
         <Modal.Actions>
-          <Button primary onClick={() => updateCourse({
-            color: this.state.color,
-            ...this.state.course,
-          })}>
+          <Button primary onClick={() => {
+            updateCourse({ color: this.state.color, ...this.state.course });
+            closeModal();
+          }}>
             Update
           </Button>
           <Button color='red' style={{ float: 'left' }}
