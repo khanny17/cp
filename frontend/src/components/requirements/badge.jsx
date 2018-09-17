@@ -1,17 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
 import { Icon } from 'semantic-ui-react';
 
-class Badge extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inner = this.inner.bind(this);
-  }
-
-  inner(provided, snapshot) {
-    const { badge } = this.props;
-    return (
+const Badge = ({ requirement }) =>
+  <Draggable draggableId={requirement.fid} type="COURSE-REQ" index="">
+    {(provided, snapshot) =>
       <div>
         <div
           ref={provided.innerRef}
@@ -21,23 +16,18 @@ class Badge extends React.Component {
             ...provided.draggableProps.style,
           }}
         >
-          <Icon name={badge.course ? 'circle outline' : 'certificate'}
+          <Icon name={requirement.course ? 'circle outline' : 'certificate'}
             className="badge"/>
           {provided.placeholder}
         </div>
       </div>
-    );
-  }
+    }
+  </Draggable>
+;
+Badge.propTypes = { requirement: PropTypes.object };
 
-  render() {
-    const { badge } = this.props;
-    return (
-      <Draggable draggableId={badge.fid} type="COURSE-REQ" index="">
-        {this.inner}
-      </Draggable>
-    );
-  }
-}
-Badge.propTypes = { badge: PropTypes.object };
-
-export default Badge;
+export default connect(
+  (state, { requirement }) => ({
+    requirement: state.plan.requirements[requirement],
+  })
+)(Badge);

@@ -110,6 +110,12 @@ function plan(state = initialState, action) {
   }
   case UPDATE_REQUIREMENT: {
     const { fid, ...updates } = action.updates;
+
+    // If we change the type, wipe the assigned course
+    if(updates.type && updates.type !== state.requirements[fid].type) {
+      updates.course = null;      
+    }
+
     return {
       ...state,
       requirements: {

@@ -1,36 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Badge from './badge';
 import { Droppable } from 'react-beautiful-dnd';
 
-class Badges extends React.Component {
-  constructor(props) {
-    super(props);
+const Badges = ({ id, requirement }) =>
+  <div className="badges">
+    <Droppable droppableId={id+' badges'} type="COURSE-REQ">
+      {(provided, snapshot) =>
+        <div ref={provided.innerRef}>
+          {requirement.type === 'ATTRIBUTE' ?
+            <Badge key={id} requirement={id}/>
+            : null
+          }
+          { provided.placeholder }
+        </div>
+      }
+    </Droppable>
+  </div>
+;
+Badges.propTypes = { id: PropTypes.string, requirement: PropTypes.object };
 
-    this.inner = this.inner.bind(this);
-  }
-
-  inner(provided, snapshot) {
-    const { badges } = this.props;
-    return (
-      <div ref={provided.innerRef}>
-        {badges.map(badge => <Badge key={badge.fid} badge={badge} />)}
-        { provided.placeholder }
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div className="badges">
-        <Droppable droppableId="REQUIREMENTS" type="COURSE-REQ">
-          {this.inner}
-        </Droppable>
-      </div>
-    );
-  }
-}
-
-Badges.propTypes = { badges: PropTypes.array };
-
-export default Badges;
+export default connect(
+  (state, { id }) => ({
+    requirement: state.plan.requirements[id],
+  })
+)(Badges);
