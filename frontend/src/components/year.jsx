@@ -3,14 +3,21 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import YearContextMenu from './year-contextmenu';
-import { addTerm, deleteItem } from '../actions/plan';
+import InlineEdit from 'react-edit-inline';
+import { addTerm, deleteItem, updateYear } from '../actions/plan';
 import Term from './term';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import '../css/year.css';
 
-const Year = ({ year }) => (
+const Year = ({ year, updateYear }) => (
   <div className="year">
-    <h2>{year.title}</h2>
+    <InlineEdit
+      className="year-title"
+      text={year.title}
+      paramName="title"
+      change={update => updateYear(update)}
+      staticElement="h2"
+    />
     <Droppable droppableId={year.fid} type="YEAR-TERM" direction="horizontal">
       {(provided, snapshot) => (
         <div
@@ -33,11 +40,14 @@ const Year = ({ year }) => (
 );
 Year.propTypes = {
   year: PropTypes.object,
+  updateYear: PropTypes.func,
 };
 
 const YearContainer = connect(
   (state, { year }) => ({ year: state.plan.years[year] }),
-  dispatch => ({}),
+  (dispatch, { year }) => ({
+    updateYear: updates => dispatch(updateYear(year, updates)),
+  }),
 )(Year);
 
 const DraggableYear = ({ year, index }) => (
@@ -109,7 +119,7 @@ ContextMenuYear.propTypes = {
 
 const ContextMenuYearContainer = connect(
   state => ({}),
-  dispatch => ({
+  (dispatch, { year }) => ({
     addTerm: (year, term) => dispatch(addTerm(year, term)),
     deleteYear: year => dispatch(deleteItem('PLAN-YEAR', year)),
   }),

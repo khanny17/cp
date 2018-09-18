@@ -16,6 +16,7 @@ import {
   DELETE_ITEM,
 
   UPDATE_PLAN,
+  UPDATE_YEAR,
   UPDATE_TERM,
   UPDATE_COURSE,
 
@@ -170,6 +171,20 @@ function plan(state = initialState, action) {
       }
     };
   }
+  case UPDATE_YEAR: {
+    const { fid, updates } = action;
+    return {
+      ...state,
+      years: {
+        ...state.years,
+        [fid]: {
+          ...state.years[fid],
+          ...updates,
+        }
+      }
+    };
+  }
+
   case UPDATE_TERM: {
     const { fid, updates } = action;
     return {

@@ -17,7 +17,7 @@ PlanSchool.propTypes = {
 };
 
 const PlanSchoolContainer = connect(
-  state => ({ 
+  state => ({
     school: state.plan.plans[state.plan.plan].school,
     schools: state.school.schools,
     loading: state.school.loading,

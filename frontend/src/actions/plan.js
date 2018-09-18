@@ -9,6 +9,7 @@ export const MOVE_COURSE = 'MOVE_COURSE';
 export const MINIMIZE_TERM = 'MINIMIZE_TERM';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const UPDATE_PLAN = 'UPDATE_PLAN';
+export const UPDATE_YEAR = 'UPDATE_YEAR';
 export const UPDATE_TERM = 'UPDATE_TERM';
 export const UPDATE_COURSE = 'UPDATE_COURSE';
 export const ADD_REQUIREMENT = 'ADD_REQUIREMENT';
@@ -51,6 +52,14 @@ export function deleteRequirement(reqId) {
 export function updatePlan(updates) {
   return {
     type: UPDATE_PLAN,
+    updates,
+  };
+}
+
+export function updateYear(fid, updates) {
+  return {
+    type: UPDATE_YEAR,
+    fid,
     updates,
   };
 }

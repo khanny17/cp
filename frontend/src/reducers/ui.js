@@ -24,6 +24,7 @@ import {
   MOVE_COURSE,
   DELETE_ITEM,
   UPDATE_PLAN,
+  UPDATE_YEAR,
   UPDATE_TERM,
   UPDATE_COURSE,
   ADD_REQUIREMENT,
@@ -82,12 +83,13 @@ function ui(state = initialState, action) {
   case MOVE_COURSE:
   case DELETE_ITEM:
   case UPDATE_PLAN:
+  case UPDATE_YEAR:
+  case UPDATE_TERM:
   case UPDATE_COURSE:
   case ADD_REQUIREMENT:
   case UPDATE_REQUIREMENT:
   case ASSIGN_REQUIREMENT:
   case DELETE_REQUIREMENT:
-  case UPDATE_TERM:
   case NEW_PLAN:
     return { ...state, unsavedChanges: true };
   case SAVE_PLAN_SUCCESS:

@@ -61,23 +61,30 @@ class PublishModal extends React.Component {
   }
 
   onDescriptionChange(e, data) {
-    this.setState({
-      template: {
-        ...this.state.template,
-        description: data.value,
-      },
-    });
+    if(data.value === this.state.description) {
+      return;
+    }
+    this.setState({ template: { ...this.state.template, description: data.value } });
   }
 
   onSchoolChange(e, data) {
+    if(data.value === this.state.school) {
+      return;
+    }
     this.setState({ template: { ...this.state.template, school: data.value }});
   }
 
   onMajorChange(e, data) {
+    if(data.value === this.state.major) {
+      return;
+    }
     this.setState({ template: { ...this.state.template, major: data.value }});
   }
 
   onTagChange(e, data) {
+    if(data.value === this.state.tags) {
+      return;
+    }
     this.setState({ template: { ...this.state.template, tags: data.value }});
   }
 

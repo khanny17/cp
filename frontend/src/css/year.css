@@ -8,6 +8,7 @@
     display: flex;
     flex-flow: column;
     height: 100%;
+    min-height: 430px;
     min-width: 110px;
     background: #e6e6e6;
 

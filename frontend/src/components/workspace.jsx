@@ -12,40 +12,25 @@ import { addYear } from '../actions/plan';
 import '../css/workspace.css';
 import CoursePrereqLines from './course-prereq-lines';
 
-class Workspace extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inner = this.inner.bind(this);
-  }
-
-  inner(provided, snapshot) {
-    const { years } = this.props;
-    return (
-      <div ref={provided.innerRef} className="year-container">
-        { years.map((p, i) => <Year year={p} key={p} index={i} />) }
-        { provided.placeholder }
-      </div>
-    );
-  }
-
-  render() {
-    const { planId } = this.props;
-    return (
-      <div className="workspace">
-        <div className="plan-title-wrapper">
-          <PlanTitle />
-          <div style={{ flex: 1 }} />
-          <PlanSchool />
+const Workspace = ({ planId, years }) =>
+  <div className="workspace">
+    <div className="plan-title-wrapper">
+      <PlanTitle />
+      <div style={{ flex: 1 }} />
+      <PlanSchool />
+    </div>
+    <Droppable droppableId={planId} type="PLAN-YEAR" direction="horizontal">
+      {(provided, snapshot) => (
+        <div ref={provided.innerRef} className="year-container">
+          { years.map((p, i) => <Year year={p} key={p} index={i} />) }
+          { provided.placeholder }
         </div>
-        <Droppable droppableId={planId} type="PLAN-YEAR" direction="horizontal">
-          {this.inner}
-        </Droppable>
-        <Trash />
-        <CoursePrereqLines />
-      </div>
-    );
-  }
-}
+      )}
+    </Droppable>
+    <Trash />
+    <CoursePrereqLines />
+  </div>
+;
 Workspace.propTypes = { planId: PropTypes.string, years: PropTypes.array };
 
 const WorkspaceContainer = connect(
