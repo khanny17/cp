@@ -1,7 +1,8 @@
 import uuidv4 from 'uuid/v4';
 import getRandomInt from './get-random-int';
+import ExamplePlan from './example-plan';
 
-export default function makeNewPlan() {
+export function makeNewPlan() {
   let plan = { fid: 'new', title: 'New Plan', years: [], requirements: [] };
 
   let plans = { [plan.fid]: plan };
@@ -54,5 +55,18 @@ export default function makeNewPlan() {
     saving: false,
     colorscheme: { SUBJ: '#607d8b' },
     requirements: {},
+  };
+}
+
+export function examplePlan() {
+  return {
+    plan: 'new',
+    plans: { 'new': ExamplePlan.details },
+    years: ExamplePlan.years,
+    terms: ExamplePlan.terms,
+    courses: ExamplePlan.courses,
+    saving: false,
+    colorscheme: ExamplePlan.colorscheme,
+    requirements: ExamplePlan.requirements,
   };
 }

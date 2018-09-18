@@ -38,9 +38,9 @@ import {
 } from '../actions/plan-api';
 
 
-import makeNewPlan from '../util/initial-plan-state';
+import { examplePlan } from '../util/initial-plan-state';
 
-const initialState = makeNewPlan();
+const initialState = examplePlan();
 
 
 function plan(state = initialState, action) {
@@ -50,7 +50,7 @@ function plan(state = initialState, action) {
     return initialState;
 
   case NEW_PLAN: {
-    let newPlan = makeNewPlan();
+    let newPlan = examplePlan();
     if(action.template) {
       return {
         ...newPlan,
