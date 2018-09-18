@@ -136,6 +136,7 @@ export function publish(templateDetails, plan) {
       plan: { details, years, terms, courses, colorscheme, requirements },
       description: templateDetails.description,
       school: templateDetails.school,
+      major: templateDetails.major,
       tags: templateDetails.tags,
     };
 

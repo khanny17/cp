@@ -34,14 +34,14 @@ module.exports = cors(jwt_auth(process.env.JWT_SECRET)
 
 async function publish(req) {
   const body = await json(req);
-  const { plan, description, school, tags } = body;
+  const { plan, description, school, tags, major } = body;
   const { years, terms, courses, details, colorscheme, requirements } = plan;
 
   await Template.create({
     plan: {
       years, terms, courses, details, colorscheme, requirements,
     },
-    description, school, tags,
+    description, school, major, tags,
     stars: [],
     owner: req.jwt._id,
     lastUpdated: Date.now(),
@@ -57,6 +57,7 @@ async function list(req) {
     owner: true,
     lastUpdated: true,
     school: true,
+    major: true,
     tags: true,
     description: true,
   });

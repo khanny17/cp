@@ -22,6 +22,7 @@ const schema = new mongoose.Schema({
     ref: 'School',
     required: true
   },
+  major: String,
   tags: [String],
   stars: [ObjectId],
 });

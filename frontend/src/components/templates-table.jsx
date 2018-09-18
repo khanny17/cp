@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { templates } from '../actions/browse';
 import { getPrefs } from '../actions/preferences';
 import POL from './pull-on-load';
-import { Header, Segment, Table } from 'semantic-ui-react';
+import { Form, Header, Segment, Table } from 'semantic-ui-react';
 import PreviewTemplateModal from './preview-template-modal';
 import TemplateStar from './template-star';
 import SchoolSelectionDropdown from './school-selection-dropdown';
+import EasyInput from './easy-input';
+import TagSelectionDropdown from './tag-selection-dropdown';
 
 const TemplateRows = ({ templates }) => {
   if(!templates || templates.error) {
@@ -26,19 +28,22 @@ const TemplateRows = ({ templates }) => {
     );
   }
 
-  return templates.map(template => (
-    <Table.Row key={template._id}>
-      <Table.Cell>{template.plan.details.title}</Table.Cell>
-      <Table.Cell collapsing>
-        {template.stars.length}
-        <TemplateStar template={template} />
-      </Table.Cell>
-      <Table.Cell>{template.tags.join(', ')}</Table.Cell>
-      <Table.Cell>
-        <PreviewTemplateModal template={template} />
-      </Table.Cell>
-    </Table.Row>
-  ));
+  return templates
+    .sort((a, b) => b.stars.length - a.stars.length)
+    .map(template => (
+      <Table.Row key={template._id}>
+        <Table.Cell>{template.plan.details.title}</Table.Cell>
+        <Table.Cell>{template.major}</Table.Cell>
+        <Table.Cell collapsing>
+          {template.stars.length}
+          <TemplateStar template={template} />
+        </Table.Cell>
+        <Table.Cell>{template.tags.join(', ')}</Table.Cell>
+        <Table.Cell>
+          <PreviewTemplateModal template={template} />
+        </Table.Cell>
+      </Table.Row>
+    ));
 };
 
 class Templates extends React.Component {
@@ -47,10 +52,12 @@ class Templates extends React.Component {
   constructor(props) {
     super(props);
     this.filterSchool = this.filterSchool.bind(this);
+    this.filterMajor = this.filterMajor.bind(this);
+    this.filterTags = this.filterTags.bind(this);
   }
 
   applyFilters() {
-    const { schoolFilter } = this.state;
+    const { schoolFilter, majorFilter, tagsFilter } = this.state;
     const { templates } = this.props;
 
     this.setState({
@@ -60,12 +67,26 @@ class Templates extends React.Component {
             return false;
           }
 
+          //TODO need to make case insensitive
+
+          if(majorFilter && !template.major.contains(majorFilter)) {
+            return false;
+          }
+
+          // TODO tag filters should be logical OR, and partial matches should
+          // match. full matches should be sorted first
+
+          if(tagsFilter && tagsFilter.length > 0 &&
+            !template.tags.some(tag => tag.contains(tagsFilter))) {
+            return false;
+          }
+
           return true;
         })
     });
   }
 
-  filterNames = [ 'schoolFilter' ];
+  filterNames = [ 'schoolFilter', 'majorFilter', 'tagsFilter' ];
   componentDidMount() {
     this.applyFilters();
   }
@@ -89,23 +110,47 @@ class Templates extends React.Component {
     this.setState({ schoolFilter: data.value });
   }
 
+  filterMajor(e, data) {
+    this.setState({ majorFilter: data.value });
+  }
+
+  filterTags(e, data) {
+    this.setState({ tagsFilter: data.value });
+  }
+
   render() {
     const { preferences, getPrefs } = this.props;
     const { templates } = this.state;
+
     return (
       <React.Fragment>
         <Header as='h1' attached='top' block>
           Plan Templates
         </Header>
         <Segment attached loading={this.props.templates.loading}>
-          <POL info={preferences} pull={getPrefs}>
-            <SchoolSelectionDropdown school={this.state.schoolFilter}
-              onChange={this.filterSchool}/>
-          </POL>
+          <Form>
+            <Form.Group widths="equal">
+              <Form.Field>
+                <label>School</label>
+                <POL info={preferences} pull={getPrefs}>
+                  <SchoolSelectionDropdown school={this.state.schoolFilter}
+                    onChange={this.filterSchool}/>
+                </POL>
+              </Form.Field>
+              <Form.Field>
+                <EasyInput name="major" onChange={this.filterMajor}/>
+              </Form.Field>
+              <Form.Field>
+                <label>Tags</label>
+                <TagSelectionDropdown onChange={this.filterTags}/>
+              </Form.Field>
+            </Form.Group>
+          </Form>
           <Table basic="very" selectable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Plan Name</Table.HeaderCell>
+                <Table.HeaderCell>Major</Table.HeaderCell>
                 <Table.HeaderCell collapsing>Stars</Table.HeaderCell>
                 <Table.HeaderCell>Tags</Table.HeaderCell>
                 <Table.HeaderCell/>
@@ -120,6 +165,7 @@ class Templates extends React.Component {
     );
   }
 }
+
 Templates.propTypes = {
   templates: PropTypes.object,
   preferences: PropTypes.object,

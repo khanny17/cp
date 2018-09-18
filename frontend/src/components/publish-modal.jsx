@@ -7,11 +7,15 @@ import {
   Form,
   Icon,
   Modal,
+  Segment,
   TextArea
 } from 'semantic-ui-react';
+import POL from './pull-on-load';
 import { getTags, publish } from '../actions/template';
+import { getPrefs } from '../actions/preferences';
 import SchoolSelectionDropdown from './school-selection-dropdown';
 import TagSelectionDropdown from './tag-selection-dropdown';
+import EasyInput from './easy-input';
 
 const description_description =
   'Description - any info that might help explain about this plan';
@@ -31,12 +35,17 @@ class PublishModal extends React.Component {
     this.validate = this.validate.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.onSchoolChange = this.onSchoolChange.bind(this);
+    this.onMajorChange = this.onMajorChange.bind(this);
     this.onTagChange = this.onTagChange.bind(this);
   }
 
   validate() {
-    if(!this.state.template.description ||
-      this.state.template.description.length === 0) {
+    const { description, school, major, tags } = this.state;
+    if(!description || description.length === 0) {
+      return false;
+    }
+
+    if(!school || !major || !tags) {
       return false;
     }
 
@@ -64,6 +73,10 @@ class PublishModal extends React.Component {
     this.setState({ template: { ...this.state.template, school: data.value }});
   }
 
+  onMajorChange(e, data) {
+    this.setState({ template: { ...this.state.template, major: data.value }});
+  }
+
   onTagChange(e, data) {
     this.setState({ template: { ...this.state.template, tags: data.value }});
   }
@@ -72,6 +85,7 @@ class PublishModal extends React.Component {
   closeModal() { return this.setState({ modalOpen: false }); }
 
   render() {
+    const { preferences, getPrefs } = this.props;
     return (
       <Modal open={this.state.modalOpen} onClose={this.closeModal}
         trigger={
@@ -82,17 +96,34 @@ class PublishModal extends React.Component {
       >
         <Modal.Header>Publish Template</Modal.Header>
         <Modal.Content>
-          Before publishing your plan, please fill out some information to help
-          others find your template.
+          <Segment>
+            Before publishing your plan, please fill out some information to help
+            others find your template.
+          </Segment>
 
           <Form>
-            <TextArea
-              onChange={this.onDescriptionChange}
-              placeholder={description_description} />
+            <Form.Group widths="equal">
+              <Form.Field>
+                <label>School</label>
+                <POL info={preferences} pull={getPrefs}>
+                  <SchoolSelectionDropdown
+                    school={(preferences.data || {}).school}
+                    onChange={this.onSchoolChange}/>
+                </POL>
+              </Form.Field>
+              <EasyInput name="major" onChange={this.onMajorChange}/>
+              <Form.Field>
+                <label>Tags</label>
+                <TagSelectionDropdown onChange={this.onTagChange}/>
+              </Form.Field>
+            </Form.Group>
 
-            <SchoolSelectionDropdown onChange={this.onSchoolChange}/>
-            <TagSelectionDropdown onChange={this.onTagChange}/>
-
+            <Form.Field>
+              <label>Description</label>
+              <TextArea
+                onChange={this.onDescriptionChange}
+                placeholder={description_description} />
+            </Form.Field>
           </Form>
 
         </Modal.Content>
@@ -101,7 +132,10 @@ class PublishModal extends React.Component {
           <Button onClick={this.closeModal}>
             Cancel
           </Button>
-          <Button primary onClick={this.publish}>
+          <Button primary onClick={() => {
+            this.publish();
+            this.closeModal();
+          }}>
             Publish
           </Button>
         </Modal.Actions>
@@ -115,16 +149,20 @@ PublishModal.propTypes = {
   tags: PropTypes.array,
   getTags: PropTypes.func,
   publishTemplate: PropTypes.func,
+  preferences: PropTypes.object,
+  getPrefs: PropTypes.func,
 };
 
 const PublishModalContainer = connect(
   state => ({
     tags: state.template.tags,
     plan: state.plan,
+    preferences: state.preferences,
   }),
   dispatch => ({
     getTags: () => dispatch(getTags()),
     publishTemplate: (template, plan) => dispatch(publish(template, plan)),
+    getPrefs: () => dispatch(getPrefs()),
   }),
 )(PublishModal);
 
