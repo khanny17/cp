@@ -4,8 +4,10 @@ function isLocal() {
 }
 
 export const AUTH_API_ROOT = isLocal() ?
-  'http://127.0.0.1:3001' :
-  'https://auth.cp-api.tech' ;
+  'http://127.0.0.1:3000' :
+  //'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev' :
+  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev' ;
+  //'https://auth.cp-api.tech' ;
 
 export const PLAN_API_ROOT = isLocal() ?
   'http://127.0.0.1:3002' :

@@ -65,6 +65,8 @@ export function register(userData) {
       method: 'post',
       body: JSON.stringify(userData),
     })
+      .then(handleErrors)
+      .then(response => response.json())
       .then(jwt => dispatch(registerSuccess(jwt)))
       .then(() => dispatch(push('/home')))
       .catch(err => dispatch(registerFailure(err)));

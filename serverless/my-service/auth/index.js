@@ -1,29 +1,30 @@
 const bcrypt = require('bcrypt');
-const jwt_auth = require('./jwt-auth');
+const jwt_auth = require('../util/jwt-auth');
 const jwt = require('jsonwebtoken');
 const request = require('request-promise-native');
-const AWS = require('aws-sdk');
+const verifyCaptcha = require('../util/captcha');
+const emailRegex = require('../util/email');
 
+const AWS = require('aws-sdk');
 const USERS_TABLE = process.env.USERS_TABLE;
 const dynamoDb = new AWS.DynamoDB.DocumentClient({
   region: process.env.SERVERLESS_REGION
 });
 
-const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 
-module.exports = async function(event, context) {
-  return jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
-    (async(event, context) => {
-      const url = event.path;
-      const body = JSON.parse(event.body);
-      switch(url) {
-        case '/register': return await register(body);
-        case '/login'   : return await login(body);
-        default: return `Recognized as ${event.jwt.email}`;
-      }
-    })(event, context);
-}
+module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
+(async(event, context) => {
+  const url = event.path;
+  const body = JSON.parse(event.body);
+
+  switch(url) {
+    case '/register': return await register(body);
+    case '/login'   : return await login(body);
+    default: return `Recognized as ${event.jwt.email}`;
+  }
+});
+
 
 async function register(body) {
   //Validate captcha first
@@ -31,18 +32,8 @@ async function register(body) {
     '?secret=' + process.env.CAPTCHA_SECRET_KEY +
     '&response=' + body['g-recaptcha-response'];
 
-  const captcha_response = await request({
-      method: 'POST',
-      uri: captcha_url,
-      json: true,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
-  });
-
-  if(!captcha_response.success) {
-    throw new Error('reCAPTCHA check failed');
-  }
+  const captchaResponse = body['g-recaptcha-response'];
+  await verifyCaptcha(captchaResponse);
 
   // Next, check email validity
   if(!emailRegex.test(body.email)) {

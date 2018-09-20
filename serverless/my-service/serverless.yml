@@ -19,6 +19,7 @@ plugins:
 custom:
   tableNames:
     user: 'users-table-${self:provider.stage}'
+    plan: 'plans-table-${self:provider.stage}'
 
 provider:
   name: aws
@@ -38,13 +39,11 @@ provider:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
   environment:
     USERS_TABLE: ${self:custom.tableNames.user}
+    PLANS_TABLE: ${self:custom.tableNames.plan}
+    JWT_SECRET: ${ssm:cp-jwt-secret}
+    CAPTCHA_SECRET_KEY: ${ssm:cp-captcha-secret}
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http: ANY /hello
-
   auth:
     handler: handler.auth
     events:
@@ -69,3 +68,18 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableNames.user}
+    PlansDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: _id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: _id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableNames.plan}
