@@ -13,14 +13,14 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient({
 
 
 
-module.exports = jwt_auth(process.env.JWT_SECRET, ['/register', '/login'])
+module.exports = jwt_auth(process.env.JWT_SECRET, ['/auth/register', '/auth/login'])
 (async(event, context) => {
-  const url = event.path;
+  const action = event.pathParameters.action;
   const body = JSON.parse(event.body);
 
-  switch(url) {
-    case '/register': return await register(body);
-    case '/login'   : return await login(body);
+  switch(action) {
+    case 'register': return await register(body);
+    case 'login'   : return await login(body);
     default: return `Recognized as ${event.jwt.email}`;
   }
 });

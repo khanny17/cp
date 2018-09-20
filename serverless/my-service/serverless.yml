@@ -48,8 +48,13 @@ functions:
     handler: handler.auth
     events:
       - http: ANY /auth
-      - http: ANY /login
-      - http: ANY /register
+      - http: ANY /auth/{action}
+  plans:
+    handler: handler.plans
+    events:
+      - http: ANY /plans
+      - http: ANY /plans/{action}
+      - http: ANY /plans/{action}/{_id}
 
 resources:
   Resources:
@@ -83,3 +88,17 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableNames.plan}
+        GlobalSecondaryIndexes:
+        - IndexName: plan_owner
+          KeySchema:
+          - AttributeName: plan_owner
+            KeyType: HASH
+          Projection:
+            NonKeyAttributes:
+            - _id
+            - details
+            - lastAccessed
+            ProjectionType: INCLUDE
+          ProvisionedThroughput:
+            ReadCapacityUnits: '5'
+            WriteCapacityUnits: '5'
