@@ -37,6 +37,10 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - { "Fn::GetAtt": ["UsersDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["PlansDynamoDBTable", "Arn" ] }
+        - { "Fn::Join": [ "/", [
+            { "Fn::GetAtt": ["PlansDynamoDBTable", "Arn" ] }, "index", "plan_owner"
+          ]]}
   environment:
     USERS_TABLE: ${self:custom.tableNames.user}
     PLANS_TABLE: ${self:custom.tableNames.plan}
@@ -80,6 +84,9 @@ resources:
           -
             AttributeName: _id
             AttributeType: S
+          -
+            AttributeName: plan_owner
+            AttributeType: S
         KeySchema:
           -
             AttributeName: _id
@@ -100,5 +107,5 @@ resources:
             - lastAccessed
             ProjectionType: INCLUDE
           ProvisionedThroughput:
-            ReadCapacityUnits: '5'
-            WriteCapacityUnits: '5'
+            ReadCapacityUnits: '1'
+            WriteCapacityUnits: '1'

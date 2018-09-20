@@ -5,13 +5,15 @@ function isLocal() {
 
 export const AUTH_API_ROOT = isLocal() ?
   //'http://127.0.0.1:3000' :
-  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev' :
-  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev' ;
+  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev/auth' :
+  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev/auth' ;
   //'https://auth.cp-api.tech' ;
 
 export const PLAN_API_ROOT = isLocal() ?
-  'http://127.0.0.1:3002' :
-  'https://plans.cp-api.tech' ;
+  //'http://127.0.0.1:3002' :
+  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev/plans' :
+  'https://0gm3wmboci.execute-api.us-east-1.amazonaws.com/dev/plans' ;
+  //'https://plans.cp-api.tech' ;
 
 export const TEMPLATE_API_ROOT = isLocal() ?
   'http://127.0.0.1:3003' :
