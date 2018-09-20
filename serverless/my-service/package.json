@@ -1,0 +1,22 @@
+{
+  "name": "my-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^3.25.12"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.318.0",
+    "bcrypt": "^3.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
