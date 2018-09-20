@@ -31,9 +31,11 @@ function registerFailure() {
   };
 }
 
-function registerSuccess() {
+function registerSuccess(jwt, user) {
   return {
     type: REGISTER_SUCCESS,
+    jwt,
+    user,
   };
 }
 
@@ -67,7 +69,7 @@ export function register(userData) {
     })
       .then(handleErrors)
       .then(response => response.json())
-      .then(jwt => dispatch(registerSuccess(jwt)))
+      .then(data => dispatch(registerSuccess(data.jwt, data.user)))
       .then(() => dispatch(push('/home')))
       .catch(err => dispatch(registerFailure(err)));
   };

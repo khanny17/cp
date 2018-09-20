@@ -7,12 +7,20 @@ function handleErrors(fn) {
       const data = await fn(event, context);
       return {
         statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body: JSON.stringify(data),
       };
     }
     catch(error) {
       return {
         statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
         body: JSON.stringify({ message: error.message }),
       };
     }

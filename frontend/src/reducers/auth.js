@@ -24,12 +24,11 @@ function auth(state = initialState, action) {
     return state;
   case REGISTER_FAILURE:
     return state;
-  case REGISTER_SUCCESS:
-    return state;
   case LOGIN_REQUEST:
     return state;
   case LOGIN_FAILURE:
     return state;
+  case REGISTER_SUCCESS:
   case LOGIN_SUCCESS:
     localStorage.setItem('jwt', action.jwt);
     localStorage.setItem('user', JSON.stringify(action.user));
