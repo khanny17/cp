@@ -30,5 +30,5 @@ function handleErrors(fn) {
 }
 
 // Add new filepaths to this array
-['auth', 'plans']
+['auth', 'plans', 'preferences', 'templates']
   .forEach(name => module.exports[name] = handleErrors(require('./'+name)));

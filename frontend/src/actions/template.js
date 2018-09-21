@@ -130,6 +130,7 @@ export function publish(templateDetails, plan) {
     const details = {
       title: plan.plans[plan.plan].title,
       years: plan.plans[plan.plan].years,
+      requirements: plan.plans[plan.plan].requirements,
     };
 
     const template = {

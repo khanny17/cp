@@ -20,6 +20,8 @@ custom:
   tableNames:
     user: 'users-table-${self:provider.stage}'
     plan: 'plans-table-${self:provider.stage}'
+    preferences: 'preferences-table-${self:provider.stage}'
+    templates: 'templates-table-${self:provider.stage}'
 
 provider:
   name: aws
@@ -41,9 +43,14 @@ provider:
         - { "Fn::Join": [ "/", [
             { "Fn::GetAtt": ["PlansDynamoDBTable", "Arn" ] }, "index", "plan_owner"
           ]]}
+        - { "Fn::GetAtt": ["PreferencesDynamoDBTable", "Arn" ] }
+        - { "Fn::GetAtt": ["TemplatesDynamoDBTable", "Arn" ] }
+
   environment:
     USERS_TABLE: ${self:custom.tableNames.user}
     PLANS_TABLE: ${self:custom.tableNames.plan}
+    PREFERENCES_TABLE: ${self:custom.tableNames.preferences}
+    TEMPLATES_TABLE: ${self:custom.tableNames.templates}
     JWT_SECRET: ${ssm:cp-jwt-secret}
     CAPTCHA_SECRET_KEY: ${ssm:cp-captcha-secret}
 
@@ -59,6 +66,17 @@ functions:
       - http: ANY /plans
       - http: ANY /plans/{action}
       - http: ANY /plans/{action}/{_id}
+  preferences:
+    handler: handler.preferences
+    events:
+      - http: ANY /preferences
+      - http: ANY /preferences/{action}
+  templates:
+    handler: handler.templates
+    events:
+      - http: ANY /templates
+      - http: ANY /templates/{action}
+      - http: ANY /templates/{action}/{_id}
 
 resources:
   Resources:
@@ -77,6 +95,7 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.tableNames.user}
+
     PlansDynamoDBTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
@@ -109,3 +128,35 @@ resources:
           ProvisionedThroughput:
             ReadCapacityUnits: '1'
             WriteCapacityUnits: '1'
+
+    PreferencesDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: user
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: user
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableNames.preferences}
+
+    TemplatesDynamoDBTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: _id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: _id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.tableNames.templates}

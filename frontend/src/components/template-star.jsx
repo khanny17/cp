@@ -9,7 +9,7 @@ const TemplateStar = ({ template, toggleStar, user }) =>
     <Icon loading name="circle notch" className="star"/>
     :
     <Icon
-      name={ template.stars.includes(user._id) ? 'star' : 'star outline' }
+      name={ template.stars.includes(user.email) ? 'star' : 'star outline' }
       className="star"
       onClick={() => toggleStar(template._id)} />
 ;
