@@ -8,10 +8,19 @@ import {
   LOGOUT,
 } from '../actions/auth';
 
+let initialUser;
+try {
+  initialUser = localStorage.getItem('user');
+  initialUser = JSON.parse(initialUser);
+} catch(error) {
+  localStorage.removeItem('user');
+  initialUser = null;
+}
+
 
 const initialState = {
   jwt: localStorage.getItem('jwt') || null,
-  user: JSON.parse(localStorage.getItem('user')) || null,
+  user: initialUser,
 };
 
 function auth(state = initialState, action) {

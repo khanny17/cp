@@ -10,6 +10,7 @@ import TemplateStar from './template-star';
 import SchoolSelectionDropdown from './school-selection-dropdown';
 import EasyInput from './easy-input';
 import TagSelectionDropdown from './tag-selection-dropdown';
+import Fuse from 'fuse.js';
 
 const TemplateRows = ({ templates }) => {
   if(!templates || templates.error) {
