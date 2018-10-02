@@ -14,7 +14,7 @@ phases:
       - cd frontend/ && npm install && npm run build
   post_build:
     commands:
-      - aws s3 sync --delete . "s3://courseplanner"
+      - aws s3 sync --delete ./build/ "s3://courseplanner"
 artifacts:
   files:
     - '**/*'
