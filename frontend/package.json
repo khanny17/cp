@@ -40,7 +40,7 @@
     "react-beautiful-dnd": "^8.0.5",
     "react-color": "^2.14.1",
     "react-contextmenu": "^2.9.3",
-    "react-dev-utils": "^5.0.1",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.4.1",
     "react-edit-inline": "khanny17/ReactInlineEdit",
     "react-google-recaptcha": "^0.14.0",
